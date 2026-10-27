@@ -1,0 +1,168 @@
+@import 'tailwindcss';
+
+/*
+ * Design tokens.
+ *
+ * Every colour the UI uses is a semantic token defined here, so components
+ * never hard-code a palette value. The dark theme is the default; the light
+ * theme overrides the same variables under `[data-theme='light']`, which
+ * `src/app/theme.ts` sets on <html>. `static` keeps every variable in the
+ * output so canvas/SVG renderers can read them at runtime.
+ *
+ * Contrast pairs are verified against WCAG AA in `src/app/designTokens.test.ts`.
+ */
+@theme static {
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Surfaces */
+  --color-bg: #0b0e14; /* keep in sync with THEME_COLORS.dark (src/app/brand.ts) */
+  --color-surface: #131823;
+  --color-surface-raised: #1b2231;
+  --color-border: #283143;
+  --color-border-strong: #3a4559;
+  /* Selection controls (segmented control, toggles): inset track, raised thumb. */
+  --color-track: #0b0e14;
+  --color-thumb: #2a3446;
+
+  /* Text */
+  --color-fg: #f2f5fa;
+  --color-fg-muted: #a7b1c5;
+  --color-fg-subtle: #8590a7;
+
+  /* Accent: "correct" and "in tune". `accent` is a fill, `accent-fg` is text
+     on that fill, `accent-text` is accent-coloured text on a surface. */
+  --color-accent: #3ddc97;
+  --color-accent-strong: #62e8ad;
+  --color-accent-fg: #03140c;
+  --color-accent-text: #4be3a0;
+
+  /* Tuning direction and feedback */
+  --color-sharp: #ffa05c;
+  --color-flat: #6bb5ff;
+  --color-warning: #f7c54e;
+  --color-danger: #ff6b86;
+
+  /* Guitar strings, 1 = high e … 6 = low E */
+  --color-string-1: #ff85d6;
+  --color-string-2: #3fd8e2;
+  --color-string-3: #b994ff;
+  --color-string-4: #5aa8ff;
+  --color-string-5: #ffc64d;
+  --color-string-6: #ff6b7d;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Mono', 'Roboto Mono', Menlo, monospace;
+
+  --radius-card: 1.25rem;
+  --radius-control: 0.875rem;
+
+  --shadow-elevated: 0 12px 32px rgb(0 0 0 / 0.45);
+
+  /* Height of the mobile bottom tab bar, excluding the safe-area inset. */
+  --spacing-tabbar: 4rem;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-indeterminate: fp-indeterminate 1.2s ease-in-out infinite;
+  --animate-delayed-fade-in: fp-fade-in 0.2s ease-out 0.15s forwards;
+
+  @keyframes fp-indeterminate {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(300%);
+    }
+  }
+
+  @keyframes fp-fade-in {
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@layer base {
+  :root[data-theme='light'] {
+    --color-bg: #f6f7fb; /* keep in sync with THEME_COLORS.light (src/app/brand.ts) */
+    --color-surface: #ffffff;
+    --color-surface-raised: #eef1f6;
+    --color-border: #d8dee8;
+    --color-border-strong: #b9c2d0;
+    --color-track: #e6eaf0;
+    --color-thumb: #ffffff;
+
+    --color-fg: #0d1220;
+    --color-fg-muted: #454f64;
+    --color-fg-subtle: #5b6579;
+
+    --color-accent: #22c98e;
+    --color-accent-strong: #1db57f;
+    --color-accent-fg: #03140c;
+    --color-accent-text: #057a55;
+
+    --color-sharp: #b3470d;
+    --color-flat: #0b62c2;
+    --color-warning: #8a5b00;
+    --color-danger: #c2264a;
+
+    --color-string-1: #b8287f;
+    --color-string-2: #086e76;
+    --color-string-3: #6b3fd0;
+    --color-string-4: #1a66c8;
+    --color-string-5: #8c5900;
+    --color-string-6: #c82a43;
+
+    --shadow-elevated: 0 12px 32px rgb(15 23 42 / 0.14);
+  }
+
+  html {
+    color-scheme: dark;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  html[data-theme='light'] {
+    color-scheme: light;
+  }
+
+  body {
+    /* Removes the double-tap-to-zoom delay while keeping pinch-zoom available. */
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent-text);
+    outline-offset: 2px;
+  }
+}
+
+/* Installed app: no pull-to-refresh or rubber-band scrolling of the shell. */
+@media (display-mode: standalone) {
+  body {
+    overscroll-behavior-y: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Theme follows the app setting, not only the OS preference. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));

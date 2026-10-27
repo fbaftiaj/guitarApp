@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="FretPath">
+  <defs>
+    <linearGradient id="fp-pick" x1="108" y1="108" x2="404" y2="412" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5BEAA8"/>
+      <stop offset="1" stop-color="#1FB5A8"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#0B0E14"/>
+  <path d="M256 108C340 108 404 128 404 196C404 276 318 368 256 412C194 368 108 276 108 196C108 128 172 108 256 108Z" fill="url(#fp-pick)"/>
+  <path d="M178 290L232 236L272 264L330 190" fill="none" stroke="#0B0E14" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="178" cy="290" r="22" fill="#0B0E14"/>
+  <circle cx="330" cy="190" r="22" fill="#0B0E14"/>
+</svg>
