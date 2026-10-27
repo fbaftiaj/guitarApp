@@ -8,6 +8,8 @@ export interface SegmentedOption<T extends string> {
 
 interface SegmentedControlProps<T extends string> {
   legend: string;
+  /** Keeps the legend for screen readers only, when the context already says it. */
+  hideLegend?: boolean;
   /** Radio group name; must be unique on the page. */
   name: string;
   options: readonly SegmentedOption<T>[];
@@ -21,6 +23,7 @@ interface SegmentedControlProps<T extends string> {
  */
 export function SegmentedControl<T extends string>({
   legend,
+  hideLegend = false,
   name,
   options,
   value,
@@ -28,7 +31,9 @@ export function SegmentedControl<T extends string>({
 }: SegmentedControlProps<T>) {
   return (
     <fieldset>
-      <legend className="mb-2 text-sm font-medium text-fg-muted">{legend}</legend>
+      <legend className={hideLegend ? 'sr-only' : 'mb-2 text-sm font-medium text-fg-muted'}>
+        {legend}
+      </legend>
       <div className="grid auto-cols-fr grid-flow-col gap-1 rounded-control border border-border bg-track p-1">
         {options.map(({ value: optionValue, label, icon: Icon }) => (
           <label key={optionValue} className="relative">

@@ -26,7 +26,7 @@ describe('useSettingsStore', () => {
 
     await vi.waitFor(async () => {
       expect(await (await getDB()).get('kv', SETTINGS_STORAGE_KEY)).toEqual({
-        state: { theme: 'light' },
+        state: { theme: 'light', referencePitch: 440 },
         version: 1,
       });
     });

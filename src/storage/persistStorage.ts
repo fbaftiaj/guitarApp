@@ -41,3 +41,42 @@ export function createIdbPersistStorage<T>(): PersistStorage<T, Promise<void>> {
     },
   };
 }
+
+interface SafeParser<T> {
+  safeParse(data: unknown): { success: true; data: T } | { success: false };
+}
+
+/**
+ * `merge` option for persisted stores: stored data is untrusted (older app
+ * versions, manual edits), so it is validated with `schema` before it
+ * replaces the defaults. Invalid data leaves the current state untouched.
+ */
+export function mergeValidated<T extends object>(schema: SafeParser<T>) {
+  return <S extends T>(persisted: unknown, current: S): S => {
+    const parsed = schema.safeParse(persisted);
+    return parsed.success ? { ...current, ...parsed.data } : current;
+  };
+}
+
+interface HydrationApi {
+  hasHydrated: () => boolean;
+  onFinishHydration: (listener: () => void) => () => void;
+}
+
+/**
+ * Resolves once a persisted store has loaded, or after `timeoutMs` so a hung
+ * IndexedDB open (seen on some WebKit builds) never blocks the UI; the store
+ * still updates if loading finishes later.
+ */
+export function whenHydrated(api: HydrationApi, timeoutMs = 1500): Promise<void> {
+  if (api.hasHydrated()) return Promise.resolve();
+  return new Promise((resolve) => {
+    const finish = () => {
+      clearTimeout(timer);
+      unsubscribe();
+      resolve();
+    };
+    const timer = setTimeout(finish, timeoutMs);
+    const unsubscribe = api.onFinishHydration(finish);
+  });
+}

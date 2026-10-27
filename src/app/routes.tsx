@@ -30,9 +30,15 @@ export function createRoutes(): RouteObject[] {
             { index: true, element: <Navigate to={HOME_PATH} replace /> },
             {
               path: 'tuner',
-              lazy: async () => ({
-                Component: (await import('@/features/tuner/TunerScreen')).TunerScreen,
-              }),
+              lazy: async () => {
+                const [{ TunerScreen }, { whenTunerHydrated }] = await Promise.all([
+                  import('@/features/tuner/TunerScreen'),
+                  import('@/features/tuner/tunerStore'),
+                ]);
+                // Render with the saved instrument and tuning, not a flash of the defaults.
+                await whenTunerHydrated();
+                return { Component: TunerScreen };
+              },
             },
             {
               path: 'learn',

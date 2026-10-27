@@ -52,6 +52,13 @@
   --color-string-5: #ffc64d;
   --color-string-6: #ff6b7d;
 
+  /* Instrument illustrations (decorative; the same in both themes) */
+  --color-wood: #a8744a;
+  --color-wood-dark: #74492a;
+  --color-ebony: #262a33;
+  --color-hardware: #c9ced8;
+  --color-nut: #ece3cf;
+
   --font-sans:
     ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
@@ -69,6 +76,8 @@
 
   --animate-indeterminate: fp-indeterminate 1.2s ease-in-out infinite;
   --animate-delayed-fade-in: fp-fade-in 0.2s ease-out 0.15s forwards;
+  --animate-pop-in: fp-pop-in 0.35s var(--ease-out-quint) both;
+  --animate-rise-in: fp-rise-in 0.4s var(--ease-out-quint) both;
 
   @keyframes fp-indeterminate {
     from {
@@ -82,6 +91,25 @@
   @keyframes fp-fade-in {
     to {
       opacity: 1;
+    }
+  }
+
+  @keyframes fp-pop-in {
+    0% {
+      transform: scale(0);
+    }
+    60% {
+      transform: scale(1.25);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fp-rise-in {
+    from {
+      opacity: 0;
+      transform: translateY(0.75rem);
     }
   }
 }

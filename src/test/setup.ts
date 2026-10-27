@@ -6,7 +6,8 @@ import { afterEach } from 'vitest';
 import { closeDB } from '@/storage/db';
 
 // jsdom does not implement scrolling; the router's scroll restoration calls it.
-window.scrollTo = () => undefined;
+// (DSP tests run in the plain Node environment, without a window.)
+if (typeof window !== 'undefined') window.scrollTo = () => undefined;
 
 afterEach(async () => {
   cleanup();

@@ -16,6 +16,8 @@ export default defineConfig({
   use: {
     baseURL: `http://localhost:${PORT}`,
     trace: 'retain-on-failure',
+    // The fake microphone (e2e/support) plays its test tone without a gesture.
+    launchOptions: { args: ['--autoplay-policy=no-user-gesture-required'] },
   },
   projects: [
     {

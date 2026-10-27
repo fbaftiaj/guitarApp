@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { installFakeMicrophone } from './support/fakeMicrophone';
 
 interface ManifestIcon {
   src: string;
@@ -74,4 +75,26 @@ test('works offline once the service worker is installed', async ({ page, contex
   await expect(page.getByRole('heading', { level: 1, name: 'Learn' })).toBeVisible();
   await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Songs' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Songs' })).toBeVisible();
+});
+
+test.describe('offline tuner', () => {
+  test('tunes offline, with the pitch worklet served from the precache', async ({
+    page,
+    context,
+  }) => {
+    await page.addInitScript(installFakeMicrophone);
+    await page.goto('/tuner');
+    await expect
+      .poll(() => page.evaluate(() => navigator.serviceWorker.controller !== null))
+      .toBe(true);
+
+    await context.setOffline(true);
+    await page.reload();
+    await page.getByRole('button', { name: 'Tap to tune' }).click();
+
+    await expect(page.getByRole('meter', { name: 'Tuning offset' })).toHaveAttribute(
+      'aria-valuetext',
+      'In tune',
+    );
+  });
 });

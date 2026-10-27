@@ -4,6 +4,7 @@ import type { ThemePreference } from '@/app/theme';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { Card } from '@/ui/Card';
 import { SegmentedControl, type SegmentedOption } from '@/ui/SegmentedControl';
+import { ReferencePitchControl } from './ReferencePitchControl';
 
 const THEME_OPTIONS: readonly SegmentedOption<ThemePreference>[] = [
   { value: 'dark', label: 'Dark', icon: Moon },
@@ -27,6 +28,10 @@ export function SettingsScreen() {
             value={theme}
             onChange={setTheme}
           />
+        </Card>
+        <Card>
+          <h2 className="mb-4 text-base font-semibold">Tuning</h2>
+          <ReferencePitchControl />
         </Card>
         <Card>
           <h2 className="mb-3 text-base font-semibold">About</h2>
