@@ -5,6 +5,8 @@ const SCREENS = [
   '/tuner',
   '/learn',
   '/practice',
+  '/practice/am-e-waltz',
+  '/practice/open-strings',
   '/songs',
   '/profile',
   '/profile/settings',

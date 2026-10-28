@@ -53,6 +53,18 @@ export function createRoutes(): RouteObject[] {
               }),
             },
             {
+              path: 'practice/:exerciseId',
+              lazy: async () => {
+                const [{ PracticerScreen }, { whenPracticeHydrated }] = await Promise.all([
+                  import('@/features/practice/PracticerScreen'),
+                  import('@/features/practice/practiceStore'),
+                ]);
+                // Start at the saved tempo and loop, not a flash of the defaults.
+                await whenPracticeHydrated();
+                return { Component: PracticerScreen };
+              },
+            },
+            {
               path: 'songs',
               lazy: async () => ({
                 Component: (await import('@/features/songs/SongsScreen')).SongsScreen,

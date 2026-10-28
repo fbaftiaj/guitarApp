@@ -9,7 +9,8 @@ import {
   type MicrophoneErrorKind,
 } from '@/audio/microphone';
 import { connectPitchInput, type PitchInput } from '@/audio/pitchInput';
-import { createReferenceTonePlayer, type ToneTimbre } from '@/audio/synth/referenceTone';
+import type { ToneTimbre } from '@/audio/synth/pluckBank';
+import { createReferenceTonePlayer } from '@/audio/synth/referenceTone';
 import {
   LISTENING,
   TunerEngine,

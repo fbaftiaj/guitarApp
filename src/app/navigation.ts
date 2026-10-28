@@ -16,3 +16,9 @@ export const TABS: readonly TabDefinition[] = [
 ];
 
 export const HOME_PATH = '/tuner';
+
+export const PRACTICE_PATH = '/practice';
+
+export function exercisePath(exerciseId: string): string {
+  return `${PRACTICE_PATH}/${encodeURIComponent(exerciseId)}`;
+}

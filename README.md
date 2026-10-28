@@ -4,15 +4,16 @@ A mobile-first Progressive Web App for learning guitar: a precision tuner, a str
 eight-stage course and an interactive play-along practicer that listens to what you play.
 Everything runs on the device and works offline; there is no backend.
 
-> **Status:** Milestones 1 (foundation) and 2 (tuner) of 7 are complete. The practicer,
-> curriculum, songs and profile screens are placeholders until their milestones land.
+> **Status:** Milestones 1–3 of 7 (foundation, tuner, practicer engine) are complete. The
+> practicer plays along but does not listen yet (Milestone 4). The curriculum, songs and
+> profile screens are placeholders until their milestones land.
 
 | #   | Milestone                                                  | Status  |
 | --- | ---------------------------------------------------------- | ------- |
 | 1   | Foundation: tooling, design system, shell, PWA, IndexedDB  | Done    |
 | 2   | Tuner: audio engine, pitch worklet, tuner UI               | Done    |
-| 3   | Practicer engine: scheduler, metronome, timeline, controls | Next    |
-| 4   | Listening and scoring: onset/chroma, latency calibration   | Planned |
+| 3   | Practicer engine: scheduler, metronome, timeline, controls | Done    |
+| 4   | Listening and scoring: onset/chroma, latency calibration   | Next    |
 | 5   | Curriculum: content schemas, stages 1–3, lesson flow       | Planned |
 | 6   | Progress and profile: skill meters, streaks, history       | Planned |
 | 7   | Polish: onboarding, stages 4–8, accessibility, performance | Planned |
@@ -50,8 +51,9 @@ The first `test:e2e` run on a new machine needs a browser: `npx playwright insta
 React 18 · TypeScript (strict) · Vite · Tailwind CSS 4 · Zustand · IndexedDB (`idb`) · Zod
 (`zod/mini`) · React Router · vite-plugin-pwa (Workbox) · Vitest · Playwright · axe-core.
 
-Audio uses the Web Audio API only: pitch detection runs in an AudioWorklet, reference tones
-are synthesised (Karplus–Strong). No audio libraries, no recordings.
+Audio uses the Web Audio API only: pitch detection runs in an AudioWorklet; reference tones,
+guide strums, metronome and backing track are synthesised (Karplus–Strong plucks, oscillators,
+filtered noise). No audio libraries, no recordings.
 
 ## Project structure
 
@@ -61,13 +63,14 @@ src/
   ui/         Design-system primitives: Button, Card, Sheet, ChoiceList, SegmentedControl, …
   audio/      Shared AudioContext, microphone, pitch worklet and its main-thread input
     dsp/      FFT, autocorrelation, McLeod pitch detector, streaming analyzer, stabilizer
-    synth/    Karplus–Strong plucked string and the reference-tone player
-  content/    Data-driven content (instruments and tunings JSON) with Zod schemas
-  lib/music/  Music theory: note spelling, MIDI ↔ Hz, cents, nearest note
+    synth/    Karplus–Strong plucks (shared pluck bank), reference tones, practice synth
+  content/    Data-driven content (instruments, chords, exercises JSON) with Zod schemas
+  lib/music/  Music theory: note spelling, MIDI ↔ Hz, cents, chord tones and shapes
   platform/   Thin wrappers for browser APIs (screen wake lock, vibration)
   storage/    IndexedDB schema, migrations, repositories and the Zustand persist adapter
   stores/     App-wide Zustand stores (settings)
   features/   One folder per screen: tuner, learn, practice, songs, profile, settings
+    practice/engine/  Timeline compiler, arrangement, transport, lookahead scheduler (pure)
   test/       Test setup, signal generators and module stand-ins
 e2e/          Playwright specs (phone 390×844 and desktop 1280×800); support/ has the fake mic
 public/       Static assets: logo, generated icons and splash screens
@@ -94,7 +97,7 @@ stays usable.
 
 | Store            | Key        | Contents                                                   |
 | ---------------- | ---------- | ---------------------------------------------------------- |
-| `kv`             | name       | Persisted Zustand stores (e.g. `settings`)                 |
+| `kv`             | name       | Persisted Zustand stores (`settings`, `tuner`, `practice`) |
 | `sessions`       | `id`       | Scored session results, indexed by start time and exercise |
 | `lessonProgress` | `lessonId` | Best stars and accuracy per lesson                         |
 
@@ -139,6 +142,38 @@ ukulele; 12 guitar tunings), validated at load. The instrument, tuning per instr
 guitar type and mode are remembered in IndexedDB; the A4 reference (432–446 Hz) is an app
 setting.
 
+**Practicer.** Exercises are data (`src/content/exercises.json`, validated at load): chord
+exercises (chords per bar and a strum pattern such as `D.DU.UDU`) and single-note exercises
+(string, fret, length and finger per note), with repeats. Every chord must exist in the chord
+library (`chords.json`), whose shapes are checked to sound exactly the chord's notes. The
+pipeline is pure until the last step:
+
+```
+exercise ─▶ compileExercise ─▶ timeline (chords, strums, notes, wait targets, in beats)
+                              └▶ arrange ─▶ guide (strums, notes) + backing (bass, kick, hat)
+Transport (audio clock) ◀── LookaheadScheduler: every 25 ms, schedule the next 100 ms
+   └▶ sounds with exact start times ─▶ PracticeSynth (metronome / count-in / guide / backing)
+```
+
+- **Timing:** the transport maps audio-clock time to beats as a list of continuous runs, so
+  every sound is scheduled with sample accuracy from `AudioContext.currentTime` and timer
+  jitter never reaches the ear. Tempo changes apply from the scheduling horizon without a
+  jump. The highway moves with a CSS transform on every animation frame, driven by the audio
+  clock minus the output latency (what is heard now); React re-renders only when the bar,
+  beat slot, chord or note changes.
+- **Controls:** play, pause (freezes the position exactly; resuming counts in one bar on the
+  beat grid and carries on from the same position), restart, tempo 30–220 BPM with ±1 and
+  50/75/100/125 % presets, loop any bars, auto speed-up (+2/5/10 BPM per successful pass up
+  to the target tempo; the default for new exercises, which start at 60 %), wait mode (stops
+  at each chord or note; Next carries on until listening arrives in Milestone 4), and
+  metronome, backing and guide on/off with volume. The count-in always plays. Chord names,
+  finger numbers, note names and a fretboard view can be toggled.
+- **Persistence:** tempo, loop, speed-up and wait mode are remembered per exercise; the mix and
+  display options for the practicer as a whole. Practice pauses when the app goes to the
+  background or audio is interrupted, and keeps the screen awake while playing.
+- **Extension points:** a pass judge decides whether a loop earns a speed-up (always yes until
+  scoring lands), and `advanceWait` is what listening will call in wait mode.
+
 **PWA.** Workbox precaches the app shell and every screen chunk, so the app works offline
 after the first visit. New versions wait for the user to tap "Reload to update", so an
 update never interrupts a practice session. The manifest is portrait, standalone and
@@ -153,7 +188,18 @@ installable, with maskable icons and iOS splash screens.
   tuner engine (modes, hysteresis, hold-to-tune, ticks), content schema, storage (against
   `fake-indexeddb`), settings, theme, routing, error boundaries, PWA prompt and
   design-token contrast.
-- **End-to-end tests** (`e2e/`): the tuner with a fake microphone — a controllable test tone
+- **Practicer unit tests:** exercise and chord schemas (every chord referenced exists,
+  rejects malformed content), timeline and arrangement, and the transport and scheduler on a
+  fake clock — count-in, exact beat spacing under irregular ticks and stalls, tempo changes,
+  pause freezing exactly, resume on the grid, loops, speed-up and the pass judge, wait mode,
+  restart, and cancelled loop wraps. The practice synth is checked against a fake
+  AudioContext, and an architecture test keeps all Web Audio code in `src/audio/` so the
+  tuner and practicer share one context, microphone and pluck bank.
+- **End-to-end tests** (`e2e/`): the practicer on the real audio clock, with an audio spy
+  recording each sound's scheduled start time: click spacing to the microsecond, sounds always
+  scheduled ahead, pause and resume, restart, loop with speed-up, wait mode, mix and label
+  toggles, guide strums, persistence, background pause, 30+ fps under 4× CPU throttling,
+  offline play and axe scans while playing. The tuner with a fake microphone — a controllable test tone
   injected in place of `getUserMedia` — running through the real AudioWorklet: string
   detection and cues, ticking all strings, manual and chromatic modes, A4 reference,
   persistence, microphone release, background pause and resume, every microphone error,
@@ -163,6 +209,6 @@ installable, with maskable icons and iOS splash screens.
 
 ## Content policy
 
-The code, logo and artwork are original. Course songs will be public-domain or traditional
-pieces, or written for the app. The repository will not contain lyrics, tabs or
+The code, logo, artwork, chord diagrams and exercises are original. Course songs will be
+public-domain or traditional pieces, or written for the app. The repository will not contain lyrics, tabs or
 arrangements of copyrighted songs.

@@ -38,6 +38,16 @@ const SHARP_SPELLINGS: readonly (readonly [NoteLetter, Accidental])[] = [
 ];
 
 const NOTE_PATTERN = /^([A-G])([#b]?)(-?\d)$/;
+const PITCH_CLASS_PATTERN = /^([A-G])([#b]?)$/;
+
+/** Pitch class (0 = C … 11 = B) of a name without octave, e.g. "F#" → 6; null if invalid. */
+export function tryParsePitchClass(name: string): number | null {
+  const match = PITCH_CLASS_PATTERN.exec(name);
+  if (!match) return null;
+  const semitones =
+    LETTER_SEMITONES[match[1] as NoteLetter] + ACCIDENTAL_SEMITONES[match[2] as Accidental];
+  return (semitones + 12) % 12;
+}
 
 /** Parses scientific pitch notation such as "E2", "F#3" or "Bb0"; null if invalid. */
 export function tryParseNote(text: string): SpelledNote | null {

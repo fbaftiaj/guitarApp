@@ -1,16 +1,5 @@
 import { acquireAudio, type AudioLease } from '../context';
-import { renderPluck, type PluckOptions } from './karplusStrong';
-
-export type ToneTimbre = 'acoustic' | 'electric' | 'bass' | 'nylon';
-
-type TimbreSettings = Required<Pick<PluckOptions, 'brightness' | 'decaySeconds' | 'pickPosition'>>;
-
-const TIMBRES: Record<ToneTimbre, TimbreSettings> = {
-  acoustic: { brightness: 0.7, decaySeconds: 3.5, pickPosition: 0.18 },
-  electric: { brightness: 0.45, decaySeconds: 5, pickPosition: 0.12 },
-  bass: { brightness: 0.35, decaySeconds: 4, pickPosition: 0.22 },
-  nylon: { brightness: 0.3, decaySeconds: 2.2, pickPosition: 0.25 },
-};
+import { createPluckBank, type ToneTimbre } from './pluckBank';
 
 export const REFERENCE_TONE_SECONDS = 2.5;
 const OUTPUT_GAIN = 0.9;
@@ -36,36 +25,8 @@ export interface ReferenceTonePlayer {
 export function createReferenceTonePlayer(
   acquire: () => AudioLease = acquireAudio,
 ): ReferenceTonePlayer {
-  const buffers = new Map<string, AudioBuffer>();
+  const bank = createPluckBank({ seconds: REFERENCE_TONE_SECONDS, limit: CACHE_LIMIT });
   let current: { stop(): void } | null = null;
-
-  function bufferFor(
-    context: BaseAudioContext,
-    frequency: number,
-    timbre: ToneTimbre,
-  ): AudioBuffer {
-    const key = `${context.sampleRate}:${frequency.toFixed(3)}:${timbre}`;
-    let buffer = buffers.get(key);
-    if (buffer) {
-      // Re-insert to keep the most recently used notes in the cache.
-      buffers.delete(key);
-    } else {
-      const samples = renderPluck({
-        frequency,
-        sampleRate: context.sampleRate,
-        durationSeconds: REFERENCE_TONE_SECONDS,
-        ...TIMBRES[timbre],
-      });
-      buffer = context.createBuffer(1, samples.length, context.sampleRate);
-      buffer.copyToChannel(samples, 0);
-      if (buffers.size >= CACHE_LIMIT) {
-        const oldest = buffers.keys().next().value;
-        if (oldest !== undefined) buffers.delete(oldest);
-      }
-    }
-    buffers.set(key, buffer);
-    return buffer;
-  }
 
   function stop() {
     current?.stop();
@@ -79,7 +40,7 @@ export function createReferenceTonePlayer(
       const lease = acquire();
       const { context } = lease;
       const source = context.createBufferSource();
-      source.buffer = bufferFor(context, frequency, timbre);
+      source.buffer = bank.get(context, frequency, timbre);
       const gain = context.createGain();
       gain.gain.value = OUTPUT_GAIN;
       source.connect(gain);

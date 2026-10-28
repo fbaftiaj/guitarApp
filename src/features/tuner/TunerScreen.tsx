@@ -1,7 +1,7 @@
 import { ChevronDown, SlidersHorizontal, Square } from 'lucide-react';
 import { useCallback, useMemo, useState } from 'react';
 import { Screen } from '@/app/Screen';
-import type { ToneTimbre } from '@/audio/synth/referenceTone';
+import type { ToneTimbre } from '@/audio/synth/pluckBank';
 import {
   instrumentLabel,
   resolveSelection,

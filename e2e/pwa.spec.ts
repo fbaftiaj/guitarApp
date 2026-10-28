@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { installAudioSpy } from './support/audioSpy';
 import { installFakeMicrophone } from './support/fakeMicrophone';
 
 interface ManifestIcon {
@@ -96,5 +97,29 @@ test.describe('offline tuner', () => {
       'aria-valuetext',
       'In tune',
     );
+  });
+});
+
+test.describe('offline practice', () => {
+  test('plays along offline, with the practicer served from the precache', async ({
+    page,
+    context,
+  }) => {
+    await page.addInitScript(installAudioSpy);
+    await page.goto('/practice');
+    await expect
+      .poll(() => page.evaluate(() => navigator.serviceWorker.controller !== null))
+      .toBe(true);
+
+    await context.setOffline(true);
+    await page.reload();
+    await page.getByRole('link', { name: /G – C – D folk strum/ }).click();
+    await page.getByRole('button', { name: 'Play', exact: true }).click();
+
+    // The count-in (4 clicks, 4.4 s at 54 BPM), then the backing track.
+    await expect
+      .poll(() => page.evaluate(() => window.audioSpy.started.length), { timeout: 10_000 })
+      .toBeGreaterThan(4);
+    await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
   });
 });
