@@ -64,9 +64,9 @@ export function ProfileScreen() {
     (lesson) => progress.lessons.get(lesson.id)?.status === 'completed',
   ).length;
   const { level } = progress;
-  const nextTest = COURSE.stages.find(
-    (stage) => stage.test && progress.stages.get(stage.id)?.test?.status !== 'passed',
-  );
+  // Stages are passed in order, so the next one to pass follows the passed ones.
+  const nextStage = COURSE.stages[progress.stagesPassed];
+  const nextTest = nextStage?.test ? nextStage : undefined;
 
   return (
     <Screen
@@ -91,7 +91,7 @@ export function ProfileScreen() {
         <p className="mt-3 text-sm">
           <span className="font-semibold">{plural(completed, 'lesson')}</span>
           <span className="text-fg-muted"> of {COURSE.lessons.length} completed · </span>
-          <span className="font-semibold">{plural(progress.testsPassed, 'stage test')}</span>
+          <span className="font-semibold">{plural(progress.stagesPassed, 'stage')}</span>
           <span className="text-fg-muted"> passed</span>
         </p>
         {completed === 0 && (

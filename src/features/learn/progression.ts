@@ -10,6 +10,10 @@ import type { LessonProgress, StarCount } from '@/storage/types';
  * stays open, even if the content around it changes.
  *
  * Stage tests keep their results with the lessons', under the test's id.
+ *
+ * A player who chose a later starting stage at setup has the stages before
+ * it counted as passed (their lessons stay open to play), and carries on
+ * from the chosen stage.
  */
 
 export type LessonStatus = 'locked' | 'available' | 'completed';
@@ -54,53 +58,63 @@ export interface CourseProgress {
   stages: ReadonlyMap<string, StageState>;
   /** The first open lesson or test not yet completed, in course order; null when all are done. */
   next: NextStep | null;
-  testsPassed: number;
+  /** Stages passed by their test, or credited by the starting stage. */
+  stagesPassed: number;
   level: Level;
 }
 
 export type ProgressByLesson = Readonly<Partial<Record<string, LessonProgress>>>;
 
-/** Levels and the number of stage tests passed to reach each one. */
+/** Levels and the number of stages passed to reach each one. */
 export const LEVELS = [
-  { name: 'Beginner 1', testsPassed: 0 },
-  { name: 'Beginner 2', testsPassed: 1 },
-  { name: 'Beginner 3', testsPassed: 2 },
-  { name: 'Intermediate 1', testsPassed: 3 },
-  { name: 'Intermediate 2', testsPassed: 5 },
-  { name: 'Intermediate 3', testsPassed: 7 },
+  { name: 'Beginner 1', stagesPassed: 0 },
+  { name: 'Beginner 2', stagesPassed: 1 },
+  { name: 'Beginner 3', stagesPassed: 2 },
+  { name: 'Intermediate 1', stagesPassed: 3 },
+  { name: 'Intermediate 2', stagesPassed: 5 },
+  { name: 'Intermediate 3', stagesPassed: 7 },
 ] as const;
 
 const starsOf = (progress: LessonProgress | undefined): StarCount => progress?.stars ?? 0;
 
-export function levelFor(testsPassed: number): Level {
+export function levelFor(stagesPassed: number): Level {
   let index = 0;
   LEVELS.forEach((level, i) => {
-    if (testsPassed >= level.testsPassed) index = i;
+    if (stagesPassed >= level.stagesPassed) index = i;
   });
   const following = LEVELS[index + 1];
   return {
     index,
     name: LEVELS[index]?.name ?? LEVELS[0].name,
     next: following
-      ? { name: following.name, testsNeeded: following.testsPassed - testsPassed }
+      ? { name: following.name, testsNeeded: following.stagesPassed - stagesPassed }
       : null,
   };
 }
 
-/** Whether `stage` is passed, which opens the next one. */
+/** Whether `stage` is passed by its test (which opens the next one). */
 export function isStagePassed(stage: Stage, progress: ProgressByLesson): boolean {
   return stage.test !== null && starsOf(progress[stage.test.id]) > 0;
 }
 
-export function courseProgress(course: Course, progress: ProgressByLesson): CourseProgress {
+export function courseProgress(
+  course: Course,
+  progress: ProgressByLesson,
+  /** The stage chosen at setup: the stages before it count as passed. */
+  startStage = 1,
+): CourseProgress {
   const lessons = new Map<string, LessonState>();
   const stages = new Map<string, StageState>();
-  let next: NextStep | null = null;
+  /** Open steps not yet done, in course order. */
+  const open: { step: NextStep; stage: Stage }[] = [];
+  const offer = (step: NextStep, stage: Stage) => {
+    open.push({ step, stage });
+  };
   let previousPassed = true;
-  let testsPassed = 0;
+  let stagesPassed = 0;
 
   for (const stage of course.stages) {
-    const open = previousPassed && stage.lessons.length > 0;
+    const opened = previousPassed && stage.lessons.length > 0;
     let previousCompleted = true;
     let completedLessons = 0;
     let stars = 0;
@@ -109,24 +123,31 @@ export function courseProgress(course: Course, progress: ProgressByLesson): Cour
       const completed = lessonStars > 0;
       const status: LessonStatus = completed
         ? 'completed'
-        : open && previousCompleted
+        : opened && previousCompleted
           ? 'available'
           : 'locked';
       lessons.set(lesson.id, { status, stars: lessonStars });
-      if (status === 'available') next ??= { kind: 'lesson', lesson };
+      if (status === 'available') offer({ kind: 'lesson', lesson }, stage);
       if (completed) completedLessons++;
       stars += lessonStars;
       previousCompleted = completed;
     }
 
-    const passed = isStagePassed(stage, progress);
-    if (passed) testsPassed++;
+    const credited = stage.lessons.length > 0 && stage.number < startStage;
+    const passed = isStagePassed(stage, progress) || credited;
+    if (passed) stagesPassed++;
     let test: TestState | null = null;
     if (stage.test) {
       const allDone = completedLessons === stage.lessons.length;
-      const status: TestStatus = passed ? 'passed' : open && allDone ? 'available' : 'locked';
+      // A credited stage's test can still be taken, for its stars.
+      const status: TestStatus = isStagePassed(stage, progress)
+        ? 'passed'
+        : opened && (allDone || credited)
+          ? 'available'
+          : 'locked';
       test = { status, stars: starsOf(progress[stage.test.id]) };
-      if (status === 'available') next ??= { kind: 'test', test: stage.test, stage };
+      if (status === 'available' && !credited)
+        offer({ kind: 'test', test: stage.test, stage }, stage);
     }
     stages.set(stage.id, {
       status:
@@ -134,7 +155,7 @@ export function courseProgress(course: Course, progress: ProgressByLesson): Cour
           ? 'preview'
           : passed
             ? 'completed'
-            : open || completedLessons > 0
+            : opened || completedLessons > 0
               ? 'available'
               : 'locked',
       completedLessons,
@@ -145,7 +166,14 @@ export function courseProgress(course: Course, progress: ProgressByLesson): Cour
     });
     previousPassed = passed;
   }
-  return { lessons, stages, next, testsPassed, level: levelFor(testsPassed) };
+  return {
+    lessons,
+    stages,
+    // Carry on from the starting stage if anything is open there, else from earlier.
+    next: (open.find(({ stage }) => stage.number >= startStage) ?? open[0])?.step ?? null,
+    stagesPassed,
+    level: levelFor(stagesPassed),
+  };
 }
 
 /** The lesson after `lessonId` in course order, or null after the last one. */

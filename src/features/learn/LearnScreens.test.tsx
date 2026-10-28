@@ -33,12 +33,22 @@ describe('Learn screens', () => {
     expect(stages).toHaveLength(8);
     expect(stages[1]).toHaveTextContent('Pass the Stage 1 test to unlock');
     expect(stages[3]).toHaveTextContent('Coming soon');
-    expect(within(stages[3] ?? document.body).queryByRole('link')).toBeNull();
 
     await user.click(screen.getByRole('link', { name: 'Start the first lesson' }));
     expect(
       await screen.findByRole('heading', { level: 1, name: first?.title ?? '' }),
     ).toBeInTheDocument();
+  });
+
+  it('shows the planned lessons of a preview stage', async () => {
+    renderRoute('/learn/stage/lead-guitar-1');
+    await screen.findByRole('heading', { level: 1, name: 'Stage 6: Lead Guitar I' });
+    expect(screen.getByText(/These lessons are coming soon/)).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Unit 1 · The minor pentatonic scale/ }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Pentatonic box 1')).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: /Pentatonic box 1/ })).toBeNull();
   });
 
   it('offers to continue where the player left off', async () => {

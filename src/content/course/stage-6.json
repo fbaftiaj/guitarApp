@@ -1,0 +1,101 @@
+{
+  "stage": "lead-guitar-1",
+  "outline": [
+    {
+      "id": "minor-pentatonic",
+      "title": "The minor pentatonic scale",
+      "summary": "The five-note scale behind most rock and blues solos.",
+      "lessons": [
+        {
+          "id": "pentatonic-box-1",
+          "title": "Pentatonic box 1",
+          "summary": "Play the first box of the A minor pentatonic scale up and down."
+        },
+        {
+          "id": "alternate-picking",
+          "title": "Alternate picking",
+          "summary": "Pick down and up evenly through the scale."
+        },
+        {
+          "id": "pentatonic-box-2",
+          "title": "Pentatonic box 2",
+          "summary": "Extend the scale with the second box and connect them."
+        },
+        {
+          "id": "pentatonic-licks",
+          "title": "Your first licks",
+          "summary": "Play short, memorable phrases from the scale."
+        },
+        {
+          "id": "call-and-response",
+          "title": "Call and response",
+          "summary": "Answer a phrase from the app with a phrase of your own."
+        }
+      ]
+    },
+    {
+      "id": "expressive-techniques",
+      "title": "Expressive techniques",
+      "summary": "Slides, bends and vibrato: making notes sing.",
+      "lessons": [
+        {
+          "id": "slides",
+          "title": "Slides",
+          "summary": "Slide into and between notes along one string."
+        },
+        {
+          "id": "half-step-bends",
+          "title": "Half-step bends",
+          "summary": "Bend a note up one fret's worth and hear it in tune."
+        },
+        {
+          "id": "whole-step-bends",
+          "title": "Whole-step bends",
+          "summary": "Bend up two frets' worth with support from other fingers."
+        },
+        {
+          "id": "vibrato",
+          "title": "Vibrato",
+          "summary": "Add a steady, controlled wobble to a held note."
+        },
+        {
+          "id": "expressive-licks",
+          "title": "Expressive licks",
+          "summary": "Combine slides, bends and vibrato in short phrases."
+        }
+      ]
+    },
+    {
+      "id": "twelve-bar-blues",
+      "title": "The 12-bar blues",
+      "summary": "The form behind countless songs, and your first solos over it.",
+      "lessons": [
+        {
+          "id": "twelve-bar-form",
+          "title": "The 12-bar form",
+          "summary": "Follow the I–IV–V changes of a 12-bar blues in A."
+        },
+        {
+          "id": "blues-shuffle",
+          "title": "The blues shuffle",
+          "summary": "Play the classic shuffle rhythm on the low strings."
+        },
+        {
+          "id": "soloing-over-the-changes",
+          "title": "Soloing over the changes",
+          "summary": "Use pentatonic licks that fit each chord of the blues."
+        },
+        {
+          "id": "turnarounds",
+          "title": "Turnarounds",
+          "summary": "End each chorus with a turnaround that leads back to the top."
+        },
+        {
+          "id": "stage-6-song",
+          "title": "Stage song: A traditional blues",
+          "summary": "Play rhythm and a short solo over a full 12-bar blues."
+        }
+      ]
+    }
+  ]
+}

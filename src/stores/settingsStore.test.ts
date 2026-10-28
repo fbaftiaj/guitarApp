@@ -26,7 +26,13 @@ describe('useSettingsStore', () => {
 
     await vi.waitFor(async () => {
       expect(await (await getDB()).get('kv', SETTINGS_STORAGE_KEY)).toEqual({
-        state: { theme: 'light', referencePitch: 440, latencyMs: null },
+        state: {
+          theme: 'light',
+          referencePitch: 440,
+          latencyMs: null,
+          onboarded: false,
+          startStage: 1,
+        },
         version: 1,
       });
     });
@@ -62,6 +68,22 @@ describe('useSettingsStore', () => {
     expect(useSettingsStore.getState().latencyMs).toBe(0);
     setLatency(null);
     expect(useSettingsStore.getState().latencyMs).toBeNull();
+  });
+
+  it('finishes onboarding at a valid starting stage', () => {
+    const { completeOnboarding } = useSettingsStore.getState();
+    completeOnboarding(3);
+    expect(useSettingsStore.getState()).toMatchObject({ onboarded: true, startStage: 3 });
+    completeOnboarding(42);
+    expect(useSettingsStore.getState().startStage).toBe(8);
+    completeOnboarding(Number.NaN);
+    expect(useSettingsStore.getState().startStage).toBe(1);
+  });
+
+  it('starts at stage 1 when the saved placement is invalid', async () => {
+    await storeRaw({ state: { onboarded: true, startStage: 0 }, version: 1 });
+    await useSettingsStore.persist.rehydrate();
+    expect(useSettingsStore.getState()).toMatchObject({ onboarded: true, startStage: 1 });
   });
 
   it('forgets an invalid saved latency', async () => {

@@ -1,8 +1,7 @@
-import { Navigate, type RouteObject } from 'react-router';
+import type { RouteObject } from 'react-router';
 import { AppCrashScreen } from './AppCrashScreen';
 import { AppLoadingScreen } from './AppLoadingScreen';
-import { AppShell } from './AppShell';
-import { HOME_PATH } from './navigation';
+import { AppShell, type RouteHandle } from './AppShell';
 import { NotFoundScreen } from './NotFoundScreen';
 import { RouteErrorScreen } from './RouteErrorScreen';
 
@@ -27,7 +26,25 @@ export function createRoutes(): RouteObject[] {
           // of this error boundary (react-router 7.18).
           ErrorBoundary: RouteErrorScreen,
           children: [
-            { index: true, element: <Navigate to={HOME_PATH} replace /> },
+            {
+              index: true,
+              lazy: async () => {
+                const [{ StartRedirect }, { whenSettingsHydrated }] = await Promise.all([
+                  import('@/features/onboarding/StartRedirect'),
+                  import('@/stores/settingsStore'),
+                ]);
+                await whenSettingsHydrated();
+                return { Component: StartRedirect };
+              },
+            },
+            {
+              path: 'welcome',
+              handle: { hideNavigation: true } satisfies RouteHandle,
+              lazy: async () => ({
+                Component: (await import('@/features/onboarding/OnboardingScreen'))
+                  .OnboardingScreen,
+              }),
+            },
             {
               path: 'tuner',
               lazy: async () => {

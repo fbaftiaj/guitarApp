@@ -160,6 +160,15 @@
     -webkit-tap-highlight-color: transparent;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* Focused and scrolled-to elements stay clear of the sticky header and the tab bar. */
+    scroll-padding-top: calc(4rem + env(safe-area-inset-top));
+    scroll-padding-bottom: calc(var(--spacing-tabbar) + env(safe-area-inset-bottom) + 0.5rem);
+  }
+
+  @media (width >= 64rem) {
+    html {
+      scroll-padding-bottom: 0.5rem;
+    }
   }
 
   html[data-theme='light'] {

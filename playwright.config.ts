@@ -2,6 +2,7 @@ import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4173;
 const LISTENING = /listening\.spec\.ts/;
+const DEVICES = /devices\.spec\.ts/;
 const PHONE = {
   browserName: 'chromium',
   viewport: { width: 390, height: 844 },
@@ -30,13 +31,18 @@ export default defineConfig({
   projects: [
     {
       name: 'mobile',
-      testIgnore: LISTENING,
+      testIgnore: [LISTENING, DEVICES],
       use: PHONE,
     },
     {
       name: 'desktop',
-      testIgnore: LISTENING,
+      testIgnore: [LISTENING, DEVICES],
       use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 } },
+    },
+    {
+      // Layout on other device sizes (each spec emulates its device).
+      name: 'devices',
+      testMatch: DEVICES,
     },
     {
       // Scoring is judged in milliseconds on the real audio clock: these tests run on

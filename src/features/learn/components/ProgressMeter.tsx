@@ -14,7 +14,10 @@ export function ProgressMeter({
   return (
     <div className={cx('flex items-center gap-3', className)}>
       <div aria-hidden className="h-1.5 flex-1 overflow-hidden rounded-full bg-surface-raised">
-        <div className="h-full rounded-full bg-accent" style={{ width: `${ratio * 100}%` }} />
+        <div
+          className="h-full rounded-full bg-accent forced-colors:bg-[Highlight]"
+          style={{ width: `${ratio * 100}%` }}
+        />
       </div>
       <span className="shrink-0 text-xs font-medium text-fg-muted tabular-nums">
         {done} of {total} lessons

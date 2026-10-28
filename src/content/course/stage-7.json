@@ -1,0 +1,101 @@
+{
+  "stage": "fingerstyle-and-theory",
+  "outline": [
+    {
+      "id": "fingerpicking",
+      "title": "Fingerpicking",
+      "summary": "Thumb and fingers: patterns that make a guitar sound full on its own.",
+      "lessons": [
+        {
+          "id": "pima-fingers",
+          "title": "Thumb and fingers",
+          "summary": "Assign the thumb to the bass and the fingers to the treble strings."
+        },
+        {
+          "id": "arpeggio-patterns",
+          "title": "Arpeggio patterns",
+          "summary": "Pick through chords one string at a time in steady patterns."
+        },
+        {
+          "id": "travis-picking",
+          "title": "Travis picking",
+          "summary": "Alternate the thumb between bass strings while the fingers pick a melody."
+        },
+        {
+          "id": "fingerpicking-changes",
+          "title": "Fingerpicking with changes",
+          "summary": "Keep the pattern going while the chords change."
+        },
+        {
+          "id": "fingerstyle-piece",
+          "title": "A fingerstyle piece",
+          "summary": "Play an original fingerstyle piece from start to finish."
+        }
+      ]
+    },
+    {
+      "id": "scales-and-keys",
+      "title": "Scales and keys",
+      "summary": "The major scale and how keys organise chords.",
+      "lessons": [
+        {
+          "id": "major-scale",
+          "title": "The major scale",
+          "summary": "Play the G major scale in open position and hear its steps."
+        },
+        {
+          "id": "intervals",
+          "title": "Intervals",
+          "summary": "Recognise and play the distances between notes."
+        },
+        {
+          "id": "keys-and-chords",
+          "title": "Keys and their chords",
+          "summary": "Build the chords of a key from its scale."
+        },
+        {
+          "id": "capo-use",
+          "title": "Using a capo",
+          "summary": "Change key without changing shapes by moving a capo."
+        },
+        {
+          "id": "transposing",
+          "title": "Transposing songs",
+          "summary": "Move a song to a key that suits your voice."
+        }
+      ]
+    },
+    {
+      "id": "chord-progressions",
+      "title": "Chord progressions",
+      "summary": "Why common progressions work, and how to use them.",
+      "lessons": [
+        {
+          "id": "one-four-five",
+          "title": "I–IV–V",
+          "summary": "Play the I–IV–V progression in several keys."
+        },
+        {
+          "id": "one-five-six-four",
+          "title": "I–V–vi–IV",
+          "summary": "Play the four-chord progression and hear its pull."
+        },
+        {
+          "id": "minor-keys",
+          "title": "Minor keys",
+          "summary": "Use the chords of a minor key in a progression."
+        },
+        {
+          "id": "writing-a-progression",
+          "title": "Writing your own progression",
+          "summary": "Combine chords from a key into a progression of your own."
+        },
+        {
+          "id": "stage-7-song",
+          "title": "Stage song: Scarborough Fair, fingerpicked",
+          "summary": "Fingerpick the traditional ballad's chords with a capo."
+        }
+      ]
+    }
+  ]
+}

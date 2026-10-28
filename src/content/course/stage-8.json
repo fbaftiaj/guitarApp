@@ -1,0 +1,101 @@
+{
+  "stage": "intermediate-musician",
+  "outline": [
+    {
+      "id": "whole-neck",
+      "title": "The whole neck",
+      "summary": "Scale shapes and triads across the fretboard.",
+      "lessons": [
+        {
+          "id": "pentatonic-positions",
+          "title": "All five pentatonic positions",
+          "summary": "Connect the pentatonic boxes from one end of the neck to the other."
+        },
+        {
+          "id": "major-scale-positions",
+          "title": "Major scale positions",
+          "summary": "Play the major scale in several positions."
+        },
+        {
+          "id": "triads",
+          "title": "Triads",
+          "summary": "Play major and minor triads on the top three strings."
+        },
+        {
+          "id": "triad-inversions",
+          "title": "Triad inversions",
+          "summary": "Move triads around the neck to find smooth voice leading."
+        },
+        {
+          "id": "neck-navigation",
+          "title": "Finding your way",
+          "summary": "Locate any note or chord quickly across the neck."
+        }
+      ]
+    },
+    {
+      "id": "advanced-rhythm",
+      "title": "Advanced rhythm",
+      "summary": "Syncopation and feel for confident accompaniment.",
+      "lessons": [
+        {
+          "id": "syncopation",
+          "title": "Syncopation",
+          "summary": "Strum on the off-beats and tie across the beat."
+        },
+        {
+          "id": "sixteenth-note-strumming",
+          "title": "Sixteenth-note strumming",
+          "summary": "Divide the beat into four with a relaxed wrist."
+        },
+        {
+          "id": "percussive-strumming",
+          "title": "Percussive strumming",
+          "summary": "Add muted chucks to give strumming a backbeat."
+        },
+        {
+          "id": "mixed-picking-and-strumming",
+          "title": "Mixing picking and strumming",
+          "summary": "Combine bass notes, strums and fills in one part."
+        },
+        {
+          "id": "groove-in-time",
+          "title": "Locking into a groove",
+          "summary": "Hold a syncopated groove steady with the metronome on 2 and 4."
+        }
+      ]
+    },
+    {
+      "id": "complete-musician",
+      "title": "The complete musician",
+      "summary": "Improvising, playing by ear and complete songs end to end.",
+      "lessons": [
+        {
+          "id": "improvising-over-progressions",
+          "title": "Improvising over progressions",
+          "summary": "Solo over a progression, following its chords."
+        },
+        {
+          "id": "playing-by-ear",
+          "title": "Playing by ear",
+          "summary": "Work out a melody and its chords by listening."
+        },
+        {
+          "id": "arranging-a-song",
+          "title": "Arranging a song",
+          "summary": "Plan an intro, verse, chorus and ending for a song."
+        },
+        {
+          "id": "performance-practice",
+          "title": "Performance practice",
+          "summary": "Play a full song without stopping, mistakes and all."
+        },
+        {
+          "id": "stage-8-song",
+          "title": "Stage song: Auld Lang Syne, arranged",
+          "summary": "Play your own full arrangement of a traditional song."
+        }
+      ]
+    }
+  ]
+}

@@ -32,7 +32,10 @@ export function SkillMeters({ meters }: { meters: readonly SkillMeter[] }) {
               className="mt-1.5 h-2 overflow-hidden rounded-full bg-surface-raised"
             >
               {shown !== null && (
-                <div className="h-full rounded-full bg-chart" style={{ width: `${shown}%` }} />
+                <div
+                  className="h-full rounded-full bg-chart forced-colors:bg-[Highlight]"
+                  style={{ width: `${shown}%` }}
+                />
               )}
             </div>
             <p className="mt-1 text-xs text-fg-muted">

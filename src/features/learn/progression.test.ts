@@ -109,7 +109,7 @@ describe('courseProgress', () => {
       ...done([testId(stage1)], 0),
     });
     expect(failed.stages.get(stage1?.id ?? '')?.test).toEqual({ status: 'available', stars: 0 });
-    expect(failed.testsPassed).toBe(0);
+    expect(failed.stagesPassed).toBe(0);
 
     const passed = courseProgress(COURSE, stagesDone([stage1]));
     expect(passed.stages.get(stage1?.id ?? '')).toMatchObject({
@@ -119,7 +119,7 @@ describe('courseProgress', () => {
     expect(passed.stages.get(stage2?.id ?? '')?.status).toBe('available');
     expect(passed.lessons.get(ids(stage2)[0] ?? '')?.status).toBe('available');
     expect(nextId(passed.next)).toBe(ids(stage2)[0]);
-    expect(passed.testsPassed).toBe(1);
+    expect(passed.stagesPassed).toBe(1);
     expect(passed.level.name).toBe('Beginner 2');
   });
 
@@ -150,6 +150,36 @@ describe('courseProgress', () => {
     expect(lessons.get(second ?? '')?.status).toBe('completed');
     expect(lessons.get(third ?? '')?.status).toBe('available');
     expect(nextId(next)).toBe(ids(stage1)[0]);
+  });
+});
+
+describe('starting at a later stage', () => {
+  it('credits the earlier stages and carries on from the chosen one', () => {
+    const progress = courseProgress(COURSE, {}, 3);
+    expect(progress.stages.get(stage1?.id ?? '')?.status).toBe('completed');
+    expect(progress.stages.get(stage2?.id ?? '')?.status).toBe('completed');
+    expect(progress.lessons.get(ids(stage3)[0] ?? '')?.status).toBe('available');
+    expect(nextId(progress.next)).toBe(ids(stage3)[0]);
+    expect(progress.stagesPassed).toBe(2);
+    expect(progress.level.name).toBe('Beginner 3');
+  });
+
+  it('keeps the earlier lessons and tests open to play', () => {
+    const progress = courseProgress(COURSE, {}, 2);
+    expect(progress.lessons.get(ids(stage1)[0] ?? '')?.status).toBe('available');
+    expect(progress.lessons.get(ids(stage1)[1] ?? '')?.status).toBe('locked');
+    expect(progress.stages.get(stage1?.id ?? '')?.test).toEqual({ status: 'available', stars: 0 });
+  });
+
+  it('falls back to earlier steps once the later stages are done', () => {
+    const progress = courseProgress(COURSE, stagesDone([stage2, stage3]), 2);
+    expect(nextId(progress.next)).toBe(ids(stage1)[0]);
+  });
+
+  it('ignores a starting stage beyond the playable ones for unlocking previews', () => {
+    const progress = courseProgress(COURSE, {}, 8);
+    expect(progress.stages.get(stage4?.id ?? '')?.status).toBe('preview');
+    expect(progress.stagesPassed).toBe(3);
   });
 });
 

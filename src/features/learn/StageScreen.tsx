@@ -8,6 +8,7 @@ import { cx } from '@/ui/cx';
 import { EmptyState } from '@/ui/EmptyState';
 import { StarRating } from '@/ui/StarRating';
 import { ProgressMeter } from './components/ProgressMeter';
+import { StageOutline } from './components/StageOutline';
 import { StageTestCard } from './components/StageTestCard';
 import { StorageNotice } from './components/StorageNotice';
 import type { LessonState } from './progression';
@@ -98,11 +99,7 @@ export function StageScreen() {
       <StorageNotice />
       <p className="text-pretty text-fg-muted">{stage.summary}</p>
       {state.status === 'preview' ? (
-        <EmptyState
-          icon={GraduationCap}
-          title="Coming soon"
-          description="The lessons for this stage are on their way."
-        />
+        <StageOutline stage={stage} />
       ) : (
         <>
           <ProgressMeter

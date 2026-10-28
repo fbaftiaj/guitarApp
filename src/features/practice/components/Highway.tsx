@@ -40,6 +40,35 @@ const MARK_BACKGROUND: Record<HitMark, string> = {
   miss: 'bg-danger/15',
 };
 
+/** A symbol for each mark, so the result never depends on colour alone. */
+const MARK_GLYPH: Record<HitMark, string> = {
+  good: '✓',
+  off: '~',
+  wrong: '✗',
+  miss: '–',
+};
+
+const MARK_TEXT: Record<HitMark, string> = {
+  good: 'text-accent-text',
+  off: 'text-warning',
+  wrong: 'text-danger',
+  miss: 'text-fg-muted',
+};
+
+function MarkGlyph({ mark, className }: { mark: HitMark; className?: string }) {
+  return (
+    <span
+      className={cx(
+        'absolute flex size-3.5 items-center justify-center rounded-full bg-surface text-[10px] leading-none font-bold',
+        MARK_TEXT[mark],
+        className,
+      )}
+    >
+      {MARK_GLYPH[mark]}
+    </span>
+  );
+}
+
 const PX_PER_BEAT = 72;
 /** Where the "now" line sits, from the left edge. */
 const NOW_X = 56;
@@ -246,6 +275,7 @@ const StrumLane = memo(function StrumLane({
             ) : (
               <span className="size-1.5 rounded-full bg-fg-subtle/60" />
             )}
+            {mark && <MarkGlyph mark={mark} className="-bottom-1" />}
           </div>
         );
       })}
@@ -292,6 +322,9 @@ function TabLane({
           }}
         >
           {note.fret}
+          {marks.has(note.index) && (
+            <MarkGlyph mark={marks.get(note.index) ?? 'miss'} className="-top-2.5 -right-2.5" />
+          )}
           {showNoteNames && (
             <span className="font-semibold text-fg-muted">{noteName(spellMidi(note.midi))}</span>
           )}

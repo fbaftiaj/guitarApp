@@ -1,5 +1,6 @@
 import type { MouseEvent } from 'react';
-import { Outlet, ScrollRestoration } from 'react-router';
+import { Outlet, ScrollRestoration, useMatches } from 'react-router';
+import { cx } from '@/ui/cx';
 import { MainNav } from './MainNav';
 import { NavigationProgress } from './NavigationProgress';
 import { NoticeArea } from './NoticeArea';
@@ -15,12 +16,29 @@ function skipToMain(event: MouseEvent<HTMLAnchorElement>) {
   document.getElementById(MAIN_ID)?.focus();
 }
 
+/** A route's `handle` can ask for the screen without the main navigation (e.g. setup). */
+export interface RouteHandle {
+  hideNavigation?: boolean;
+}
+
+function hidesNavigation(handle: unknown): boolean {
+  return typeof handle === 'object' && handle !== null && 'hideNavigation' in handle
+    ? handle.hideNavigation === true
+    : false;
+}
+
 export function AppShell() {
   useThemeSync();
   useFocusOnNavigate();
+  const navigation = !useMatches().some((match) => hidesNavigation(match.handle));
 
   return (
-    <div className="min-h-dvh pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)] lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]">
+    <div
+      className={cx(
+        'min-h-dvh pr-[env(safe-area-inset-right)] pl-[env(safe-area-inset-left)]',
+        navigation && 'lg:grid lg:grid-cols-[15rem_minmax(0,1fr)]',
+      )}
+    >
       <a
         href={`#${MAIN_ID}`}
         onClick={skipToMain}
@@ -28,11 +46,16 @@ export function AppShell() {
       >
         Skip to content
       </a>
-      <MainNav />
+      {navigation && <MainNav />}
       <main
         id={MAIN_ID}
         tabIndex={-1}
-        className="min-w-0 pb-[calc(var(--spacing-tabbar)+env(safe-area-inset-bottom))] outline-none lg:pb-0"
+        className={cx(
+          'min-w-0 outline-none',
+          navigation
+            ? 'pb-[calc(var(--spacing-tabbar)+env(safe-area-inset-bottom))] lg:pb-0'
+            : 'pb-[env(safe-area-inset-bottom)]',
+        )}
       >
         <Outlet />
       </main>

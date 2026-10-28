@@ -1,0 +1,101 @@
+{
+  "stage": "barre-and-power-chords",
+  "outline": [
+    {
+      "id": "power-chords",
+      "title": "Power chords",
+      "summary": "Two- and three-note shapes that drive rock music.",
+      "lessons": [
+        {
+          "id": "e-root-power-chords",
+          "title": "Power chords on the E string",
+          "summary": "Play E5 and move the same shape up the low E string."
+        },
+        {
+          "id": "a-root-power-chords",
+          "title": "Power chords on the A string",
+          "summary": "Move the shape to the A string and find any root."
+        },
+        {
+          "id": "power-chord-changes",
+          "title": "Power chord changes",
+          "summary": "Jump between E- and A-string shapes in time."
+        },
+        {
+          "id": "palm-muting",
+          "title": "Palm muting",
+          "summary": "Rest the side of your hand on the strings for a tight, chugging sound."
+        },
+        {
+          "id": "muted-rock-rhythm",
+          "title": "A muted rock rhythm",
+          "summary": "Mix palm-muted eighths with open accents in a rock groove."
+        }
+      ]
+    },
+    {
+      "id": "first-barre-chords",
+      "title": "Your first barre chords",
+      "summary": "F and Bm, and the technique that makes them ring.",
+      "lessons": [
+        {
+          "id": "barre-technique",
+          "title": "Barre technique",
+          "summary": "Press one finger across all strings with the bony edge, not the pad."
+        },
+        {
+          "id": "f-major-barre",
+          "title": "F major",
+          "summary": "Build the full F barre chord string by string."
+        },
+        {
+          "id": "b-minor-barre",
+          "title": "B minor",
+          "summary": "Play Bm on the A string with a partial barre."
+        },
+        {
+          "id": "barre-chord-changes",
+          "title": "Changing to barre chords",
+          "summary": "Move between open chords and F or Bm without losing the beat."
+        },
+        {
+          "id": "barre-endurance",
+          "title": "Barre endurance",
+          "summary": "Hold barre chords through a full verse without tiring."
+        }
+      ]
+    },
+    {
+      "id": "movable-shapes",
+      "title": "Movable shapes",
+      "summary": "One shape, every key: using the neck to find any chord.",
+      "lessons": [
+        {
+          "id": "notes-on-the-low-strings",
+          "title": "Notes on the low strings",
+          "summary": "Learn the note names along the E and A strings."
+        },
+        {
+          "id": "e-shape-barres",
+          "title": "E-shape barre chords",
+          "summary": "Slide the F shape up the neck to play G, A and B."
+        },
+        {
+          "id": "a-shape-barres",
+          "title": "A-shape barre chords",
+          "summary": "Use the A-string shape for C, D and E major and minor."
+        },
+        {
+          "id": "movable-progressions",
+          "title": "Progressions with movable shapes",
+          "summary": "Play a whole progression with barre chords only."
+        },
+        {
+          "id": "stage-5-song",
+          "title": "Stage song: Greensleeves",
+          "summary": "Play the traditional English tune's chords with barre and power shapes."
+        }
+      ]
+    }
+  ]
+}

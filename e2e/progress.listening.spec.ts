@@ -122,7 +122,7 @@ test('passing the Stage 1 test opens Stage 2 and raises the level', async ({ pag
   await expect.poll(() => practiceSecondsToday(page)).toBeGreaterThan(30);
   await page.goto('/profile');
   await expect(page.getByText('Beginner 2', { exact: true })).toBeVisible();
-  await expect(page.getByText('1 stage test')).toBeVisible();
+  await expect(page.getByText('1 stage', { exact: true })).toBeVisible();
   await expect(page.getByRole('meter', { name: 'Single notes' })).toHaveAttribute(
     'aria-valuetext',
     '100%, from 3 sessions',

@@ -1,0 +1,101 @@
+{
+  "stage": "open-chords-2",
+  "outline": [
+    {
+      "id": "more-open-chords",
+      "title": "More open chords",
+      "summary": "Minor, suspended and add9 shapes that colour the chords you know.",
+      "lessons": [
+        {
+          "id": "d-minor-chord",
+          "title": "D minor (Dm)",
+          "summary": "Play Dm cleanly and hear how it darkens D major."
+        },
+        {
+          "id": "suspended-d",
+          "title": "Dsus2 and Dsus4",
+          "summary": "Lift and add one finger to make D sound open or tense."
+        },
+        {
+          "id": "c-add-nine",
+          "title": "Cadd9",
+          "summary": "Keep two fingers anchored between G and Cadd9 for a ringing change."
+        },
+        {
+          "id": "sus-and-add-changes",
+          "title": "Colourful changes",
+          "summary": "Move between D, Dsus2, Dsus4 and Cadd9 without breaking the strum."
+        },
+        {
+          "id": "open-chords-2-review",
+          "title": "Open chords review",
+          "summary": "Switch between all twelve open chords you know in a one-minute drill."
+        }
+      ]
+    },
+    {
+      "id": "seventh-chords",
+      "title": "Seventh chords",
+      "summary": "E7, A7, D7 and G7: the bluesy pull towards the next chord.",
+      "lessons": [
+        {
+          "id": "e-seven-a-seven",
+          "title": "E7 and A7",
+          "summary": "Turn E and A into seventh chords by lifting one finger."
+        },
+        {
+          "id": "d-seven-chord",
+          "title": "D7",
+          "summary": "Flip the D triangle into D7 and hear it lead back to G."
+        },
+        {
+          "id": "g-seven-chord",
+          "title": "G7",
+          "summary": "Play G7 and use it to pull a progression home to C."
+        },
+        {
+          "id": "seventh-progressions",
+          "title": "Seventh chord progressions",
+          "summary": "Change between E7, A7 and D7 in a shuffle rhythm."
+        },
+        {
+          "id": "blues-in-e-strum",
+          "title": "A strummed blues in E",
+          "summary": "Strum a twelve-bar blues with seventh chords and a swung feel."
+        }
+      ]
+    },
+    {
+      "id": "riffs-and-slurs",
+      "title": "Riffs, hammer-ons and pull-offs",
+      "summary": "Single-note riffs and the slurs that make them flow.",
+      "lessons": [
+        {
+          "id": "single-note-riffs",
+          "title": "Single-note riffs",
+          "summary": "Play short riffs on the low strings with alternate picking."
+        },
+        {
+          "id": "hammer-ons",
+          "title": "Hammer-ons",
+          "summary": "Sound a second note by hammering a finger down, without picking."
+        },
+        {
+          "id": "pull-offs",
+          "title": "Pull-offs",
+          "summary": "Flick a finger off the string to sound the note below it."
+        },
+        {
+          "id": "riffs-with-slurs",
+          "title": "Riffs with slurs",
+          "summary": "Combine picked notes, hammer-ons and pull-offs in one riff."
+        },
+        {
+          "id": "stage-4-song",
+          "title": "Stage song: House of the Rising Sun",
+          "summary": "Pick through the chords of a traditional ballad, with a simplified F."
+        }
+      ]
+    }
+  ]
+}

@@ -17,6 +17,8 @@ export const TABS: readonly TabDefinition[] = [
 
 export const TUNER_PATH = '/tuner';
 export const HOME_PATH = TUNER_PATH;
+/** First-launch setup. */
+export const WELCOME_PATH = '/welcome';
 
 export const LEARN_PATH = '/learn';
 

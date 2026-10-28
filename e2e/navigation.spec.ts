@@ -2,8 +2,11 @@ import { expect, test } from '@playwright/test';
 
 const TABS = ['Tuner', 'Learn', 'Practice', 'Songs', 'Profile'];
 
-test('opens the tuner and reaches every tab', async ({ page }) => {
+test('opens setup on first launch, then the tuner, and reaches every tab', async ({ page }) => {
   await page.goto('/');
+  await expect(page).toHaveURL(/\/welcome$/);
+  await expect(page.getByRole('navigation', { name: 'Main' })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Skip setup' }).click();
 
   await expect(page).toHaveURL(/\/tuner$/);
   await expect(page.getByRole('heading', { level: 1, name: 'Tuner' })).toBeVisible();

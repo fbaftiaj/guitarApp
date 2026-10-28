@@ -13,7 +13,6 @@ import { describeNextStep } from './nextStep';
 import { useCourseProgress } from './useCourseProgress';
 
 function StageCard({ stage, state }: { stage: Stage; state: StageState }) {
-  const playable = state.status !== 'preview';
   const content = (
     <>
       <span
@@ -50,19 +49,16 @@ function StageCard({ stage, state }: { stage: Stage; state: StageState }) {
           />
         )}
       </span>
-      {playable && <ChevronRight aria-hidden className="size-5 shrink-0 text-fg-muted" />}
+      <ChevronRight aria-hidden className="size-5 shrink-0 text-fg-muted" />
     </>
   );
-  const classes = 'flex items-start gap-3 rounded-card border border-border bg-surface p-4';
-  return playable ? (
+  return (
     <Link
       to={stagePath(stage.id)}
-      className={cx(classes, 'transition-colors hover:border-border-strong')}
+      className="flex items-start gap-3 rounded-card border border-border bg-surface p-4 transition-colors hover:border-border-strong"
     >
       {content}
     </Link>
-  ) : (
-    <div className={classes}>{content}</div>
   );
 }
 

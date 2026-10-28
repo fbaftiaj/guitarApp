@@ -1,5 +1,5 @@
-import { Monitor, Moon, Sun, Timer } from 'lucide-react';
-import { LATENCY_PATH } from '@/app/navigation';
+import { Monitor, Moon, RotateCcw, Sun, Timer } from 'lucide-react';
+import { LATENCY_PATH, WELCOME_PATH } from '@/app/navigation';
 import { Screen } from '@/app/Screen';
 import type { ThemePreference } from '@/app/theme';
 import { useSettingsStore } from '@/stores/settingsStore';
@@ -45,6 +45,16 @@ export function SettingsScreen() {
           </p>
           <ButtonLink to={LATENCY_PATH} variant="secondary" icon={Timer} className="mt-3">
             {latencyMs === null ? 'Measure latency' : 'Measure again'}
+          </ButtonLink>
+        </Card>
+        <Card>
+          <h2 className="mb-2 text-base font-semibold">Setup</h2>
+          <p className="text-sm text-pretty text-fg-muted">
+            Choose a different starting stage, or go through the microphone, latency and tuning
+            steps again.
+          </p>
+          <ButtonLink to={WELCOME_PATH} variant="secondary" icon={RotateCcw} className="mt-3">
+            Run setup again
           </ButtonLink>
         </Card>
         <Card>

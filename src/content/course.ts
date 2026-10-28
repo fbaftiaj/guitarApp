@@ -3,6 +3,11 @@ import { skillIdSchema, type SkillId } from '@/storage/types';
 import stage1Json from './course/stage-1.json';
 import stage2Json from './course/stage-2.json';
 import stage3Json from './course/stage-3.json';
+import stage4Json from './course/stage-4.json';
+import stage5Json from './course/stage-5.json';
+import stage6Json from './course/stage-6.json';
+import stage7Json from './course/stage-7.json';
+import stage8Json from './course/stage-8.json';
 import stagesJson from './course/stages.json';
 import { EXERCISES, buildExercise, checkMusic, musicSchema, type Exercise } from './exercises';
 import { parseOrThrow, report, slug, text } from './schemaParts';
@@ -11,7 +16,8 @@ import { SONGS, type Song } from './songs';
 /**
  * The course: Course → Stage → Unit → Lesson, validated when the module
  * loads. stages.json lists every stage; a stage's lessons live in its own
- * file. A stage without one is a preview, shown but not yet playable.
+ * file. A stage that only has an outline (units and lessons with their
+ * titles and objectives) is a preview, shown but not yet playable.
  *
  * Each lesson runs Learn → Listen → Practice → Check on one exercise: its own
  * music, or a song from the library. Each playable stage ends with a stage
@@ -72,6 +78,20 @@ export interface StageTest {
   parts: readonly StageTestPart[];
 }
 
+/** A lesson of a preview stage: what it will teach, not yet playable. */
+export interface PlannedLesson {
+  id: string;
+  title: string;
+  summary: string;
+}
+
+export interface PlannedUnit {
+  id: string;
+  title: string;
+  summary: string;
+  lessons: readonly PlannedLesson[];
+}
+
 export interface Stage {
   id: string;
   number: number;
@@ -84,6 +104,8 @@ export interface Stage {
   lessons: readonly Lesson[];
   /** Null for a preview stage. */
   test: StageTest | null;
+  /** A preview stage's planned units; empty for a playable stage. */
+  outline: readonly PlannedUnit[];
 }
 
 export interface Course {
@@ -160,9 +182,28 @@ const stageContentSchema = z.object({
     .check(z.minLength(UNITS_PER_STAGE.min), z.maxLength(UNITS_PER_STAGE.max)),
 });
 
+const plannedLessonSchema = z.object({ id: slug, title: text, summary: text });
+
+const stageOutlineSchema = z.object({
+  stage: slug,
+  outline: z
+    .array(
+      z.object({
+        id: slug,
+        title: text,
+        summary: text,
+        lessons: z
+          .array(plannedLessonSchema)
+          .check(z.minLength(LESSONS_PER_UNIT.min), z.maxLength(LESSONS_PER_UNIT.max)),
+      }),
+    )
+    .check(z.minLength(UNITS_PER_STAGE.min), z.maxLength(UNITS_PER_STAGE.max)),
+});
+
 interface CourseData {
   stages: readonly z.infer<typeof stageSchema>[];
   content: readonly z.infer<typeof stageContentSchema>[];
+  outlines: readonly z.infer<typeof stageOutlineSchema>[];
 }
 
 function checkLesson(lesson: LessonData, songs: ReadonlyMap<string, Song>, issues: string[]): void {
@@ -237,6 +278,22 @@ function checkCourse(
       checkMusic(part.exercise, `stage test "${test.id}", part ${i + 1}`, issues);
     });
   }
+
+  const outlined = new Set<string>();
+  for (const { stage, outline } of course.outlines) {
+    if (!stageIds.has(stage)) issues.push(`outline for unknown stage "${stage}"`);
+    if (contentFor.has(stage)) issues.push(`stage "${stage}" has both lessons and an outline`);
+    if (outlined.has(stage)) issues.push(`stage "${stage}" has two outlines`);
+    outlined.add(stage);
+    for (const unit of outline) {
+      if (unitIds.has(unit.id)) issues.push(`duplicate unit id "${unit.id}"`);
+      unitIds.add(unit.id);
+      for (const lesson of unit.lessons) {
+        if (lessonIds.has(lesson.id)) issues.push(`duplicate lesson id "${lesson.id}"`);
+        lessonIds.add(lesson.id);
+      }
+    }
+  }
 }
 
 function buildTest(test: StageTestData, stageId: string): StageTest {
@@ -303,7 +360,7 @@ function buildLesson(
  * `takenIds` are exercise ids a lesson id must not reuse.
  */
 export function parseCourse(
-  data: { stages: unknown; content: readonly unknown[] },
+  data: { stages: unknown; content: readonly unknown[]; outlines?: readonly unknown[] },
   songs: readonly Song[],
   takenIds: ReadonlySet<string>,
 ): Course {
@@ -312,6 +369,7 @@ export function parseCourse(
     .object({
       stages: z.array(stageSchema).check(z.minLength(1)),
       content: z.array(stageContentSchema),
+      outlines: z.array(stageOutlineSchema),
     })
     .check(
       z.superRefine((course, ctx) => {
@@ -320,7 +378,7 @@ export function parseCourse(
         report(issues, ctx);
       }),
     );
-  const course = parseOrThrow(schema, data, 'course');
+  const course = parseOrThrow(schema, { outlines: [], ...data }, 'course');
 
   const stages = course.stages.map((stage): Stage => {
     const content = course.content.find((candidate) => candidate.stage === stage.id);
@@ -335,13 +393,18 @@ export function parseCourse(
       units,
       lessons: units.flatMap((unit) => unit.lessons),
       test: content ? buildTest(content.test, stage.id) : null,
+      outline: course.outlines.find((candidate) => candidate.stage === stage.id)?.outline ?? [],
     };
   });
   return { stages, lessons: stages.flatMap((stage) => stage.lessons) };
 }
 
 export const COURSE = parseCourse(
-  { stages: stagesJson, content: [stage1Json, stage2Json, stage3Json] },
+  {
+    stages: stagesJson,
+    content: [stage1Json, stage2Json, stage3Json],
+    outlines: [stage4Json, stage5Json, stage6Json, stage7Json, stage8Json],
+  },
   SONGS,
   new Set([...EXERCISES.map((exercise) => exercise.id), ...SONGS.map((song) => song.id)]),
 );

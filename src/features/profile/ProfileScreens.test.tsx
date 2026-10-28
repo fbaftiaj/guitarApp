@@ -67,7 +67,7 @@ describe('Profile', () => {
 
     expect(await screen.findByText('Beginner 2')).toBeInTheDocument();
     expect(screen.getByText('15 lessons')).toBeInTheDocument();
-    expect(screen.getByText('1 stage test')).toBeInTheDocument();
+    expect(screen.getByText('1 stage')).toBeInTheDocument();
     expect(screen.getByText('2 days')).toBeInTheDocument();
     expect(screen.getByText('17 min')).toBeInTheDocument();
     expect(await screen.findByRole('meter', { name: 'Chords' })).toHaveAttribute(

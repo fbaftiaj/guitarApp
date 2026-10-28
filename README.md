@@ -4,9 +4,9 @@ A mobile-first Progressive Web App for learning guitar: a precision tuner, a str
 eight-stage course and an interactive play-along practicer that listens to what you play.
 Everything runs on the device and works offline; there is no backend.
 
-> **Status:** Milestones 1–6 of 7 (foundation, tuner, practicer, listening and scoring,
-> curriculum, progress and profile) are complete. Stages 4–8 are shown as previews until
-> Milestone 7.
+> **Status:** all seven milestones are complete. Stages 1–3 (45 lessons, three stage tests)
+> are fully playable; Stages 4–8 are outlined with 75 planned lessons. See
+> [Known limitations](#known-limitations) for what still needs real devices.
 
 | #   | Milestone                                                  | Status |
 | --- | ---------------------------------------------------------- | ------ |
@@ -16,7 +16,7 @@ Everything runs on the device and works offline; there is no backend.
 | 4   | Listening and scoring: onset/chroma, latency calibration   | Done   |
 | 5   | Curriculum: content schemas, stages 1–3, lesson flow       | Done   |
 | 6   | Progress and profile: skill meters, streaks, history       | Done   |
-| 7   | Polish: onboarding, stages 4–8, accessibility, performance | Next   |
+| 7   | Polish: onboarding, stages 4–8, accessibility, performance | Done   |
 
 ## Getting started
 
@@ -69,7 +69,7 @@ src/
   platform/   Thin wrappers for browser APIs (screen wake lock, vibration)
   storage/    IndexedDB schema, migrations, repositories and the Zustand persist adapter
   stores/     App-wide Zustand stores (settings, lesson progress, practice time)
-  features/   One folder per screen: tuner, learn, practice, songs, profile, settings
+  features/   One folder per screen: onboarding, tuner, learn, practice, songs, profile, settings
     practice/engine/     Timeline compiler, arrangement, transport, lookahead scheduler (pure)
     practice/scoring/    Chord recognition, hit checks, scorer, wait matcher, latency, stars, results
     practice/listening/  Session inputs: scoring while practising, latency calibration
@@ -219,10 +219,12 @@ note of the guide part as the transport schedules it (the guide does not have to
   real guitars and phones is part of Milestone 7's cross-device testing.
 
 **Curriculum.** The course is data: `src/content/course/stages.json` lists the eight
-stages, and each playable stage has its own file of units and lessons (`stage-1.json` …
-`stage-3.json`), validated with Zod when the module loads. The checks go beyond the schema:
-unique ids, known chords and songs, strum patterns that fit the bar, 3–5 units of 4–8 lessons
-per stage, a stage song at the end of every stage, and no playable stage after a preview.
+stages, and each stage has its own file (`stage-1.json` … `stage-8.json`), validated with Zod
+when the module loads. A playable stage has units of full lessons and a stage test; a preview
+stage has an outline of planned units and lessons with their titles and objectives. The
+checks go beyond the schema: unique ids, known chords and songs, strum patterns that fit the
+bar, 3–5 units of 4–8 lessons per stage, a stage song at the end of every playable stage, and
+no playable stage after a preview.
 Strum patterns are shared (`strumPatterns.json`); the exercise schema's music part is reused
 by lessons and songs.
 
@@ -259,6 +261,20 @@ by lessons and songs.
 - **Chord library:** every chord from a completed lesson, with its diagram, its place on the
   fretboard and a microphone check that judges each strum with the practicer's chord
   recognition (down or up) and names the chord it heard instead.
+
+**Onboarding.** On first launch `/` opens setup at `/welcome` (without the tab bar): how
+much you have played (never / a few chords / regularly) places you at Stage 1, 2 or 3 —
+earlier stages count as passed, stay playable and set the starting level — then what the
+microphone is for (nothing is recorded or sent), latency calibration (the same component as
+the Settings screen) and tuning. Every step can be skipped, and Settings → Run setup again
+repeats it. Deep links skip setup, so a shared lesson link opens the lesson.
+
+**Accessibility.** WCAG 2.1 AA is checked with axe on every screen in both themes. Results
+never rely on colour alone (words on the hit badge, ✓ ~ ✗ – on the highway's marks, icons
+on lesson states), meters and progress bars use system colours in forced-colours mode, all
+motion stops under `prefers-reduced-motion` (the lesson demo waits to be played), focus moves
+to each new screen and setup step, and scroll padding keeps focused controls clear of the
+sticky header and tab bar.
 
 **PWA.** Workbox precaches the app shell and every screen chunk, so the app works offline
 after the first visit. New versions wait for the user to tap "Reload to update", so an
@@ -327,6 +343,28 @@ installable, with maskable icons and iOS splash screens.
   offline tuning, and needle frame rate under 4× CPU throttling. Also navigation, layouts,
   touch-target size, theme persistence, behaviour without IndexedDB, manifest and Chrome
   installability, offline operation, and axe WCAG 2.1 AA scans in both themes.
+
+- **Setup and devices:** `e2e/onboarding.listening.spec.ts` runs first-launch setup with the
+  fake guitarist calibrating latency, then checks the placement (Stage 2, Beginner 2) and that
+  setup is done for good; skipping and re-running it from Settings. `e2e/devices.spec.ts`
+  (its own project) emulates iPhone SE, Galaxy S8, Pixel 7, iPhone 15 Pro Max and iPad Mini
+  in both orientations: no sideways scrolling and full-size buttons on every main screen, and
+  focused practicer controls clear of the tab bar. Keyboard-only setup and forced-colours
+  rendering are checked in `e2e/accessibility.spec.ts`.
+- **Lighthouse** (mobile, production build): 98 performance, 100 accessibility and 100 best
+  practices on the setup, tuner, lesson, practicer and profile screens.
+
+## Known limitations
+
+- **Real devices.** End-to-end tests run in Chromium only (with device emulation for size,
+  touch and user agent); Safari and Firefox, iOS audio routing with the microphone open,
+  Bluetooth latency and real phone microphones still need testing on hardware.
+- **Scoring thresholds** (onsets, chroma, chord matching) were tuned on synthesised guitar
+  sounds; they should be checked against recordings of real guitars in real rooms.
+- **Speaker bleed.** With the speaker on, the microphone also hears FretPath's own clicks
+  and backing, so wired headphones or a lower volume give the fairest scores.
+- **Stages 4–8** are outlines: their lessons have titles and objectives but no content yet.
+- **Chord check** names the chord it heard, not which string or finger was wrong.
 
 ## Content policy
 

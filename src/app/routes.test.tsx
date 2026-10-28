@@ -1,10 +1,23 @@
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
+import { useSettingsStore } from '@/stores/settingsStore';
 import { renderRoute } from '@/test/renderRoute';
 
 describe('app navigation', () => {
-  it('opens the tuner from the root path', async () => {
+  it('starts a first launch with setup', async () => {
+    useSettingsStore.setState({ onboarded: false });
+    const { router } = renderRoute('/');
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Get started' }),
+    ).toBeInTheDocument();
+    expect(router.state.location.pathname).toBe('/welcome');
+    expect(screen.queryByRole('navigation', { name: 'Main' })).toBeNull();
+  });
+
+  it('opens the tuner from the root path once set up', async () => {
+    useSettingsStore.setState({ onboarded: true });
     const { router } = renderRoute('/');
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Tuner' })).toBeInTheDocument();

@@ -127,6 +127,31 @@ describe('course content', () => {
     expect(findStage('first-steps')?.lessons.at(-1)?.songId).toBe('ode-to-joy');
   });
 
+  it('outlines every preview stage, for at least 120 lessons in all', () => {
+    const previews = COURSE.stages.filter((stage) => stage.lessons.length === 0);
+    expect(previews.map((stage) => stage.number)).toEqual([4, 5, 6, 7, 8]);
+    for (const stage of previews) {
+      expect(stage.outline.length, stage.id).toBeGreaterThanOrEqual(UNITS_PER_STAGE.min);
+      expect(stage.outline.length, stage.id).toBeLessThanOrEqual(UNITS_PER_STAGE.max);
+      for (const unit of stage.outline) {
+        expect(unit.lessons.length, unit.id).toBeGreaterThanOrEqual(LESSONS_PER_UNIT.min);
+        expect(unit.lessons.length, unit.id).toBeLessThanOrEqual(LESSONS_PER_UNIT.max);
+      }
+    }
+    const planned = previews.flatMap((stage) => stage.outline.flatMap((unit) => unit.lessons));
+    const ids = [
+      ...COURSE.lessons.map((lesson) => lesson.id),
+      ...planned.map((lesson) => lesson.id),
+    ];
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids.length).toBeGreaterThanOrEqual(120);
+    expect(
+      COURSE.stages
+        .filter((stage) => stage.lessons.length > 0)
+        .every((s) => s.outline.length === 0),
+    ).toBe(true);
+  });
+
   it('ends every full stage with a test of mixed parts', () => {
     for (const stage of COURSE.stages) {
       if (stage.lessons.length === 0) {
@@ -249,6 +274,49 @@ describe('course validation', () => {
     ['a test with one part', stageTest('one-test', { parts: [] }), 'parts'],
   ])('rejects %s', (_, test, message) => {
     expect(() => parse([stageContent('one', 'one', test)])).toThrow(message);
+  });
+
+  const outline = (stage: string, prefix: string, lessons = 4) => ({
+    stage,
+    outline: ['a', 'b', 'c'].map((unit) => ({
+      id: `${prefix}-${unit}`,
+      title: 'Unit',
+      summary: 'A unit.',
+      lessons: Array.from({ length: lessons }, (_, i) => ({
+        id: `${prefix}-${unit}-${i + 1}`,
+        title: 'Lesson',
+        summary: 'An objective.',
+      })),
+    })),
+  });
+
+  it('builds a preview stage from its outline', () => {
+    const course = parseCourse(
+      { stages, content: [stageContent('one')], outlines: [outline('two', 'two')] },
+      SONGS,
+      new Set(),
+    );
+    expect(course.stages[1]?.outline.map((unit) => unit.lessons.length)).toEqual([4, 4, 4]);
+    expect(course.stages[1]?.lessons).toEqual([]);
+  });
+
+  it.each([
+    [
+      'an outline for a stage with lessons',
+      [outline('one', 'x')],
+      'stage "one" has both lessons and an outline',
+    ],
+    [
+      'an outline for an unknown stage',
+      [outline('three', 'x')],
+      'outline for unknown stage "three"',
+    ],
+    ['an outline reusing a lesson id', [outline('two', 'one')], 'duplicate unit id "one-a"'],
+    ['an outlined unit with three lessons', [outline('two', 'x', 3)], 'lessons'],
+  ])('rejects %s', (_, outlines, message) => {
+    expect(() =>
+      parseCourse({ stages, content: [stageContent('one')], outlines }, SONGS, new Set()),
+    ).toThrow(message);
   });
 
   it('rejects a lesson id taken by an exercise or song', () => {
