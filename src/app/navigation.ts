@@ -44,6 +44,39 @@ export function lessonPath(lessonId: string, step: LessonStep = 'learn'): string
 
 export const PRACTICE_PATH = '/practice';
 
+export const TRAINER_PATH = '/trainer';
+
+/** The chord trainer for `chords`; `learn` goes string by string first; `back` is where Close goes. */
+export function trainerPath({
+  chords,
+  learn,
+  back,
+}: {
+  chords: readonly string[];
+  learn: boolean;
+  back?: string;
+}): string {
+  const params = new URLSearchParams({ chords: chords.join(','), learn: learn ? '1' : '0' });
+  if (back) params.set('back', back);
+  return `${TRAINER_PATH}?${params.toString()}`;
+}
+
+const SAME_ORIGIN = 'https://app.invalid';
+
+/**
+ * Only app paths are followed: anything that resolves to another site ("//host",
+ * "/\\host", tabs or newlines the URL parser drops) falls back.
+ */
+export function safeAppPath(path: string | null, fallback: string): string {
+  if (!path?.startsWith('/')) return fallback;
+  try {
+    const url = new URL(path, SAME_ORIGIN);
+    return url.origin === SAME_ORIGIN ? `${url.pathname}${url.search}${url.hash}` : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export function exercisePath(exerciseId: string): string {
   return `${PRACTICE_PATH}/${encodeURIComponent(exerciseId)}`;
 }

@@ -1,6 +1,6 @@
-import { CircleCheck, Mic, MicOff, Music } from 'lucide-react';
+import { CircleCheck, GraduationCap, Mic, MicOff, Music } from 'lucide-react';
 import { useParams } from 'react-router';
-import { CHORD_LIBRARY_PATH } from '@/app/navigation';
+import { CHORD_LIBRARY_PATH, chordPath, trainerPath } from '@/app/navigation';
 import { Screen } from '@/app/Screen';
 import { CHORDS, type Chord } from '@/content/chords';
 import { useSettingsStore } from '@/stores/settingsStore';
@@ -58,6 +58,16 @@ function ChordCheckView({ chord }: { chord: Chord }) {
           Fingers: 1 index · 2 middle · 3 ring · 4 little. × means leave that string out.
         </p>
       </Card>
+
+      <ButtonLink
+        to={trainerPath({ chords: [chord.id], learn: true, back: chordPath(chord.id) })}
+        icon={GraduationCap}
+        variant="secondary"
+        size="lg"
+        fullWidth
+      >
+        Learn it string by string
+      </ButtonLink>
 
       <Card className="space-y-3">
         <h2 className="font-semibold">Play it</h2>

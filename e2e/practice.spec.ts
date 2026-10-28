@@ -1,6 +1,7 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { installAudioSpy, type StartedSound } from './support/audioSpy';
+import { withOptions } from './support/practicer';
 
 /**
  * The practicer's playback end to end, on the real AudioContext. An audio spy records
@@ -21,8 +22,10 @@ const CLICK_HZ = { accent: 1760, normal: 1320 };
 async function openExercise(page: Page, id: string) {
   await page.goto(`/practice/${id}`);
   await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible();
-  const listening = page.getByRole('switch', { name: 'Listen and score' });
-  if ((await listening.getAttribute('aria-checked')) === 'true') await listening.click();
+  await withOptions(page, async (options) => {
+    const listening = options.getByRole('switch', { name: 'Listen and score' });
+    if ((await listening.getAttribute('aria-checked')) === 'true') await listening.click();
+  });
 }
 
 async function started(page: Page): Promise<StartedSound[]> {
@@ -60,10 +63,12 @@ test('lists exercises and opens one at 60% of its target tempo with speed-up on'
   await expect(page.getByRole('heading', { level: 1, name: 'Em – Am changes' })).toBeVisible();
   await expect(tempoSlider(page)).toHaveValue('48');
   await expect(page.getByText('target 80')).toBeVisible();
-  await expect(page.getByRole('switch', { name: 'Auto speed-up' })).toBeChecked();
-  await expect(page.getByRole('switch', { name: 'Wait mode' })).not.toBeChecked();
+  await expect(page.getByRole('switch', { name: 'Wait for me' })).not.toBeChecked();
   await expect(page.getByRole('img', { name: /^E minor chord/ })).toBeVisible();
   await expect(page.getByText('Bar 1 / 8')).toBeVisible();
+  await withOptions(page, async (options) => {
+    await expect(options.getByRole('switch', { name: 'Auto speed-up' })).toBeChecked();
+  });
 });
 
 test('counts in one bar, then clicks exactly on the beat, scheduled ahead', async ({ page }) => {
@@ -139,9 +144,11 @@ test('restart goes back to bar 1 with a new count-in', async ({ page }) => {
 test('loops the chosen bars and speeds up after each pass up to the target', async ({ page }) => {
   await openExercise(page, 'em-am-changes');
   await page.getByRole('button', { name: '75%' }).click(); // 60 BPM
-  await page.getByRole('switch', { name: 'Loop' }).click();
-  await page.getByRole('combobox', { name: 'Loop to bar' }).selectOption('1');
-  await page.getByText('+10', { exact: true }).click();
+  await withOptions(page, async (options) => {
+    await options.getByRole('switch', { name: 'Loop' }).click();
+    await options.getByRole('combobox', { name: 'Loop to bar' }).selectOption('1');
+    await options.getByText('+10', { exact: true }).click();
+  });
   await page.getByRole('button', { name: 'Play', exact: true }).click();
 
   // Count-in (4 s) and one 4-beat pass at 60 BPM, then 70, then the 80 BPM target.
@@ -160,17 +167,22 @@ test('loops the chosen bars and speeds up after each pass up to the target', asy
   await page.getByRole('button', { name: 'Pause' }).click();
 });
 
-test('wait mode stops on each chord until Next', async ({ page }) => {
+test('wait for me stops on each chord until Next', async ({ page }) => {
   await openExercise(page, 'em-am-changes');
   await page.getByRole('button', { name: '125%' }).click(); // 100 BPM
-  await page.getByRole('switch', { name: 'Wait mode' }).click();
-  await expect(page.getByRole('switch', { name: 'Auto speed-up' })).not.toBeChecked();
+  await page.getByRole('switch', { name: 'Wait for me' }).click();
+  await withOptions(page, async (options) => {
+    await expect(options.getByRole('switch', { name: 'Auto speed-up' })).not.toBeChecked();
+  });
   const next = page.getByRole('button', { name: 'Next' });
   await expect(next).toBeDisabled();
 
   await page.getByRole('button', { name: 'Play', exact: true }).click();
   await expect(next).toBeEnabled();
   await expect(page.getByText('Waiting for E minor. Play it, then tap Next.')).toBeAttached();
+  // Pause, Restart and Next all fit across a phone.
+  const nextRight = await next.evaluate((element) => element.getBoundingClientRect().right);
+  expect(nextRight).toBeLessThanOrEqual(page.viewportSize()?.width ?? 0);
   await page.waitForTimeout(500);
   expect(await clicks(page)).toEqual([]); // no count-in, nothing moves
 
@@ -191,9 +203,11 @@ test('mutes the metronome but keeps the count-in; the guide strums the chords', 
 }) => {
   await openExercise(page, 'em-am-changes');
   await page.getByRole('button', { name: '125%' }).click();
-  await page.getByRole('switch', { name: 'Metronome' }).click();
-  await page.getByRole('switch', { name: 'Backing track' }).click();
-  await page.getByRole('switch', { name: 'Guide playback' }).click();
+  await withOptions(page, async (options) => {
+    await options.getByRole('switch', { name: 'Metronome' }).click();
+    await options.getByRole('switch', { name: 'Backing track' }).click();
+    await options.getByRole('switch', { name: 'Guide playback' }).click();
+  });
   await page.getByRole('button', { name: 'Play', exact: true }).click();
 
   await expect(page.getByText('Bar 2 / 8')).toBeVisible({ timeout: 10_000 });
@@ -214,22 +228,28 @@ test('label and fretboard toggles change what is shown', async ({ page }) => {
   await expect(nowChord).toBeVisible();
   await expect(page.getByRole('img', { name: /^E minor chord:.*finger 2/ })).toBeVisible();
 
-  await page.getByRole('switch', { name: 'Chord names' }).click();
+  await withOptions(page, (options) =>
+    options.getByRole('switch', { name: 'Chord names' }).click(),
+  );
   await expect(page.getByText('Em', { exact: true })).toHaveCount(0);
 
-  await page.getByRole('switch', { name: 'Finger numbers' }).click();
+  await withOptions(page, (options) =>
+    options.getByRole('switch', { name: 'Finger numbers' }).click(),
+  );
   await expect(page.getByRole('img', { name: /^E minor chord:/ })).not.toHaveAccessibleName(
     /finger/,
   );
 
-  await page.getByRole('switch', { name: 'Fretboard view' }).click();
+  await withOptions(page, (options) =>
+    options.getByRole('switch', { name: 'Fretboard view' }).click(),
+  );
   await expect(page.getByRole('img', { name: 'E minor on the fretboard' })).toBeVisible();
 });
 
 test('shows a tab lane with notes on their strings for single-note exercises', async ({ page }) => {
   await openExercise(page, 'e-minor-riff');
   await expect(page.getByText('String 6 (low E), open').first()).toBeVisible();
-  await page.getByRole('switch', { name: 'Note names' }).click();
+  await withOptions(page, (options) => options.getByRole('switch', { name: 'Note names' }).click());
   await expect(page.getByText('String 6 (low E), open · E').first()).toBeVisible();
   await expect(track(page).getByText('3G')).toHaveCount(4);
 });
@@ -237,24 +257,30 @@ test('shows a tab lane with notes on their strings for single-note exercises', a
 test('remembers tempo, loop and mix per exercise', async ({ page }) => {
   await openExercise(page, 'g-c-d-folk');
   await page.getByRole('button', { name: 'Faster by 1 BPM' }).click();
-  await page.getByRole('switch', { name: 'Loop' }).click();
-  // 80 % → 40 % in 5 % steps.
-  const volume = page.getByRole('slider', { name: 'Metronome volume' });
-  await volume.focus();
-  for (let i = 0; i < 8; i++) await volume.press('ArrowLeft');
+  await withOptions(page, async (options) => {
+    await options.getByRole('switch', { name: 'Loop' }).click();
+    // 80 % → 40 % in 5 % steps.
+    const volume = options.getByRole('slider', { name: 'Metronome volume' });
+    await volume.focus();
+    for (let i = 0; i < 8; i++) await volume.press('ArrowLeft');
+  });
   await expect(tempoSlider(page)).toHaveValue('55');
 
   await page.reload();
   await expect(tempoSlider(page)).toHaveValue('55');
-  await expect(page.getByRole('combobox', { name: 'Loop from bar' })).toHaveValue('1');
-  await expect(page.getByRole('combobox', { name: 'Loop to bar' })).toHaveValue('2');
-  await expect(page.getByRole('slider', { name: 'Metronome volume' })).toHaveValue('40');
+  await withOptions(page, async (options) => {
+    await expect(options.getByRole('combobox', { name: 'Loop from bar' })).toHaveValue('1');
+    await expect(options.getByRole('combobox', { name: 'Loop to bar' })).toHaveValue('2');
+    await expect(options.getByRole('slider', { name: 'Metronome volume' })).toHaveValue('40');
+  });
 
   // Another exercise keeps its own tempo and loop; the mix is shared.
   await openExercise(page, 'em-am-changes');
   await expect(tempoSlider(page)).toHaveValue('48');
-  await expect(page.getByRole('switch', { name: 'Loop' })).not.toBeChecked();
-  await expect(page.getByRole('slider', { name: 'Metronome volume' })).toHaveValue('40');
+  await withOptions(page, async (options) => {
+    await expect(options.getByRole('switch', { name: 'Loop' })).not.toBeChecked();
+    await expect(options.getByRole('slider', { name: 'Metronome volume' })).toHaveValue('40');
+  });
 });
 
 test('pauses when the app goes to the background', async ({ page }) => {
@@ -278,7 +304,9 @@ test('shows a message for an unknown exercise', async ({ page }) => {
 
 test('scrolls smoothly and keeps the beat on a slowed-down CPU', async ({ page }) => {
   await openExercise(page, 'g-c-d-folk');
-  await page.getByRole('switch', { name: 'Guide playback' }).click();
+  await withOptions(page, (options) =>
+    options.getByRole('switch', { name: 'Guide playback' }).click(),
+  );
   await page.getByRole('button', { name: '100%' }).click(); // 90 BPM
   await page.getByRole('button', { name: 'Play', exact: true }).click();
   await waitForClicks(page, 5);
@@ -328,10 +356,13 @@ test('passes axe checks while playing, waiting and with every view on', async ({
   expect(await scan()).toEqual([]);
   await page.getByRole('button', { name: 'Pause' }).click();
 
-  await page.getByRole('switch', { name: 'Wait mode' }).click();
-  await page.getByRole('switch', { name: 'Loop' }).click();
-  await page.getByRole('switch', { name: 'Fretboard view' }).click();
-  await page.getByRole('switch', { name: 'Note names' }).click();
+  await page.getByRole('switch', { name: 'Wait for me' }).click();
+  await withOptions(page, async (options) => {
+    await options.getByRole('switch', { name: 'Loop' }).click();
+    await options.getByRole('switch', { name: 'Fretboard view' }).click();
+    await options.getByRole('switch', { name: 'Note names' }).click();
+    expect(await scan()).toEqual([]); // the Options sheet itself
+  });
   await page.getByRole('button', { name: 'Restart' }).click();
   await page.getByRole('button', { name: 'Play', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Next' })).toBeEnabled();

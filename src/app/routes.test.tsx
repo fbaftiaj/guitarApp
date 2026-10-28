@@ -91,6 +91,21 @@ describe('app navigation', () => {
     expect(await screen.findByRole('heading', { level: 1, name: 'Tuner' })).toBeInTheDocument();
   });
 
+  it('opens the chord trainer full screen, closing only to app paths', async () => {
+    renderRoute('/trainer?chords=G,Nope,C&learn=0&back=%2F%5Cexample.com');
+
+    expect(await screen.findByRole('heading', { level: 1, name: 'G – C' })).toBeInTheDocument();
+    expect(screen.queryByRole('navigation', { name: 'Main' })).toBeNull();
+    expect(screen.getByRole('link', { name: 'Close' })).toHaveAttribute('href', '/practice');
+  });
+
+  it('explains a chord trainer link without chords it knows', async () => {
+    renderRoute('/trainer?chords=Nope&back=%2Fprofile%2Fchords');
+
+    expect(await screen.findByRole('heading', { name: 'No chords chosen' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Close' })).toHaveAttribute('href', '/profile/chords');
+  });
+
   it('offers a skip link that moves focus to the main content', async () => {
     const user = userEvent.setup();
     renderRoute('/tuner');

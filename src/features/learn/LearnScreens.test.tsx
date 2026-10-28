@@ -1,6 +1,7 @@
 import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
+import { lessonPath, trainerPath } from '@/app/navigation';
 import { COURSE } from '@/content/course';
 import type { LessonProgress, StarCount } from '@/storage/types';
 import { useProgressStore } from '@/stores/progressStore';
@@ -113,7 +114,8 @@ describe('Learn screens', () => {
     expect(await screen.findByText(/Hear how it should sound/)).toBeInTheDocument();
 
     await user.click(screen.getByRole('link', { name: 'Next: Practice' }));
-    expect(await screen.findByRole('heading', { name: 'Practice' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Play along' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Play' })).toBeInTheDocument();
 
     await user.click(screen.getByRole('link', { name: 'Next: Check' }));
     expect(await screen.findByText(/passes with one star/)).toBeInTheDocument();
@@ -131,6 +133,26 @@ describe('Learn screens', () => {
     expect(await screen.findByRole('heading', { name: 'The chords' })).toBeInTheDocument();
     expect(screen.getByRole('img', { name: /^G major chord: .*finger 2/ })).toBeInTheDocument();
     expect(screen.getByRole('img', { name: /^C major chord/ })).toBeInTheDocument();
+  });
+
+  it('offers the chord trainer for a chord lesson, coming back to the lesson', async () => {
+    const index = COURSE.lessons.findIndex((lesson) => lesson.id === 'changing-g-c');
+    complete([
+      ...COURSE.lessons.slice(0, index).map((lesson) => lesson.id),
+      COURSE.stages[0]?.test?.id ?? '',
+    ]);
+    renderRoute('/learn/lesson/changing-g-c/practice');
+
+    const trainer = await screen.findByRole('link', { name: 'Open the chord trainer' });
+    expect(trainer).toHaveAttribute(
+      'href',
+      trainerPath({
+        chords: ['G', 'C'],
+        learn: true,
+        back: lessonPath('changing-g-c', 'practice'),
+      }),
+    );
+    expect(screen.getByRole('heading', { name: 'Play along' })).toBeInTheDocument();
   });
 
   it('opens the stage test once every lesson of the stage is done', async () => {

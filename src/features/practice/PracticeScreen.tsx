@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { exercisePath } from '@/app/navigation';
 import { Screen } from '@/app/Screen';
 import { EXERCISES, type Exercise } from '@/content/exercises';
+import { TrainerCard } from '../trainer/components/TrainerCard';
 
 function summary(exercise: Exercise): string {
   const { beats, unit } = exercise.timeSignature;
@@ -13,6 +14,8 @@ function summary(exercise: Exercise): string {
 export function PracticeScreen() {
   return (
     <Screen title="Practice">
+      <TrainerCard />
+      <h2 className="mb-1 text-lg font-bold">Play along</h2>
       <p className="mb-4 text-sm text-pretty text-fg-muted">
         Play along with a scrolling timeline. Each exercise starts slower than its target tempo and
         speeds up as you loop it.

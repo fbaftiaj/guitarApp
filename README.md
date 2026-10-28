@@ -1,7 +1,8 @@
 # FretPath
 
 A mobile-first Progressive Web App for learning guitar: a precision tuner, a structured
-eight-stage course and an interactive play-along practicer that listens to what you play.
+eight-stage course, a chord trainer that waits for you to play each string and chord right,
+and an interactive play-along practicer that listens to what you play.
 Everything runs on the device and works offline; there is no backend.
 
 > **Status:** all seven milestones are complete. Stages 1–3 (45 lessons, three stage tests)
@@ -17,6 +18,9 @@ Everything runs on the device and works offline; there is no backend.
 | 5   | Curriculum: content schemas, stages 1–3, lesson flow       | Done   |
 | 6   | Progress and profile: skill meters, streaks, history       | Done   |
 | 7   | Polish: onboarding, stages 4–8, accessibility, performance | Done   |
+
+Since then: a chord trainer and a simpler play-along screen (big
+now/next chord diagrams, one Play button, “Wait for me”, everything else under Options); see [Architecture notes](#architecture-notes).
 
 ## Getting started
 
@@ -69,10 +73,11 @@ src/
   platform/   Thin wrappers for browser APIs (screen wake lock, vibration)
   storage/    IndexedDB schema, migrations, repositories and the Zustand persist adapter
   stores/     App-wide Zustand stores (settings, lesson progress, practice time)
-  features/   One folder per screen: onboarding, tuner, learn, practice, songs, profile, settings
+  features/   One folder per screen: onboarding, tuner, learn, practice, trainer, songs, profile, settings
     practice/engine/     Timeline compiler, arrangement, transport, lookahead scheduler (pure)
     practice/scoring/    Chord recognition, hit checks, scorer, wait matcher, latency, stars, results
-    practice/listening/  Session inputs: scoring while practising, latency calibration
+    practice/listening/  Session inputs: scoring while practising, latency calibration, useMicrophone
+    trainer/             Chord trainer: plan, step reducer, judge and wording (pure), screen
     learn/               Course screens, unlock rules and levels, lesson steps, stage tests
     profile/             Level, streak, skill meters, accuracy history, chord library
   test/       Test setup, signal generators and module stand-ins
@@ -174,10 +179,14 @@ Transport (audio clock) ◀── LookaheadScheduler: every 25 ms, schedule the 
 - **Controls:** play, pause (freezes the position exactly; resuming counts in one bar on the
   beat grid and carries on from the same position), restart, tempo 30–220 BPM with ±1 and
   50/75/100/125 % presets, loop any bars, auto speed-up (+2/5/10 BPM per successful pass up
-  to the target tempo; the default for new exercises, which start at 60 %), wait mode (stops
-  at each chord or note; Next carries on until listening arrives in Milestone 4), and
+  to the target tempo; the default for new exercises, which start at 60 %), “Wait for me”
+  (stops at each chord or note until it is heard, or until Next without listening), and
   metronome, backing and guide on/off with volume. The count-in always plays. Chord names,
   finger numbers, note names and a fretboard view can be toggled.
+- **Layout:** the screen shows the current and next chord as large diagrams over the
+  highway, then Play (with Restart, and Next in wait mode), “Wait for me” and the tempo.
+  Listening, loop and speed-up, the mix and the display options are in an Options sheet,
+  which pauses play when opened.
 - **Persistence:** tempo, loop, speed-up and wait mode are remembered per exercise; the mix and
   display options for the practicer as a whole. Practice pauses when the app goes to the
   background or audio is interrupted, and keeps the screen awake while playing.
@@ -212,11 +221,29 @@ note of the guide part as the transport schedules it (the guide does not have to
   the next lesson”) with a button to apply it. Each session is stored in IndexedDB with its
   hits, misses per chord/note and per-skill scores (for the profile in Milestone 6).
 - **Microphone:** opened in the play tap, released shortly after pausing, finishing or leaving;
-  every microphone error has its own message, a retry and “Play without listening”.
+  every microphone error has its own message next to Play, a retry and “Play without
+  listening”.
 - **Limits:** with the speaker on, the microphone also hears FretPath's own metronome and
   backing (echo cancellation must stay off for pitch accuracy), so it recommends wired
   headphones. Thresholds were tuned and tested on synthesised guitar sounds; tuning them on
   real guitars and phones is part of Milestone 7's cross-device testing.
+
+**Chord trainer.** `/trainer?chords=Em,Am&learn=1` (full screen, from the Practice tab, a lesson's Practice
+step and each chord in the chord library) listens and waits; there is no metronome.
+
+- **Learn a chord:** one string at a time from the lowest sounding string, highlighted on a
+  large diagram with the finger and fret to use. It moves on only when it hears that
+  string's note (±50 cents, from the median pitch after the onset), and says what it heard
+  instead: the string next to it, or a note this string doesn't make with that finger. Then
+  three right strums of the whole chord.
+- **Change between chords:** the current and next chord, eight changes that alternate
+  between the chosen chords, each judged on one strum by the practicer's chord recognition
+  (down or up), naming the chord it heard when it's wrong. The summary shows the average
+  change time and the tries that missed.
+- A progress bar with one segment per chord (and the changes), a microphone level meter,
+  Pause and Skip. The plan (`trainerPlan.ts`), the step reducer (`trainerState.ts`), the
+  judge (`trainerJudge.ts`) and the wording (`trainerText.ts`) are pure and unit-tested; the
+  microphone comes through the shared `useMicrophone` hook (also used by the chord check).
 
 **Curriculum.** The course is data: `src/content/course/stages.json` lists the eight
 stages, and each stage has its own file (`stage-1.json` … `stage-8.json`), validated with Zod
@@ -344,6 +371,12 @@ installable, with maskable icons and iOS splash screens.
   touch-target size, theme persistence, behaviour without IndexedDB, manifest and Chrome
   installability, offline operation, and axe WCAG 2.1 AA scans in both themes.
 
+- **Chord trainer** (`e2e/trainer.listening.spec.ts`): the fake guitarist learns E minor
+  string by string (a wrong string and a wrong note get their own messages), strums it three
+  times, then plays eight Em–Am changes with an E major in between that is named as the
+  wrong chord; the microphone is released at the end. Unit tests cover the plan, the
+  reducer, the judge and the wording; route tests check that `back` only ever leads to an
+  app path.
 - **Setup and devices:** `e2e/onboarding.listening.spec.ts` runs first-launch setup with the
   fake guitarist calibrating latency, then checks the placement (Stage 2, Beginner 2) and that
   setup is done for good; skipping and re-running it from Settings. `e2e/devices.spec.ts`
@@ -364,7 +397,12 @@ installable, with maskable icons and iOS splash screens.
 - **Speaker bleed.** With the speaker on, the microphone also hears FretPath's own clicks
   and backing, so wired headphones or a lower volume give the fairest scores.
 - **Stages 4–8** are outlines: their lessons have titles and objectives but no content yet.
-- **Chord check** names the chord it heard, not which string or finger was wrong.
+- **Chord check** and the trainer's strum and change steps name the chord heard, not which
+  string or finger was wrong; learning a chord string by string is what catches those.
+- **Early onsets after a silence.** Once in a while a weak onset is detected about 0.1 s
+  before a strum that follows a silence, and the scorer, which gives each target the first
+  onset near it, marks that strum Early (seen in about one run in five of the strum-scoring
+  end-to-end test).
 
 ## Content policy
 

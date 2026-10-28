@@ -13,7 +13,7 @@ interface PracticeOptionsProps {
 
 const STEP_OPTIONS = SPEED_UP_STEPS.map((step) => ({ value: String(step), label: `+${step}` }));
 
-/** Loop, auto speed-up and wait mode. Speed-up and wait mode exclude each other. */
+/** Loop and auto speed-up (which turns wait mode off: they exclude each other). */
 export function PracticeOptions({
   prefs,
   totalBars,
@@ -102,17 +102,6 @@ export function PracticeOptions({
             />
           </div>
         )}
-      </div>
-
-      <div className="pt-2">
-        <Switch
-          label="Wait mode"
-          description="Stops at each chord or note until you play it, then tap Next."
-          checked={prefs.waitMode}
-          onChange={(waitMode) => {
-            onChange(waitMode ? { waitMode, speedUp: false } : { waitMode });
-          }}
-        />
       </div>
     </div>
   );

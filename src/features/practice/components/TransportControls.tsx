@@ -29,36 +29,51 @@ export function TransportControls({
   onNext,
 }: TransportControlsProps) {
   const moving = phase === 'countIn' || phase === 'playing' || phase === 'waiting';
+  // Keyed, so toggling wait mode moves the buttons rather than turning one into another.
+  const restart = (
+    <Button key="restart" variant="secondary" size="lg" icon={RotateCcw} onClick={onRestart}>
+      Restart
+    </Button>
+  );
+  const playClass = waitMode ? 'col-span-2' : undefined;
+  const playPause = moving ? (
+    <Button key="play" size="lg" icon={Pause} className={playClass} onClick={onPause}>
+      Pause
+    </Button>
+  ) : (
+    <Button
+      key="play"
+      size="lg"
+      icon={Play}
+      className={playClass}
+      onClick={onPlay}
+      disabled={starting}
+    >
+      {starting ? 'Starting…' : (PLAY_LABELS[phase] ?? 'Play')}
+    </Button>
+  );
+  const next = (
+    <Button
+      key="next"
+      variant="secondary"
+      size="lg"
+      icon={SkipForward}
+      onClick={onNext}
+      disabled={phase !== 'waiting'}
+    >
+      Next
+    </Button>
+  );
+
   return (
     <div
       className={cx(
         'grid items-center gap-2',
-        waitMode ? 'grid-cols-[1fr_1.4fr_1fr]' : 'grid-cols-[1fr_2fr]',
+        // Three big buttons don't fit across a phone: Play gets its own row.
+        waitMode ? 'grid-cols-2' : 'grid-cols-[1fr_2fr]',
       )}
     >
-      <Button variant="secondary" size="lg" icon={RotateCcw} onClick={onRestart}>
-        Restart
-      </Button>
-      {moving ? (
-        <Button size="lg" icon={Pause} onClick={onPause}>
-          Pause
-        </Button>
-      ) : (
-        <Button size="lg" icon={Play} onClick={onPlay} disabled={starting}>
-          {starting ? 'Starting…' : (PLAY_LABELS[phase] ?? 'Play')}
-        </Button>
-      )}
-      {waitMode && (
-        <Button
-          variant="secondary"
-          size="lg"
-          icon={SkipForward}
-          onClick={onNext}
-          disabled={phase !== 'waiting'}
-        >
-          Next
-        </Button>
-      )}
+      {waitMode ? [playPause, restart, next] : [restart, playPause]}
     </div>
   );
 }

@@ -53,6 +53,11 @@ export class HitCheck {
     return this.frequencies.length >= NOTE_FRAMES ? this.decideNote() : null;
   }
 
+  /** The steady pitch heard after the onset so far (median, Hz), or null before any. */
+  get heardFrequency(): number | null {
+    return this.frequencies.length > 0 ? median(this.frequencies) : null;
+  }
+
   /** Decides with what has arrived once the deadline has passed (`now` on the audio clock). */
   expire(now: number): boolean | null {
     if (now < this.onsetTime + CHECK_DEADLINE_SECONDS) return null;

@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { installAudioSpy } from './support/audioSpy';
+import { withOptions } from './support/practicer';
 
 /** The course: stages, lessons, unlocking and the Learn and Listen steps. */
 
@@ -63,7 +64,9 @@ test('Listen plays the exercise with the guide at the target tempo', async ({ pa
   // Backing off, so every buffer source is a guide note; the guide is off by default,
   // and Listen turns it on.
   await page.goto('/practice/open-strings');
-  await page.getByRole('switch', { name: 'Backing track' }).click();
+  await withOptions(page, (options) =>
+    options.getByRole('switch', { name: 'Backing track' }).click(),
+  );
   await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Learn' }).click();
   await page.getByRole('link', { name: 'Start the first lesson' }).click();
   await page.getByRole('link', { name: 'Next: Listen' }).click();

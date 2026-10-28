@@ -114,6 +114,13 @@ export function createRoutes(): RouteObject[] {
               }),
             },
             {
+              path: 'trainer',
+              handle: { hideNavigation: true } satisfies RouteHandle,
+              lazy: async () => ({
+                Component: (await import('@/features/trainer/TrainerScreen')).TrainerScreen,
+              }),
+            },
+            {
               path: 'practice/:exerciseId',
               lazy: async () => {
                 const [{ PracticerScreen }, { whenPracticeHydrated }] = await Promise.all([

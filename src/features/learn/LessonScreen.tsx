@@ -13,7 +13,6 @@ import { COURSE, findLesson, findStage, type Lesson } from '@/content/course';
 import { ButtonLink } from '@/ui/ButtonLink';
 import { EmptyState } from '@/ui/EmptyState';
 import { StarRating } from '@/ui/StarRating';
-import { Practicer } from '../practice/Practicer';
 import { StepNav } from './components/StepNav';
 import { StorageNotice } from './components/StorageNotice';
 import { STEP_INFO } from './lessonSteps';
@@ -21,6 +20,7 @@ import { describeNextStep } from './nextStep';
 import { CheckStep } from './steps/CheckStep';
 import { LearnStep } from './steps/LearnStep';
 import { ListenStep } from './steps/ListenStep';
+import { PracticeStep } from './steps/PracticeStep';
 import { useCourseProgress } from './useCourseProgress';
 
 function StepContent({ lesson, step }: { lesson: Lesson; step: LessonStep }) {
@@ -30,7 +30,7 @@ function StepContent({ lesson, step }: { lesson: Lesson; step: LessonStep }) {
     case 'listen':
       return <ListenStep lesson={lesson} />;
     case 'practice':
-      return <Practicer exercise={lesson.exercise} />;
+      return <PracticeStep lesson={lesson} />;
     case 'check':
       return <CheckStep lesson={lesson} />;
   }

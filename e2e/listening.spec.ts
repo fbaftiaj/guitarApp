@@ -2,6 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { installFakeGuitarist } from './support/fakeGuitarist';
 import { EM, calibrate, follow } from './support/listening';
+import { withOptions } from './support/practicer';
 
 /**
  * Listening and scoring end to end: a fake guitarist plays synthesised
@@ -50,7 +51,9 @@ test('scores strums: timing, right and wrong chords, misses, then the results', 
   await calibrate(page);
   await openExercise(page, 'em-am-changes');
   await page.getByRole('button', { name: '75%' }).click(); // 60 BPM: a beat a second
-  await page.getByRole('switch', { name: 'Auto speed-up' }).click();
+  await withOptions(page, (options) =>
+    options.getByRole('switch', { name: 'Auto speed-up' }).click(),
+  );
   // Arm the guitarist before playing, so it counts the count-in from its first click.
   await follow(page, 4, [
     { midis: EM },
@@ -126,11 +129,11 @@ test('scores strums: timing, right and wrong chords, misses, then the results', 
   await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
 });
 
-test('wait mode carries on when it hears the right chord', async ({ page }) => {
+test('wait for me carries on when it hears the right chord', async ({ page }) => {
   await calibrate(page);
   await openExercise(page, 'em-am-changes');
   await page.getByRole('button', { name: '125%' }).click(); // 100 BPM
-  await page.getByRole('switch', { name: 'Wait mode' }).click();
+  await page.getByRole('switch', { name: 'Wait for me' }).click();
   await page.getByRole('button', { name: 'Play', exact: true }).click();
 
   await expect(page.getByText('Waiting for E minor. Play it to carry on.')).toBeAttached();
@@ -168,7 +171,9 @@ test('scores single notes by pitch', async ({ page }) => {
   await calibrate(page);
   await openExercise(page, 'open-strings');
   await page.getByRole('button', { name: '75%' }).click(); // 60 BPM
-  await page.getByRole('switch', { name: 'Auto speed-up' }).click();
+  await withOptions(page, (options) =>
+    options.getByRole('switch', { name: 'Auto speed-up' }).click(),
+  );
   await follow(page, 4, [
     { midi: 40 },
     { midi: 41 }, // F2 instead of A2
@@ -195,9 +200,11 @@ test('speeds up only after a pass played well', async ({ page }) => {
   await calibrate(page);
   await openExercise(page, 'em-am-changes');
   await page.getByRole('button', { name: '75%' }).click(); // 60 BPM
-  await page.getByRole('switch', { name: 'Loop' }).click();
-  await page.getByRole('combobox', { name: 'Loop to bar' }).selectOption('1');
-  await page.getByText('+10', { exact: true }).click();
+  await withOptions(page, async (options) => {
+    await options.getByRole('switch', { name: 'Loop' }).click();
+    await options.getByRole('combobox', { name: 'Loop to bar' }).selectOption('1');
+    await options.getByText('+10', { exact: true }).click();
+  });
   // Pass 1 played right, pass 2 not played at all.
   await follow(
     page,
@@ -226,7 +233,9 @@ test('explains a blocked microphone and can play without listening', async ({ pa
   await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible();
 
   await alert.getByRole('button', { name: 'Play without listening' }).click();
-  await expect(page.getByRole('switch', { name: 'Listen and score' })).not.toBeChecked();
+  await withOptions(page, async (options) => {
+    await expect(options.getByRole('switch', { name: 'Listen and score' })).not.toBeChecked();
+  });
   await page.getByRole('button', { name: 'Play', exact: true }).click();
   await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
   expect(await page.evaluate(() => window.fakeGuitarist.isLive())).toBe(false);

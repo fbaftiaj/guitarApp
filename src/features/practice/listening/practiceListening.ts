@@ -52,7 +52,8 @@ export interface WaitStats {
 }
 
 const guitar = findInstrument(DEFAULT_INSTRUMENT_ID);
-const PITCH_RANGE = {
+/** Where guitar notes are listened for. */
+export const GUITAR_PITCH_RANGE = {
   minFrequency: guitar?.detection.minHz ?? 50,
   maxFrequency: guitar?.detection.maxHz ?? 1400,
 };
@@ -145,7 +146,7 @@ export class PracticeListening implements SessionInput {
       context,
       {
         features: {
-          pitch: this.timeline.kind === 'notes' ? PITCH_RANGE : null,
+          pitch: this.timeline.kind === 'notes' ? GUITAR_PITCH_RANGE : null,
           onsets: true,
           chroma: this.timeline.kind === 'chords',
           a4: this.a4,

@@ -3,7 +3,7 @@ import { noteName, spellMidi } from '@/lib/music/notes';
 import { cx } from '@/ui/cx';
 import type { ChordSegment, NoteEvent } from '../engine/timeline';
 import { chordFretMarks, describeNote } from '../practiceView';
-import { ChordDiagram } from './ChordDiagram';
+import { BigChordDiagram } from './BigChordDiagram';
 import { Fretboard } from './Fretboard';
 
 interface NowPanelProps {
@@ -80,24 +80,23 @@ export function NowPanel({
   if (kind === 'chords') {
     return (
       <div>
-        <div className="flex items-end justify-between gap-4">
-          <div className="flex items-end gap-3">
-            {current && <ChordDiagram chord={current} showFingers={showFingers} />}
-            <div className="pb-2">
-              <p className="text-xs font-semibold tracking-wide text-fg-muted uppercase">Now</p>
-              {showChordNames && current && (
-                <p className="text-4xl font-bold tracking-tight">{current.id}</p>
-              )}
-            </div>
+        <div className="flex items-center justify-center gap-4">
+          <div className="flex w-full max-w-44 flex-col items-center">
+            {current && <BigChordDiagram chord={current} showFingers={showFingers} size="md" />}
+            {showChordNames && current && (
+              <p className="mt-1 text-3xl font-bold tracking-tight">{current.id}</p>
+            )}
           </div>
-          <div className="flex items-end gap-2">
-            <div className="pb-2 text-right">
-              <p className="text-xs font-semibold tracking-wide text-fg-muted uppercase">Next</p>
-              {showChordNames && (
-                <p className="text-xl font-semibold text-fg-muted">{next?.id ?? 'End'}</p>
-              )}
-            </div>
-            {next && <ChordDiagram chord={next} showFingers={showFingers} size="sm" />}
+          <div className="flex w-20 shrink-0 flex-col items-center">
+            <p className="text-xs font-semibold tracking-wide text-fg-muted uppercase">Next</p>
+            {next ? (
+              <BigChordDiagram chord={next} showFingers={showFingers} size="sm" />
+            ) : (
+              <p className="py-4 text-sm text-fg-muted">End</p>
+            )}
+            {showChordNames && next && (
+              <p className="text-lg font-semibold text-fg-muted">{next.id}</p>
+            )}
           </div>
         </div>
         {showFretboard && current && (

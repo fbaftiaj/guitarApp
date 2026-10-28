@@ -1,14 +1,16 @@
-import { Flag } from 'lucide-react';
+import { Flag, SlidersHorizontal } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { CHORDS } from '@/content/chords';
 import type { Exercise } from '@/content/exercises';
 import { useWakeLock } from '@/platform/useWakeLock';
 import { useSettingsStore } from '@/stores/settingsStore';
 import { Button } from '@/ui/Button';
-import { Card } from '@/ui/Card';
 import { ErrorState } from '@/ui/ErrorState';
+import { Sheet } from '@/ui/Sheet';
+import { Switch } from '@/ui/Switch';
 import { DisplayOptions } from './components/DisplayOptions';
 import { ListeningPanel } from './components/ListeningPanel';
+import { MicrophoneAlert } from './components/MicrophoneAlert';
 import { MixControls } from './components/MixControls';
 import { PlayAlong } from './components/PlayAlong';
 import { PracticeOptions } from './components/PracticeOptions';
@@ -131,6 +133,7 @@ export function Practicer({ exercise }: { exercise: Exercise }) {
   }, [listening.waitSatisfied, next]);
 
   const [results, setResults] = useState<SessionSummary | null>(null);
+  const [optionsOpen, setOptionsOpen] = useState(false);
   const { finish: finishListening, reset: resetListening } = listening;
   const showResults = useCallback(() => {
     // The tempo may have been raised by speed-up since the last render.
@@ -165,6 +168,13 @@ export function Practicer({ exercise }: { exercise: Exercise }) {
     setResults(null);
     session.play();
   }, [clearListeningError, session]);
+  const changeListening = useCallback(
+    (enabled: boolean) => {
+      clearListeningError();
+      setListening(enabled);
+    },
+    [clearListeningError, setListening],
+  );
   const scored = listening.feedback !== null || listening.waitSatisfied > 0;
 
   const loops = settings.loop !== null || settings.speedUp !== null;
@@ -210,6 +220,18 @@ export function Practicer({ exercise }: { exercise: Exercise }) {
                 The browser didn’t start the sound. Tap Play again.
               </p>
             )}
+            {listeningEnabled && listening.error && (
+              <MicrophoneAlert error={listening.error} onRetry={play}>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    changeListening(false);
+                  }}
+                >
+                  Play without listening
+                </Button>
+              </MicrophoneAlert>
+            )}
             <TransportControls
               phase={view.phase}
               starting={session.starting}
@@ -245,56 +267,38 @@ export function Practicer({ exercise }: { exercise: Exercise }) {
             )}
           </section>
 
-          <Card>
-            <h2 className="mb-1 font-semibold">Listening</h2>
-            <ListeningPanel
-              enabled={listeningEnabled}
-              onEnabledChange={(enabled) => {
-                if (moving) session.pause();
-                clearListeningError();
-                setListening(enabled);
-              }}
-              latencyMs={latencyMs}
-              error={listening.error}
-              onRetry={play}
-            />
-          </Card>
+          <Switch
+            label="Wait for me"
+            description={
+              listening.input
+                ? 'Stops on each chord or note until you play it right.'
+                : 'Stops on each chord or note; tap Next to carry on.'
+            }
+            checked={prefs.waitMode}
+            onChange={(waitMode) => {
+              updatePrefs(waitMode ? { waitMode, speedUp: false } : { waitMode });
+            }}
+          />
 
-          <Card>
-            <TempoControl
-              tempo={prefs.tempo}
-              target={exercise.tempo}
-              onChange={(tempo) => {
-                updatePrefs({ tempo });
-              }}
-            />
-          </Card>
+          <TempoControl
+            tempo={prefs.tempo}
+            target={exercise.tempo}
+            onChange={(tempo) => {
+              updatePrefs({ tempo });
+            }}
+          />
 
-          <Card>
-            <h2 className="mb-2 font-semibold">Practice</h2>
-            <PracticeOptions
-              prefs={prefs}
-              totalBars={timeline.totalBars}
-              currentBar={view.bar}
-              targetTempo={exercise.tempo}
-              onChange={updatePrefs}
-            />
-          </Card>
-
-          <Card>
-            <h2 className="mb-2 font-semibold">Sound</h2>
-            <MixControls mix={mix} onChange={setBus} />
-          </Card>
-
-          <Card>
-            <h2 className="mb-2 font-semibold">Display</h2>
-            <DisplayOptions
-              labels={labels}
-              fretboard={fretboard}
-              onLabelChange={setLabel}
-              onFretboardChange={setFretboard}
-            />
-          </Card>
+          <Button
+            variant="secondary"
+            icon={SlidersHorizontal}
+            fullWidth
+            onClick={() => {
+              if (moving) session.pause();
+              setOptionsOpen(true);
+            }}
+          >
+            Options: listening, loop, sound, display
+          </Button>
         </div>
       )}
 
@@ -304,6 +308,56 @@ export function Practicer({ exercise }: { exercise: Exercise }) {
       <p className="sr-only" aria-live="polite" aria-atomic="true">
         {announcement}
       </p>
+
+      <Sheet
+        open={optionsOpen}
+        onClose={() => {
+          setOptionsOpen(false);
+        }}
+        title="Options"
+      >
+        <div className="space-y-6">
+          <section aria-labelledby="options-listening">
+            <h3 id="options-listening" className="mb-1 font-semibold">
+              Listening
+            </h3>
+            <ListeningPanel
+              enabled={listeningEnabled}
+              onEnabledChange={changeListening}
+              latencyMs={latencyMs}
+            />
+          </section>
+          <section aria-labelledby="options-practice">
+            <h3 id="options-practice" className="mb-2 font-semibold">
+              Practice
+            </h3>
+            <PracticeOptions
+              prefs={prefs}
+              totalBars={timeline.totalBars}
+              currentBar={view.bar}
+              targetTempo={exercise.tempo}
+              onChange={updatePrefs}
+            />
+          </section>
+          <section aria-labelledby="options-sound">
+            <h3 id="options-sound" className="mb-2 font-semibold">
+              Sound
+            </h3>
+            <MixControls mix={mix} onChange={setBus} />
+          </section>
+          <section aria-labelledby="options-display">
+            <h3 id="options-display" className="mb-2 font-semibold">
+              Display
+            </h3>
+            <DisplayOptions
+              labels={labels}
+              fretboard={fretboard}
+              onLabelChange={setLabel}
+              onFretboardChange={setFretboard}
+            />
+          </section>
+        </div>
+      </Sheet>
 
       <ResultsSheet
         summary={results}

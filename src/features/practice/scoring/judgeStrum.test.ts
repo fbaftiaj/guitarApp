@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { StreamingChroma, type ChromaEvent } from '@/audio/dsp/chroma';
 import { CHORDS } from '@/content/chords';
 import { mix, strum } from '@/test/guitarSignals';
-import { judgeStrum } from './chordCheck';
+import { judgeStrum } from './chordRecognition';
 
 const RATE = 48_000;
 
