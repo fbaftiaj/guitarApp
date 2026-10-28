@@ -26,7 +26,7 @@ describe('useSettingsStore', () => {
 
     await vi.waitFor(async () => {
       expect(await (await getDB()).get('kv', SETTINGS_STORAGE_KEY)).toEqual({
-        state: { theme: 'light', referencePitch: 440 },
+        state: { theme: 'light', referencePitch: 440, latencyMs: null },
         version: 1,
       });
     });
@@ -50,6 +50,24 @@ describe('useSettingsStore', () => {
     await useSettingsStore.persist.rehydrate();
 
     expect(useSettingsStore.getState().theme).toBe(DEFAULT_SETTINGS.theme);
+  });
+
+  it('stores a measured latency, rounded and within range', () => {
+    const { setLatency } = useSettingsStore.getState();
+    setLatency(71.6);
+    expect(useSettingsStore.getState().latencyMs).toBe(72);
+    setLatency(900);
+    expect(useSettingsStore.getState().latencyMs).toBe(500);
+    setLatency(-5);
+    expect(useSettingsStore.getState().latencyMs).toBe(0);
+    setLatency(null);
+    expect(useSettingsStore.getState().latencyMs).toBeNull();
+  });
+
+  it('forgets an invalid saved latency', async () => {
+    await storeRaw({ state: { latencyMs: 'fast', theme: 'light' }, version: 1 });
+    await useSettingsStore.persist.rehydrate();
+    expect(useSettingsStore.getState()).toMatchObject({ latencyMs: null, theme: 'light' });
   });
 
   it('ignores saved state that is not an object', async () => {

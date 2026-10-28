@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { installAudioSpy } from './support/audioSpy';
+import { installFakeGuitarist } from './support/fakeGuitarist';
 import { installFakeMicrophone } from './support/fakeMicrophone';
 
 interface ManifestIcon {
@@ -101,11 +102,12 @@ test.describe('offline tuner', () => {
 });
 
 test.describe('offline practice', () => {
-  test('plays along offline, with the practicer served from the precache', async ({
+  test('plays along and listens offline, with the practicer served from the precache', async ({
     page,
     context,
   }) => {
     await page.addInitScript(installAudioSpy);
+    await page.addInitScript(installFakeGuitarist);
     await page.goto('/practice');
     await expect
       .poll(() => page.evaluate(() => navigator.serviceWorker.controller !== null))
@@ -121,5 +123,7 @@ test.describe('offline practice', () => {
       .poll(() => page.evaluate(() => window.audioSpy.started.length), { timeout: 10_000 })
       .toBeGreaterThan(4);
     await expect(page.getByRole('button', { name: 'Pause' })).toBeVisible();
+    // The analysis worklet came from the precache too: the microphone is being listened to.
+    expect(await page.evaluate(() => window.fakeGuitarist.isLive())).toBe(true);
   });
 });

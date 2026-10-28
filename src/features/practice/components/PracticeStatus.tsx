@@ -9,10 +9,20 @@ interface PracticeStatusProps {
   tempo: number;
   /** Shown when looping. */
   pass: number | null;
+  /** Running accuracy (0–1) while listening, or null. */
+  accuracy?: number | null;
 }
 
 /** Bar counter, loop pass and tempo, then the "1 & 2 & 3 & 4 &" beat counter. */
-export function PracticeStatus({ bar, totalBars, labels, slot, tempo, pass }: PracticeStatusProps) {
+export function PracticeStatus({
+  bar,
+  totalBars,
+  labels,
+  slot,
+  tempo,
+  pass,
+  accuracy = null,
+}: PracticeStatusProps) {
   return (
     <div className="space-y-1">
       <div className="flex items-center justify-between gap-3 text-sm">
@@ -21,6 +31,11 @@ export function PracticeStatus({ bar, totalBars, labels, slot, tempo, pass }: Pr
           <span className="text-fg-muted"> / {totalBars}</span>
         </p>
         <p className="text-right text-fg-muted tabular-nums">
+          {accuracy !== null && (
+            <span>
+              <span className="font-semibold text-fg">{Math.round(accuracy * 100)}%</span> ·{' '}
+            </span>
+          )}
           {pass !== null && <span>Loop {pass} · </span>}
           <span className="font-semibold text-fg">{tempo}</span> BPM
         </p>

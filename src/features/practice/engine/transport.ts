@@ -61,7 +61,15 @@ export interface TransportConfig {
 
 export type ScheduledSound =
   | { kind: 'click'; time: number; beat: number; accent: boolean; countIn: boolean }
-  | { kind: 'music'; time: number; /** Seconds. */ duration: number; event: MusicalEvent };
+  | {
+      kind: 'music';
+      time: number;
+      /** Seconds. */
+      duration: number;
+      event: MusicalEvent;
+      /** Loop pass the sound belongs to. */
+      pass: number;
+    };
 
 export type TransportNotice =
   | { kind: 'pass'; time: number; pass: number; tempo: number; previousTempo: number }
@@ -169,6 +177,7 @@ export class Transport {
   private idleBeat = 0;
   private pass = 1;
   private scheduledUntil = -Infinity;
+  private passJudge: ((pass: PassInfo) => boolean) | undefined;
 
   constructor(config: TransportConfig, settings: TransportSettings) {
     this.config = {
@@ -178,6 +187,7 @@ export class Transport {
     };
     this.checkLoop(settings.loop);
     this.settingsValue = { ...settings, tempo: clampTempo(settings.tempo) };
+    this.passJudge = config.judgePass;
     this.idleBeat = this.range().start;
   }
 
@@ -255,6 +265,11 @@ export class Transport {
       return { phase: 'countIn', beat: run.from, tempo: runTempo, countIn, pass: run.pass };
     }
     return { phase: 'playing', beat, tempo: runTempo, countIn: null, pass: run.pass };
+  }
+
+  /** Replaces the pass judge (see `TransportConfig.judgePass`). */
+  setPassJudge(judge: ((pass: PassInfo) => boolean) | undefined): void {
+    this.passJudge = judge;
   }
 
   /** Starts, or resumes after a pause (with a count-in unless in wait mode). */
@@ -410,7 +425,7 @@ export class Transport {
     const previousTempo = this.settingsValue.tempo;
     const previousPass = this.pass;
     const { speedUp } = this.settingsValue;
-    const judge = this.config.judgePass ?? (() => true);
+    const judge = this.passJudge ?? (() => true);
     if (speedUp && previousTempo < speedUp.target && judge({ pass: previousPass, endTime: time })) {
       this.settingsValue = {
         ...this.settingsValue,
@@ -481,7 +496,7 @@ export class Transport {
       const time = timeAt(run, event.beat);
       const duration =
         'duration' in event ? event.duration * secondsPerBeat(lastPoint(run, time).tempo) : 0;
-      music.push({ kind: 'music', time, duration, event });
+      music.push({ kind: 'music', time, duration, event, pass: run.pass });
     }
 
     // Clicks first at equal times, so the metronome is never late against the music.

@@ -6,11 +6,14 @@ import { describe, expect, it } from 'vitest';
  * Audio code in `src/audio/`, so neither feature grows its own copy of the
  * context, microphone, synthesis or scheduling plumbing.
  */
-const sources = import.meta.glob<string>(['/src/**/*.{ts,tsx}', '!/src/**/*.test.{ts,tsx}'], {
-  query: '?raw',
-  import: 'default',
-  eager: true,
-});
+const sources = import.meta.glob<string>(
+  ['/src/**/*.{ts,tsx}', '!/src/**/*.test.{ts,tsx}', '!/src/test/**'],
+  {
+    query: '?raw',
+    import: 'default',
+    eager: true,
+  },
+);
 
 function filesMatching(pattern: RegExp): string[] {
   return Object.entries(sources)
@@ -28,8 +31,22 @@ describe('audio architecture', () => {
     expect(filesMatching(/new (webkit)?AudioContext\b/)).toEqual(['/src/audio/context.ts']);
   });
 
-  it('opens the microphone in one place', () => {
+  it('opens the microphone in one place, through the shared listener', () => {
     expect(filesMatching(/getUserMedia\s*\(/)).toEqual(['/src/audio/microphone.ts']);
+    expect(filesMatching(/\bopenMicrophone\s*\(/)).toEqual([
+      '/src/audio/listener.ts',
+      '/src/audio/microphone.ts',
+    ]);
+    expect(filesMatching(/\bopenListener\s*\(/)).toEqual(
+      expect.arrayContaining(['/src/audio/listener.ts', '/src/features/tuner/useTunerSession.ts']),
+    );
+  });
+
+  it('runs all input analysis in the one analysis worklet', () => {
+    expect(filesMatching(/new AudioWorkletNode\b/)).toEqual(['/src/audio/analysisInput.ts']);
+    expect(filesMatching(/registerProcessor\s*\(/)).toEqual([
+      '/src/audio/worklets/analysisProcessor.ts',
+    ]);
   });
 
   it('keeps Web Audio node graphs inside src/audio', () => {

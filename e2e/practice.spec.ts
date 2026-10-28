@@ -3,7 +3,7 @@ import { expect, test, type Page } from '@playwright/test';
 import { installAudioSpy, type StartedSound } from './support/audioSpy';
 
 /**
- * The practicer end to end, on the real AudioContext. An audio spy records
+ * The practicer's playback end to end, on the real AudioContext. An audio spy records
  * each sound's requested start time on the audio clock, so timing is checked
  * exactly (to the microsecond) rather than with wall-clock waits.
  */
@@ -17,9 +17,12 @@ test.beforeEach(async ({ page }) => {
 
 const CLICK_HZ = { accent: 1760, normal: 1320 };
 
+/** Opens an exercise with listening off: these tests are about playback (see listening.spec). */
 async function openExercise(page: Page, id: string) {
   await page.goto(`/practice/${id}`);
   await expect(page.getByRole('button', { name: 'Play', exact: true })).toBeVisible();
+  const listening = page.getByRole('switch', { name: 'Listen and score' });
+  if ((await listening.getAttribute('aria-checked')) === 'true') await listening.click();
 }
 
 async function started(page: Page): Promise<StartedSound[]> {

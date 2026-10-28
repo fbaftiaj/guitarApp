@@ -10,12 +10,14 @@ import { LookaheadScheduler } from './engine/scheduler';
 import { indexAtBeat, type Timeline } from './engine/timeline';
 import {
   Transport,
+  type PassInfo,
   type ScheduledSound,
   type TransportNotice,
   type TransportPhase,
   type TransportSettings,
 } from './engine/transport';
 import type { Mix } from './practiceStore';
+import type { SessionInput } from './sessionInput';
 
 export type PracticeError = 'audio-unsupported' | 'audio-blocked';
 
@@ -45,6 +47,8 @@ export interface PracticeSessionConfig {
   /** Called when speed-up changes the tempo, so it can be saved. */
   onTempoChange: (tempo: number) => void;
   onNotice?: (notice: TransportNotice) => void;
+  /** Listening alongside playback (scoring or calibration); may change between renders. */
+  input?: SessionInput | null;
 }
 
 export interface PracticeSession {
@@ -95,6 +99,7 @@ function guideMidis(events: readonly MusicalEvent[]): number[] {
  */
 export function usePracticeSession(config: PracticeSessionConfig): PracticeSession {
   const { timeline, events, settings } = config;
+  const inputRef = useRef<SessionInput | null>(config.input ?? null);
   const [transport] = useState(
     () =>
       new Transport(
@@ -147,7 +152,11 @@ export function usePracticeSession(config: PracticeSessionConfig): PracticeSessi
 
   useEffect(() => {
     configRef.current = config;
+    inputRef.current = config.input ?? null;
   });
+  useEffect(() => {
+    transport.setPassJudge((info: PassInfo) => inputRef.current?.judgePass?.(info) ?? true);
+  }, [transport]);
 
   const now = useCallback(() => contextRef.current?.currentTime ?? 0, []);
 
@@ -168,6 +177,7 @@ export function usePracticeSession(config: PracticeSessionConfig): PracticeSessi
     if (frameRef.current !== null) return;
     const frame = () => {
       publish();
+      if (contextRef.current) inputRef.current?.update?.(contextRef.current.currentTime);
       const status = transport.status;
       const active = status === 'running' || status === 'waiting';
       frameRef.current =
@@ -222,6 +232,7 @@ export function usePracticeSession(config: PracticeSessionConfig): PracticeSessi
       onTick: (until) => {
         const { sounds, notices } = transport.advance(until);
         sounds.forEach(playSound);
+        inputRef.current?.scheduled(sounds, notices);
         for (const notice of notices) {
           if (notice.kind === 'pass' && notice.tempo !== notice.previousTempo) {
             configRef.current.onTempoChange(notice.tempo);
@@ -230,6 +241,7 @@ export function usePracticeSession(config: PracticeSessionConfig): PracticeSessi
         }
         if (transport.status !== 'running' && transport.status !== 'waiting') {
           schedulerRef.current?.stop();
+          inputRef.current?.stop();
           startFrames();
           releaseLater();
         }
@@ -252,6 +264,8 @@ export function usePracticeSession(config: PracticeSessionConfig): PracticeSessi
     syncTempo();
     synthRef.current?.silenceFrom(time);
     schedulerRef.current?.stop();
+    inputRef.current?.cancel(time, 'pause');
+    inputRef.current?.stop();
     startFrames();
     releaseLater();
   }, [now, releaseLater, startFrames, syncTempo, transport]);
@@ -293,12 +307,27 @@ export function usePracticeSession(config: PracticeSessionConfig): PracticeSessi
     const generation = ++generationRef.current;
     setError(null);
     setStarting(true);
+    const input = inputRef.current;
+    const listening = input
+      ? input.start(lease.context).then(
+          () => true,
+          () => false,
+        )
+      : Promise.resolve(true);
 
     void (async () => {
-      await withTimeout(lease.resumed, RESUME_TIMEOUT_MS);
+      const [, inputReady] = await Promise.all([
+        withTimeout(lease.resumed, RESUME_TIMEOUT_MS),
+        listening,
+      ]);
       if (generation !== generationRef.current) return;
       setStarting(false);
+      if (!inputReady) {
+        releaseLater();
+        return;
+      }
       if (lease.context.state !== 'running') {
+        input?.stop();
         setError('audio-blocked');
         releaseLater();
         return;
@@ -316,8 +345,10 @@ export function usePracticeSession(config: PracticeSessionConfig): PracticeSessi
     transport.restart(time);
     syncTempo();
     synthRef.current?.silenceFrom(time);
+    inputRef.current?.cancel(time, 'restart');
     if (transport.status !== 'running' && transport.status !== 'waiting') {
       schedulerRef.current?.stop();
+      inputRef.current?.stop();
     }
     startFrames();
     publish();
@@ -325,6 +356,7 @@ export function usePracticeSession(config: PracticeSessionConfig): PracticeSessi
 
   const next = useCallback(() => {
     transport.advanceWait(now());
+    inputRef.current?.waitEnded?.();
     schedulerRef.current?.tick();
     startFrames();
   }, [now, startFrames, transport]);
@@ -387,6 +419,7 @@ export function usePracticeSession(config: PracticeSessionConfig): PracticeSessi
     () => () => {
       generationRef.current++;
       schedulerRef.current?.stop();
+      inputRef.current?.stop();
       if (frameRef.current !== null) cancelAnimationFrame(frameRef.current);
       if (releaseTimerRef.current !== null) window.clearTimeout(releaseTimerRef.current);
       synthRef.current?.dispose();

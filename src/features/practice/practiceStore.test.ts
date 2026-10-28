@@ -100,6 +100,7 @@ describe('practice preferences', () => {
       mix: DEFAULT_MIX,
       labels: { chordNames: false, fingers: true, noteNames: false },
       fretboard: true,
+      listening: true,
     });
   });
 });

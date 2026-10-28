@@ -2,13 +2,10 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from 'react'
 import { acquireAudio, isWebAudioSupported, type AudioLease } from '@/audio/context';
 import type { DetectionRange, PitchFrame } from '@/audio/dsp/pitchAnalyzer';
 import { PitchStabilizer } from '@/audio/dsp/pitchStabilizer';
-import {
-  MicrophoneError,
-  openMicrophone,
-  stopStream,
-  type MicrophoneErrorKind,
-} from '@/audio/microphone';
-import { connectPitchInput, type PitchInput } from '@/audio/pitchInput';
+import type { AnalysisFeatures } from '@/audio/worklets/analysisProtocol';
+import { DEFAULT_A4_HZ } from '@/lib/music/notes';
+import { openListener, type Listener } from '@/audio/listener';
+import { MicrophoneError, type MicrophoneErrorKind } from '@/audio/microphone';
 import type { ToneTimbre } from '@/audio/synth/pluckBank';
 import { createReferenceTonePlayer } from '@/audio/synth/referenceTone';
 import {
@@ -58,8 +55,7 @@ export interface TunerSession {
 
 interface ActiveSession {
   lease: AudioLease;
-  stream: MediaStream;
-  input: PitchInput;
+  listener: Listener;
   detach: () => void;
 }
 
@@ -83,6 +79,10 @@ function withTimeout(promise: Promise<void>, ms: number): Promise<void> {
   return Promise.race([promise, new Promise<void>((resolve) => setTimeout(resolve, ms))]);
 }
 
+function pitchOnly(range: DetectionRange): AnalysisFeatures {
+  return { pitch: range, onsets: false, chroma: false, a4: DEFAULT_A4_HZ };
+}
+
 function engineOptions(config: TunerSessionConfig) {
   const { mode, targets, a4, selectedIndex } = config;
   return { mode, targets, a4, selectedIndex };
@@ -90,7 +90,7 @@ function engineOptions(config: TunerSessionConfig) {
 
 /**
  * Owns the tuner's audio lifecycle: microphone, shared AudioContext and the
- * pitch worklet, feeding readings through the stabilizer into the
+ * analysis worklet (pitch only, through the shared listener), feeding readings through the stabilizer into the
  * TunerEngine. The microphone is released on stop, unmount and when the app
  * goes to the background (resuming on return where the browser allows it).
  */
@@ -148,7 +148,7 @@ export function useTunerSession(config: TunerSessionConfig): TunerSession {
   }, [engine, publish, mode, targets, a4, selectedIndex]);
 
   useEffect(() => {
-    activeRef.current?.input.setRange(range);
+    activeRef.current?.listener.configure(pitchOnly(range));
   }, [range]);
 
   const handleFrame = useCallback(
@@ -166,8 +166,7 @@ export function useTunerSession(config: TunerSessionConfig): TunerSession {
     if (!active) return;
     activeRef.current = null;
     active.detach();
-    active.input.disconnect();
-    stopStream(active.stream);
+    active.listener.close();
     active.lease.release();
     engine.clearReading();
     centsRef.current = null;
@@ -189,33 +188,24 @@ export function useTunerSession(config: TunerSessionConfig): TunerSession {
     setError(null);
 
     void (async () => {
-      let stream: MediaStream | null = null;
+      let listener: Listener | null = null;
       try {
-        stream = await openMicrophone();
+        const stabilizer = new PitchStabilizer();
+        listener = await openListener(lease.context, {
+          features: pitchOnly(configRef.current.range),
+          onPitch: (frame) => {
+            if (isCurrent()) handleFrame(stabilizer, frame);
+          },
+          onEnded: () => {
+            teardown();
+            setStatus('error');
+            setError('disconnected');
+          },
+        });
         await withTimeout(lease.resumed, RESUME_TIMEOUT_MS);
         if (!isCurrent()) throw new StartCancelled();
         if (lease.context.state !== 'running') throw new NeedsGestureError();
-        const stabilizer = new PitchStabilizer();
-        const input = await connectPitchInput(
-          lease.context,
-          stream,
-          configRef.current.range,
-          (frame) => {
-            if (isCurrent()) handleFrame(stabilizer, frame);
-          },
-        );
-        if (!isCurrent()) {
-          input.disconnect();
-          throw new StartCancelled();
-        }
 
-        const ownStream = stream;
-        const track = ownStream.getAudioTracks()[0];
-        const onTrackEnded = () => {
-          teardown();
-          setStatus('error');
-          setError('disconnected');
-        };
         const onStateChange = () => {
           // iOS reports "interrupted" for calls and Siri; other browsers suspend.
           if (lease.context.state !== 'running' && activeRef.current) {
@@ -223,20 +213,17 @@ export function useTunerSession(config: TunerSessionConfig): TunerSession {
             setStatus('paused');
           }
         };
-        track?.addEventListener('ended', onTrackEnded);
         lease.context.addEventListener('statechange', onStateChange);
         activeRef.current = {
           lease,
-          stream: ownStream,
-          input,
+          listener,
           detach: () => {
-            track?.removeEventListener('ended', onTrackEnded);
             lease.context.removeEventListener('statechange', onStateChange);
           },
         };
         setStatus('listening');
       } catch (cause) {
-        if (stream) stopStream(stream);
+        listener?.close();
         lease.release();
         if (!isCurrent() || cause instanceof StartCancelled) return;
         if (cause instanceof NeedsGestureError) {

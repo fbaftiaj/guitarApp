@@ -104,6 +104,8 @@ const persistedPracticeSchema = z.object({
     DEFAULT_LABELS,
   ),
   fretboard: z.catch(z.boolean(), false),
+  /** Listen with the microphone and score the playing. */
+  listening: z.catch(z.boolean(), true),
 });
 
 export type PracticePreferences = z.infer<typeof persistedPracticeSchema>;
@@ -113,6 +115,7 @@ export const DEFAULT_PRACTICE_PREFERENCES: PracticePreferences = {
   mix: DEFAULT_MIX,
   labels: DEFAULT_LABELS,
   fretboard: false,
+  listening: true,
 };
 
 interface PracticeState extends PracticePreferences {
@@ -120,6 +123,7 @@ interface PracticeState extends PracticePreferences {
   setBus: (bus: PracticeBus, level: Partial<BusLevel>) => void;
   setLabel: (label: LabelKey, shown: boolean) => void;
   setFretboard: (shown: boolean) => void;
+  setListening: (listening: boolean) => void;
 }
 
 export const PRACTICE_STORAGE_KEY = 'practice';
@@ -144,16 +148,20 @@ export const usePracticeStore = create<PracticeState>()(
       setFretboard: (fretboard) => {
         set({ fretboard });
       },
+      setListening: (listening) => {
+        set({ listening });
+      },
     }),
     {
       name: PRACTICE_STORAGE_KEY,
       version: 1,
       storage: createIdbPersistStorage<PracticePreferences>(),
-      partialize: ({ exercises, mix, labels, fretboard }): PracticePreferences => ({
+      partialize: ({ exercises, mix, labels, fretboard, listening }): PracticePreferences => ({
         exercises,
         mix,
         labels,
         fretboard,
+        listening,
       }),
       merge: mergeValidated(persistedPracticeSchema),
     },

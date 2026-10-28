@@ -22,3 +22,6 @@ export const PRACTICE_PATH = '/practice';
 export function exercisePath(exerciseId: string): string {
   return `${PRACTICE_PATH}/${encodeURIComponent(exerciseId)}`;
 }
+
+export const SETTINGS_PATH = '/profile/settings';
+export const LATENCY_PATH = `${SETTINGS_PATH}/latency`;

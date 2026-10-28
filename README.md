@@ -4,17 +4,17 @@ A mobile-first Progressive Web App for learning guitar: a precision tuner, a str
 eight-stage course and an interactive play-along practicer that listens to what you play.
 Everything runs on the device and works offline; there is no backend.
 
-> **Status:** Milestones 1–3 of 7 (foundation, tuner, practicer engine) are complete. The
-> practicer plays along but does not listen yet (Milestone 4). The curriculum, songs and
-> profile screens are placeholders until their milestones land.
+> **Status:** Milestones 1–4 of 7 (foundation, tuner, practicer, listening and scoring) are
+> complete. The curriculum, songs and profile screens are placeholders until their
+> milestones land.
 
 | #   | Milestone                                                  | Status  |
 | --- | ---------------------------------------------------------- | ------- |
 | 1   | Foundation: tooling, design system, shell, PWA, IndexedDB  | Done    |
 | 2   | Tuner: audio engine, pitch worklet, tuner UI               | Done    |
 | 3   | Practicer engine: scheduler, metronome, timeline, controls | Done    |
-| 4   | Listening and scoring: onset/chroma, latency calibration   | Next    |
-| 5   | Curriculum: content schemas, stages 1–3, lesson flow       | Planned |
+| 4   | Listening and scoring: onset/chroma, latency calibration   | Done    |
+| 5   | Curriculum: content schemas, stages 1–3, lesson flow       | Next    |
 | 6   | Progress and profile: skill meters, streaks, history       | Planned |
 | 7   | Polish: onboarding, stages 4–8, accessibility, performance | Planned |
 
@@ -51,7 +51,7 @@ The first `test:e2e` run on a new machine needs a browser: `npx playwright insta
 React 18 · TypeScript (strict) · Vite · Tailwind CSS 4 · Zustand · IndexedDB (`idb`) · Zod
 (`zod/mini`) · React Router · vite-plugin-pwa (Workbox) · Vitest · Playwright · axe-core.
 
-Audio uses the Web Audio API only: pitch detection runs in an AudioWorklet; reference tones,
+Audio uses the Web Audio API only: pitch, onset and chroma analysis run in an AudioWorklet; reference tones,
 guide strums, metronome and backing track are synthesised (Karplus–Strong plucks, oscillators,
 filtered noise). No audio libraries, no recordings.
 
@@ -61,16 +61,18 @@ filtered noise). No audio libraries, no recordings.
 src/
   app/        Shell: routes, navigation, screen layout, theme, notices, PWA update prompt
   ui/         Design-system primitives: Button, Card, Sheet, ChoiceList, SegmentedControl, …
-  audio/      Shared AudioContext, microphone, pitch worklet and its main-thread input
-    dsp/      FFT, autocorrelation, McLeod pitch detector, streaming analyzer, stabilizer
+  audio/      Shared AudioContext, microphone, the listener (mic + analysis worklet) for every feature
+    dsp/      FFT, McLeod pitch detector, stabilizer, onset detector (SuperFlux), chroma
     synth/    Karplus–Strong plucks (shared pluck bank), reference tones, practice synth
   content/    Data-driven content (instruments, chords, exercises JSON) with Zod schemas
-  lib/music/  Music theory: note spelling, MIDI ↔ Hz, cents, chord tones and shapes
+  lib/music/  Music theory: note spelling, MIDI ↔ Hz, cents, chord tones, shapes and templates
   platform/   Thin wrappers for browser APIs (screen wake lock, vibration)
   storage/    IndexedDB schema, migrations, repositories and the Zustand persist adapter
   stores/     App-wide Zustand stores (settings)
   features/   One folder per screen: tuner, learn, practice, songs, profile, settings
-    practice/engine/  Timeline compiler, arrangement, transport, lookahead scheduler (pure)
+    practice/engine/     Timeline compiler, arrangement, transport, lookahead scheduler (pure)
+    practice/scoring/    Chord recognition, hit checks, scorer, wait matcher, latency, stars, results
+    practice/listening/  Session inputs: scoring while practising, latency calibration
   test/       Test setup, signal generators and module stand-ins
 e2e/          Playwright specs (phone 390×844 and desktop 1280×800); support/ has the fake mic
 public/       Static assets: logo, generated icons and splash screens
@@ -111,13 +113,19 @@ user's tap (required on iOS) and suspended when nothing holds it. The microphone
 with echo cancellation, noise suppression and auto gain off.
 
 ```
-mic ─▶ MediaStreamSource ─▶ AudioWorklet (pitchProcessor)            main thread
-                              StreamingPitchAnalyzer                   PitchStabilizer
+mic ─▶ MediaStreamSource ─▶ AudioWorklet (analysisProcessor)         main thread
+                              StreamingPitchAnalyzer                   tuner: PitchStabilizer
                               · 2048-sample window (4096 for bass)  ─▶ · clarity ≥ 0.9, level gate
-                              · ~10 ms hop                             · octave-jump rejection
-                              · McLeod Pitch Method (NSDF via FFT)     · median of 5
-                              posts {time, Hz, clarity, rms}           ─▶ TunerEngine ─▶ UI
+                              · ~10 ms hop, McLeod Pitch Method        · octave-jump rejection
+                              StreamingOnsetDetector (practicer)       · median of 5 ─▶ TunerEngine
+                              · 1024-sample window, ~5 ms hop       ─▶ practicer: Scorer /
+                              StreamingChroma after each onset            WaitMatcher ─▶ UI
+                              posts {pitch | onset | chroma} frames
 ```
+
+The tuner and the practicer open the microphone through the same listener
+(`src/audio/listener.ts`) and analyse it in the same worklet; each asks only for the features
+it needs. An architecture test keeps all Web Audio code in `src/audio/`.
 
 - **Detection** is the McLeod Pitch Method, never FFT peak picking. The autocorrelation uses
   a half-size real-input FFT (0.15 ms per 2048-sample estimate on a desktop CPU), and the
@@ -174,6 +182,40 @@ Transport (audio clock) ◀── LookaheadScheduler: every 25 ms, schedule the 
 - **Extension points:** a pass judge decides whether a loop earns a speed-up (always yes until
   scoring lands), and `advanceWait` is what listening will call in wait mode.
 
+**Listening and scoring.** With “Listen and score” on, the practicer judges every strum or
+note of the guide part as the transport schedules it (the guide does not have to be audible).
+
+- **Onsets:** spectral flux of the log-compressed spectrum (150 Hz–5 kHz, ~21 ms windows every
+  ~5 ms) with SuperFlux's frequency max-filter, an adaptive median threshold and peak picking;
+  a strum counts once. On synthesised strums and notes the attack is found within ±8 ms.
+- **Chords:** the chroma of the ~80 ms after each onset (spectral peaks with parabolic
+  interpolation, the overall tuning offset removed) is compared by cosine similarity with a
+  template per chord, built by running the same analysis on an idealised spectrum of the
+  actual voicing (with separate templates for up-strums, which catch four strings). The
+  expected chord is accepted at similarity ≥ 0.8 and within 0.03 of the best match, so chords
+  one note apart (C/Cadd9) are lenient while Em/E and Am/C are told apart.
+- **Single notes:** the median pitch from the shared pitch detector, 50–200 ms after the
+  onset, must be within ±50 cents of the target (at the app's A4).
+- **Timing:** onset minus target after removing the latency: Perfect ±40 ms, Good ±90 ms,
+  Early/Late up to ±200 ms, otherwise Miss. Accuracy gives full credit for Perfect, 85 % for
+  Good and half for Early/Late, with the right chord or note (none when wrong); stars at
+  70 / 85 / 95 %. A loop pass earns an auto speed-up at ≥ 80 %. Wait mode carries on as soon
+  as the awaited chord or note is heard, and scores right-first-time.
+- **Latency calibration** (Settings → Timing, linked from the practicer): eight clicks after a
+  count-in; the median click-to-onset offset (strays and uneven playing rejected) is stored
+  and subtracted. Without a measurement the output latency reported by the browser plus an
+  assumed input latency is used. Bluetooth-sized delays (≥ 150 ms) get a warning.
+- **Results:** accuracy, stars, Perfect/Good/Early/Late/Miss counts, wrong chords, a timing
+  chart, the chords or notes missed most and a suggestion (“Try again at 70 BPM” / “Ready for
+  the next lesson”) with a button to apply it. Each session is stored in IndexedDB with its
+  hits, misses per chord/note and per-skill scores (for the profile in Milestone 6).
+- **Microphone:** opened in the play tap, released shortly after pausing, finishing or leaving;
+  every microphone error has its own message, a retry and “Play without listening”.
+- **Limits:** with the speaker on, the microphone also hears FretPath's own metronome and
+  backing (echo cancellation must stay off for pitch accuracy), so it recommends wired
+  headphones. Thresholds were tuned and tested on synthesised guitar sounds; tuning them on
+  real guitars and phones is part of Milestone 7's cross-device testing.
+
 **PWA.** Workbox precaches the app shell and every screen chunk, so the app works offline
 after the first visit. New versions wait for the user to tap "Reload to update", so an
 update never interrupts a practice session. The manifest is portrait, standalone and
@@ -188,6 +230,13 @@ installable, with maskable icons and iOS splash screens.
   tuner engine (modes, hysteresis, hold-to-tune, ticks), content schema, storage (against
   `fake-indexeddb`), settings, theme, routing, error boundaries, PWA prompt and
   design-token contrast.
+- **Listening unit tests:** onset detection on synthesised strum progressions, up-strums,
+  quiet strums, fast repeated notes and block-size independence, with no onsets on silence,
+  noise, steady tones or ringing chords; chroma; chord recognition of every Stage 2 chord,
+  down and up, at 44.1/48 kHz with bright, dull, noisy and detuned strings and the previous
+  chord ringing, telling Em/E, Am/C, G/C and D/A apart; scorer (timing windows, latency,
+  nearest-target matching, extra strums, notes by pitch, misses, cancelling, pass accuracy),
+  wait matcher, latency calibration maths, stars, results and suggestions.
 - **Practicer unit tests:** exercise and chord schemas (every chord referenced exists,
   rejects malformed content), timeline and arrangement, and the transport and scheduler on a
   fake clock — count-in, exact beat spacing under irregular ticks and stalls, tempo changes,
@@ -195,6 +244,13 @@ installable, with maskable icons and iOS splash screens.
   restart, and cancelled loop wraps. The practice synth is checked against a fake
   AudioContext, and an architecture test keeps all Web Audio code in `src/audio/` so the
   tuner and practicer share one context, microphone and pluck bank.
+- **Listening end to end** (`e2e/listening.spec.ts`, its own Playwright project that runs
+  alone after the others): a fake guitarist feeds synthesised strums and notes, timed against
+  the app's scheduled clicks on its own audio clock, through a fake microphone into the real
+  worklet. It calibrates latency, then checks Perfect/Good/Late/Miss and wrong chords
+  exactly, the results sheet and the stored session, wait mode advancing on the right chord,
+  single notes by pitch, speed-up only after a pass played well, microphone errors and the
+  microphone being released.
 - **End-to-end tests** (`e2e/`): the practicer on the real audio clock, with an audio spy
   recording each sound's scheduled start time: click spacing to the microsecond, sounds always
   scheduled ahead, pause and resume, restart, loop with speed-up, wait mode, mix and label

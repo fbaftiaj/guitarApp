@@ -82,6 +82,12 @@ export function createRoutes(): RouteObject[] {
                 Component: (await import('@/features/settings/SettingsScreen')).SettingsScreen,
               }),
             },
+            {
+              path: 'profile/settings/latency',
+              lazy: async () => ({
+                Component: (await import('@/features/settings/LatencyScreen')).LatencyScreen,
+              }),
+            },
             { path: '*', Component: NotFoundScreen },
           ],
         },

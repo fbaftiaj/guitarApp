@@ -4,6 +4,7 @@ import { noteName, spellMidi } from '@/lib/music/notes';
 import { cx } from '@/ui/cx';
 import type { Timeline } from '../engine/timeline';
 import type { BeatRange } from '../engine/transport';
+import type { HitMark } from '../listening/practiceListening';
 
 interface HighwayProps {
   timeline: Timeline;
@@ -17,9 +18,27 @@ interface HighwayProps {
   loop: BeatRange | null;
   showChordNames: boolean;
   showNoteNames: boolean;
+  /** Judged strums or notes of the current pass, by index. */
+  marks?: ReadonlyMap<number, HitMark> | undefined;
   /** Overlay, e.g. the count-in. */
   children?: ReactNode;
 }
+
+const NO_MARKS: ReadonlyMap<number, HitMark> = new Map();
+
+const MARK_RING: Record<HitMark, string> = {
+  good: 'ring-accent',
+  off: 'ring-warning',
+  wrong: 'ring-danger',
+  miss: 'ring-danger/50',
+};
+
+const MARK_BACKGROUND: Record<HitMark, string> = {
+  good: 'bg-accent/30',
+  off: 'bg-warning/30',
+  wrong: 'bg-danger/30',
+  miss: 'bg-danger/15',
+};
 
 const PX_PER_BEAT = 72;
 /** Where the "now" line sits, from the left edge. */
@@ -67,6 +86,7 @@ export function Highway({
   loop,
   showChordNames,
   showNoteNames,
+  marks = NO_MARKS,
   children,
 }: HighwayProps) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -106,9 +126,14 @@ export function Highway({
       >
         <Grid timeline={timeline} />
         {notes ? (
-          <TabLane timeline={timeline} noteIndex={noteIndex} showNoteNames={showNoteNames} />
+          <TabLane
+            timeline={timeline}
+            noteIndex={noteIndex}
+            showNoteNames={showNoteNames}
+            marks={marks}
+          />
         ) : (
-          <StrumLane timeline={timeline} />
+          <StrumLane timeline={timeline} marks={marks} />
         )}
         <ChordLane
           timeline={timeline}
@@ -187,26 +212,36 @@ function ChordLane({
   );
 }
 
-const StrumLane = memo(function StrumLane({ timeline }: { timeline: Timeline }) {
+const StrumLane = memo(function StrumLane({
+  timeline,
+  marks,
+}: {
+  timeline: Timeline;
+  marks: ReadonlyMap<number, HitMark>;
+}) {
   const { totalBeats, slotsPerBeat, beatsPerBar } = timeline;
-  const strums = new Map(timeline.strums.map((strum) => [strum.beat, strum]));
+  const strums = new Map(timeline.strums.map((strum, index) => [strum.beat, { strum, index }]));
   const slotWidth = PX_PER_BEAT / slotsPerBeat;
   return (
     <>
       {Array.from({ length: totalBeats * slotsPerBeat }, (_, slot) => {
         const beat = slot / slotsPerBeat;
-        const strum = strums.get(beat);
-        const Icon = strum?.direction === 'up' ? ArrowUp : ArrowDown;
+        const entry = strums.get(beat);
+        const mark = entry ? marks.get(entry.index) : undefined;
+        const Icon = entry?.strum.direction === 'up' ? ArrowUp : ArrowDown;
         return (
           <div
             key={slot}
-            className="absolute top-14 flex h-12 items-center justify-center"
+            className={cx(
+              'absolute top-14 flex h-12 items-center justify-center rounded-md transition-colors',
+              mark && MARK_BACKGROUND[mark],
+            )}
             style={{ left: beat * PX_PER_BEAT - slotWidth / 2 + 1, width: slotWidth }}
           >
-            {strum ? (
+            {entry ? (
               <Icon
                 strokeWidth={beat % beatsPerBar === 0 ? 3.25 : 2.5}
-                className={cx('size-7', strum.direction === 'up' ? 'text-flat' : 'text-fg')}
+                className={cx('size-7', entry.strum.direction === 'up' ? 'text-flat' : 'text-fg')}
               />
             ) : (
               <span className="size-1.5 rounded-full bg-fg-subtle/60" />
@@ -222,10 +257,12 @@ function TabLane({
   timeline,
   noteIndex,
   showNoteNames,
+  marks,
 }: {
   timeline: Timeline;
   noteIndex: number;
   showNoteNames: boolean;
+  marks: ReadonlyMap<number, HitMark>;
 }) {
   const top = TAB_TOP;
   return (
@@ -241,10 +278,13 @@ function TabLane({
         <div
           key={note.index}
           className={cx(
-            'absolute flex h-4 min-w-5 -translate-x-1/2 items-center justify-center gap-0.5 rounded-sm border bg-surface px-1 text-[11px] leading-none font-bold tabular-nums',
+            'absolute flex h-4 min-w-5 -translate-x-1/2 items-center justify-center gap-0.5 rounded-sm border px-1 text-[11px] leading-none font-bold tabular-nums',
             STRING_TEXT[note.string - 1],
             STRING_BORDER[note.string - 1],
-            note.index === noteIndex && 'ring-2 ring-accent',
+            'bg-surface',
+            marks.has(note.index)
+              ? cx('ring-2', MARK_RING[marks.get(note.index) ?? 'miss'])
+              : note.index === noteIndex && 'ring-2 ring-fg',
           )}
           style={{
             left: note.beat * PX_PER_BEAT,

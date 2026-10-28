@@ -1,6 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const PORT = 4173;
+const LISTENING = /listening\.spec\.ts/;
+const PHONE = {
+  browserName: 'chromium',
+  viewport: { width: 390, height: 844 },
+  deviceScaleFactor: 3,
+  isMobile: true,
+  hasTouch: true,
+} as const;
 const isCI = Boolean(process.env.CI);
 
 /**
@@ -22,17 +30,22 @@ export default defineConfig({
   projects: [
     {
       name: 'mobile',
-      use: {
-        browserName: 'chromium',
-        viewport: { width: 390, height: 844 },
-        deviceScaleFactor: 3,
-        isMobile: true,
-        hasTouch: true,
-      },
+      testIgnore: LISTENING,
+      use: PHONE,
     },
     {
       name: 'desktop',
+      testIgnore: LISTENING,
       use: { ...devices['Desktop Chrome'], viewport: { width: 1280, height: 800 } },
+    },
+    {
+      // Scoring is judged in milliseconds on the real audio clock: these tests run on
+      // their own, after the others, so a busy machine does not disturb their timing.
+      name: 'listening',
+      testMatch: LISTENING,
+      dependencies: ['mobile', 'desktop'],
+      fullyParallel: false,
+      use: PHONE,
     },
   ],
   webServer: {

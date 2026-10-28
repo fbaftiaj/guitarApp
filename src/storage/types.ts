@@ -36,7 +36,7 @@ export const sessionResultSchema = z.object({
   startedAt: timestamp,
   durationMs: z.number().check(z.nonnegative()),
   bpm: z.number().check(z.positive()),
-  /** 0–1 share of targets hit correctly. */
+  /** 0–1 score: right chords or notes earn full credit when Perfect, less when Good, Early or Late. */
   accuracy: unitInterval,
   hits: z.object({ perfect: count, good: count, early: count, late: count, miss: count }),
   /** 0–1 score per skill this exercise trains. */
