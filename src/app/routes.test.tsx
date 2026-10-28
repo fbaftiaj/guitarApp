@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 import { renderRoute } from '@/test/renderRoute';
@@ -9,7 +9,10 @@ describe('app navigation', () => {
 
     expect(await screen.findByRole('heading', { level: 1, name: 'Tuner' })).toBeInTheDocument();
     expect(router.state.location.pathname).toBe('/tuner');
-    expect(document.title).toBe('Tuner · FretPath');
+    // The title is set in an effect, which can run just after the heading appears.
+    await waitFor(() => {
+      expect(document.title).toBe('Tuner · FretPath');
+    });
   });
 
   it('has one main navigation with the five tabs in thumb-reach order', async () => {
@@ -42,7 +45,9 @@ describe('app navigation', () => {
 
       const heading = await screen.findByRole('heading', { level: 1, name });
       expect(heading).toHaveFocus();
-      expect(document.title).toBe(`${name} · FretPath`);
+      await waitFor(() => {
+        expect(document.title).toBe(`${name} · FretPath`);
+      });
       expect(screen.getByRole('link', { name })).toHaveAttribute('aria-current', 'page');
     }
   });
