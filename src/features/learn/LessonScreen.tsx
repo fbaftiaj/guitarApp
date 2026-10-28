@@ -17,6 +17,7 @@ import { Practicer } from '../practice/Practicer';
 import { StepNav } from './components/StepNav';
 import { StorageNotice } from './components/StorageNotice';
 import { STEP_INFO } from './lessonSteps';
+import { describeNextStep } from './nextStep';
 import { CheckStep } from './steps/CheckStep';
 import { LearnStep } from './steps/LearnStep';
 import { ListenStep } from './steps/ListenStep';
@@ -61,6 +62,7 @@ export function LessonScreen() {
   const back = { backTo: stagePath(lesson.stageId), backLabel: `Stage ${stage?.number ?? ''}` };
 
   if (!state || state.status === 'locked') {
+    const next = progress.next ? describeNextStep(progress.next) : null;
     const index = COURSE.lessons.indexOf(lesson);
     const previous = COURSE.lessons[index - 1];
     return (
@@ -71,15 +73,9 @@ export function LessonScreen() {
           description={
             previous?.stageId === lesson.stageId
               ? `Pass “${previous.title}” to unlock it.`
-              : `Complete Stage ${(stage?.number ?? 1) - 1} to unlock it.`
+              : `Pass the Stage ${(stage?.number ?? 1) - 1} test to unlock it.`
           }
-          action={
-            progress.next ? (
-              <ButtonLink to={lessonPath(progress.next.id)}>
-                Go to “{progress.next.title}”
-              </ButtonLink>
-            ) : undefined
-          }
+          action={next ? <ButtonLink to={next.path}>Go to “{next.title}”</ButtonLink> : undefined}
         />
       </Screen>
     );

@@ -8,6 +8,7 @@ import { cx } from '@/ui/cx';
 import { EmptyState } from '@/ui/EmptyState';
 import { StarRating } from '@/ui/StarRating';
 import { ProgressMeter } from './components/ProgressMeter';
+import { StageTestCard } from './components/StageTestCard';
 import { StorageNotice } from './components/StorageNotice';
 import type { LessonState } from './progression';
 import { useCourseProgress } from './useCourseProgress';
@@ -112,7 +113,7 @@ export function StageScreen() {
           {state.status === 'locked' && (
             <p className="mt-4 flex items-center gap-2 rounded-control border border-border bg-surface p-3 text-sm">
               <Lock aria-hidden className="size-4 shrink-0 text-fg-muted" />
-              Complete Stage {stage.number - 1} to unlock this stage.
+              Pass the Stage {stage.number - 1} test to unlock this stage.
             </p>
           )}
           {stage.units.map((unit, unitIndex) => {
@@ -138,6 +139,9 @@ export function StageScreen() {
               </section>
             );
           })}
+          {stage.test && state.test && (
+            <StageTestCard stage={stage} test={stage.test} state={state.test} />
+          )}
         </>
       )}
     </Screen>

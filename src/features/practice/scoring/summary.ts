@@ -70,6 +70,8 @@ function skillScores(hits: readonly Hit[], exercise: Exercise): Partial<Record<S
     chordChanges: exercise.kind === 'chords' ? changes : null,
     singleNotes: exercise.kind === 'notes' ? overall : null,
     lead: exercise.kind === 'notes' ? overall : null,
+    // Reading tab, diagrams and rhythms, shown by playing what they say.
+    theory: overall,
   };
   const result: Partial<Record<SkillId, number>> = {};
   for (const skill of exercise.skills) {

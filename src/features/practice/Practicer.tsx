@@ -23,6 +23,7 @@ import { resolveExercisePrefs, usePracticeStore, type ExercisePrefs } from './pr
 import { describeNote, playingItems, transportSettings } from './practiceView';
 import type { SessionSummary } from './scoring/summary';
 import { usePracticeSession, type PracticeView } from './usePracticeSession';
+import { usePracticeTime } from './usePracticeTime';
 
 function announcementFor(
   view: PracticeView,
@@ -121,6 +122,7 @@ export function Practicer({ exercise }: { exercise: Exercise }) {
   const { view } = session;
   const moving = MOVING.includes(view.phase);
   useWakeLock(moving);
+  usePracticeTime(moving);
 
   // Wait mode: the awaited chord or note was heard, so carry on.
   const { next } = session;

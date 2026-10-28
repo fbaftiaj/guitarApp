@@ -14,14 +14,16 @@ import type { LessonAttempt, LessonProgress } from '@/storage/types';
 
 export type ProgressStatus = 'idle' | 'ready' | 'unavailable';
 
+export type NewAttempt = Omit<LessonAttempt, 'at'> & { at?: number };
+
 interface ProgressState {
   lessons: Readonly<Record<string, LessonProgress>>;
   /** 'unavailable' when saved progress could not be read or written. */
   status: ProgressStatus;
   /** Reads the saved progress; results recorded meanwhile are kept. */
   load: () => Promise<void>;
-  /** Records a lesson check and returns the lesson's new progress. */
-  recordAttempt: (lessonId: string, attempt: LessonAttempt) => Promise<LessonProgress>;
+  /** Records a lesson check or stage test (now, unless `at` says otherwise) and returns the new progress. */
+  recordAttempt: (lessonId: string, attempt: NewAttempt) => Promise<LessonProgress>;
 }
 
 export const useProgressStore = create<ProgressState>()((set, get) => ({
@@ -43,7 +45,8 @@ export const useProgressStore = create<ProgressState>()((set, get) => ({
       set({ status: 'unavailable' });
     }
   },
-  recordAttempt: async (lessonId, attempt) => {
+  recordAttempt: async (lessonId, { at = Date.now(), ...result }) => {
+    const attempt: LessonAttempt = { ...result, at };
     let progress: LessonProgress;
     try {
       progress = await recordLessonAttempt(lessonId, attempt);

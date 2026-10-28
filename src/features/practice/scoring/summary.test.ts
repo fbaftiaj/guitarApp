@@ -75,6 +75,13 @@ describe('summarize', () => {
     expect(summary.skills.chordChanges).toBe(1);
   });
 
+  it('scores theory by how well the exercise was played', () => {
+    const reading = { ...em, skills: ['theory' as const] };
+    const hits = [hit(0, 'perfect', true), hit(1, 'late', true)];
+    const summary = summarize(hits, { exercise: reading, tempo: 60, startTime: 0 });
+    expect(summary.skills).toEqual({ theory: 0.75 });
+  });
+
   it('handles an empty session', () => {
     const summary = summarize([], { exercise: em, tempo: 60, startTime: 0 });
     expect(summary).toMatchObject({ accuracy: 0, stars: 0, total: 0, meanDeviationMs: null });

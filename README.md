@@ -4,19 +4,19 @@ A mobile-first Progressive Web App for learning guitar: a precision tuner, a str
 eight-stage course and an interactive play-along practicer that listens to what you play.
 Everything runs on the device and works offline; there is no backend.
 
-> **Status:** Milestones 1–5 of 7 (foundation, tuner, practicer, listening and scoring,
-> curriculum) are complete. Stages 4–8 are shown as previews and the profile screen is a
-> placeholder until their milestones land.
+> **Status:** Milestones 1–6 of 7 (foundation, tuner, practicer, listening and scoring,
+> curriculum, progress and profile) are complete. Stages 4–8 are shown as previews until
+> Milestone 7.
 
-| #   | Milestone                                                  | Status  |
-| --- | ---------------------------------------------------------- | ------- |
-| 1   | Foundation: tooling, design system, shell, PWA, IndexedDB  | Done    |
-| 2   | Tuner: audio engine, pitch worklet, tuner UI               | Done    |
-| 3   | Practicer engine: scheduler, metronome, timeline, controls | Done    |
-| 4   | Listening and scoring: onset/chroma, latency calibration   | Done    |
-| 5   | Curriculum: content schemas, stages 1–3, lesson flow       | Done    |
-| 6   | Progress and profile: skill meters, streaks, history       | Next    |
-| 7   | Polish: onboarding, stages 4–8, accessibility, performance | Planned |
+| #   | Milestone                                                  | Status |
+| --- | ---------------------------------------------------------- | ------ |
+| 1   | Foundation: tooling, design system, shell, PWA, IndexedDB  | Done   |
+| 2   | Tuner: audio engine, pitch worklet, tuner UI               | Done   |
+| 3   | Practicer engine: scheduler, metronome, timeline, controls | Done   |
+| 4   | Listening and scoring: onset/chroma, latency calibration   | Done   |
+| 5   | Curriculum: content schemas, stages 1–3, lesson flow       | Done   |
+| 6   | Progress and profile: skill meters, streaks, history       | Done   |
+| 7   | Polish: onboarding, stages 4–8, accessibility, performance | Next   |
 
 ## Getting started
 
@@ -68,12 +68,13 @@ src/
   lib/music/  Music theory: note spelling, MIDI ↔ Hz, cents, chord tones, shapes and templates
   platform/   Thin wrappers for browser APIs (screen wake lock, vibration)
   storage/    IndexedDB schema, migrations, repositories and the Zustand persist adapter
-  stores/     App-wide Zustand stores (settings, lesson progress)
+  stores/     App-wide Zustand stores (settings, lesson progress, practice time)
   features/   One folder per screen: tuner, learn, practice, songs, profile, settings
     practice/engine/     Timeline compiler, arrangement, transport, lookahead scheduler (pure)
     practice/scoring/    Chord recognition, hit checks, scorer, wait matcher, latency, stars, results
     practice/listening/  Session inputs: scoring while practising, latency calibration
-    learn/               Course screens, unlock rules, the Learn/Listen/Practice/Check steps
+    learn/               Course screens, unlock rules and levels, lesson steps, stage tests
+    profile/             Level, streak, skill meters, accuracy history, chord library
   test/       Test setup, signal generators and module stand-ins
 e2e/          Playwright specs (phone 390×844 and desktop 1280×800); support/ has the fake mic
 public/       Static assets: logo, generated icons and splash screens
@@ -234,10 +235,30 @@ by lessons and songs.
   a `check` session with its lesson id.
 - **Progress:** 1–3 stars at ≥ 70 / 85 / 95 % accuracy; the best result per lesson is kept in
   IndexedDB (`stores/progressStore.ts`, in memory if storage is blocked). Lessons unlock in
-  order; a stage opens once the previous one is completed (Milestone 6's stage tests will
-  replace that rule). The rules are pure functions in `features/learn/progression.ts`.
+  order. Each playable stage ends with a **stage test** of 2–4 short mixed parts, played one
+  after another and scored together (accuracy weighted by each part's strums or notes);
+  it opens once the stage's lessons are done, and passing it opens the next stage and raises
+  the level (Beginner 1 → Intermediate 3, by stage tests passed). The rules are pure
+  functions in `features/learn/progression.ts`.
 - **Songs:** chord progression (or melody), rhythm, tempo, sections and form; no lyrics.
   The Songs tab lists them with origin and credit and opens each in the practicer.
+
+**Profile.** All figures come from real playing, computed by pure functions in
+`features/profile/stats.ts`:
+
+- **Skill meters** (chords, chord changes, rhythm and timing, strumming, single notes, lead,
+  theory) average each skill's score over its last 20 scored sessions, newer ones counting
+  more (×0.85 per step back), short sessions less, and scores played below the target tempo
+  in proportion (half speed, half credit).
+- **Streak and practice time** come from the seconds spent playing each local day
+  (`stores/activityStore.ts`): every play-along counts, scored or not, including lesson
+  Listen steps and checks. A day counts towards the streak after one minute, and a streak
+  stays alive until the day ends.
+- **Accuracy history:** the last 30 days as columns (each day's sessions weighted by their
+  strums or notes) with the pass mark, hover and focus readouts and a table view.
+- **Chord library:** every chord from a completed lesson, with its diagram, its place on the
+  fretboard and a microphone check that judges each strum with the practicer's chord
+  recognition (down or up) and names the chord it heard instead.
 
 **PWA.** Workbox precaches the app shell and every screen chunk, so the app works offline
 after the first visit. New versions wait for the user to tap "Reload to update", so an
@@ -280,6 +301,16 @@ installable, with maskable icons and iOS splash screens.
   a playable stage after a preview; star thresholds at their boundaries; unlock rules (one
   lesson after another, stages after the previous stage, previews closed, completed lessons
   kept open); the progress store, including blocked storage; and the course screens.
+- **Progress tests:** stage test validation and combined scoring, unlocking through stage
+  tests, levels, streaks (runs, the grace day, the one-minute floor, month boundaries),
+  minutes, daily accuracy, skill meters (recency, tempo and length weighting), naming the
+  chord heard, learned chords, the activity and progress stores, and the profile, stage
+  test and chord library screens.
+- **Stage tests and profile end to end** (`e2e/progress.listening.spec.ts`): the fake
+  guitarist plays the three parts of the Stage 1 test; it passes with three stars, opens
+  Stage 2, raises the level to Beginner 2 and shows on the profile (meters, history). A
+  silent run fails and keeps Stage 2 closed. The chord check accepts E minor and names E
+  major when that is strummed instead, then releases the microphone.
 - **Lessons end to end** (`e2e/lesson.listening.spec.ts`, in the listening project): the
   fake guitarist plays the first lesson's check; it passes with three stars, unlocks the next
   lesson, saves a `check` session and survives a reload. A failed check keeps the next lesson

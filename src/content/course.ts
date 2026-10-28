@@ -14,7 +14,8 @@ import { SONGS, type Song } from './songs';
  * file. A stage without one is a preview, shown but not yet playable.
  *
  * Each lesson runs Learn → Listen → Practice → Check on one exercise: its own
- * music, or a song from the library. Everything a lesson shows on the Learn
+ * music, or a song from the library. Each playable stage ends with a stage
+ * test: a few short mixed parts, scored together. Everything a lesson shows on the Learn
  * step beyond its text (chord diagrams, tab, the fretboard demo) is derived
  * from that exercise.
  */
@@ -56,6 +57,21 @@ export interface Unit {
   lessons: readonly Lesson[];
 }
 
+export interface StageTestPart {
+  title: string;
+  /** Its id is the test id plus the part number, e.g. "first-steps-test-1". */
+  exercise: Exercise;
+}
+
+/** The mixed test at the end of a stage: passing it opens the next stage. */
+export interface StageTest {
+  id: string;
+  title: string;
+  summary: string;
+  stageId: string;
+  parts: readonly StageTestPart[];
+}
+
 export interface Stage {
   id: string;
   number: number;
@@ -66,6 +82,8 @@ export interface Stage {
   units: readonly Unit[];
   /** Every lesson of the stage, in order. */
   lessons: readonly Lesson[];
+  /** Null for a preview stage. */
+  test: StageTest | null;
 }
 
 export interface Course {
@@ -77,6 +95,7 @@ export interface Course {
 /** A full stage has this many units, of this many lessons each. */
 export const UNITS_PER_STAGE = { min: 3, max: 5 } as const;
 export const LESSONS_PER_UNIT = { min: 4, max: 8 } as const;
+export const PARTS_PER_TEST = { min: 2, max: 4 } as const;
 
 const stageSchema = z.object({
   id: slug,
@@ -115,8 +134,27 @@ const unitSchema = z.object({
     .check(z.minLength(LESSONS_PER_UNIT.min), z.maxLength(LESSONS_PER_UNIT.max)),
 });
 
+const stageTestSchema = z.object({
+  id: slug,
+  title: text,
+  summary: text,
+  parts: z
+    .array(
+      z.object({
+        title: text,
+        skills: z.array(skillIdSchema).check(z.minLength(1)),
+        exercise: musicSchema,
+      }),
+    )
+    .check(z.minLength(PARTS_PER_TEST.min), z.maxLength(PARTS_PER_TEST.max)),
+});
+type StageTestData = z.infer<typeof stageTestSchema>;
+
+const testPartId = (testId: string, index: number) => `${testId}-${index + 1}`;
+
 const stageContentSchema = z.object({
   stage: slug,
+  test: stageTestSchema,
   units: z
     .array(unitSchema)
     .check(z.minLength(UNITS_PER_STAGE.min), z.maxLength(UNITS_PER_STAGE.max)),
@@ -186,7 +224,40 @@ function checkCourse(
     if (last && last.song === undefined) {
       issues.push(`stage "${content.stage}" should end with a stage song`);
     }
+
+    const { test } = content;
+    const ids = [test.id, ...test.parts.map((_, i) => testPartId(test.id, i))];
+    for (const id of ids) {
+      if (lessonIds.has(id) || takenIds.has(id)) {
+        issues.push(`stage test "${test.id}": the id "${id}" is already taken`);
+      }
+      lessonIds.add(id);
+    }
+    test.parts.forEach((part, i) => {
+      checkMusic(part.exercise, `stage test "${test.id}", part ${i + 1}`, issues);
+    });
   }
+}
+
+function buildTest(test: StageTestData, stageId: string): StageTest {
+  return {
+    id: test.id,
+    title: test.title,
+    summary: test.summary,
+    stageId,
+    parts: test.parts.map((part, i) => ({
+      title: part.title,
+      exercise: buildExercise(
+        {
+          id: testPartId(test.id, i),
+          title: part.title,
+          description: test.summary,
+          skills: part.skills,
+        },
+        part.exercise,
+      ),
+    })),
+  };
 }
 
 function buildLesson(
@@ -259,7 +330,12 @@ export function parseCourse(
       summary: unit.summary,
       lessons: unit.lessons.map((lesson) => buildLesson(lesson, songsById, stage.id, unit.id)),
     }));
-    return { ...stage, units, lessons: units.flatMap((unit) => unit.lessons) };
+    return {
+      ...stage,
+      units,
+      lessons: units.flatMap((unit) => unit.lessons),
+      test: content ? buildTest(content.test, stage.id) : null,
+    };
   });
   return { stages, lessons: stages.flatMap((stage) => stage.lessons) };
 }
@@ -276,4 +352,9 @@ export function findStage(id: string): Stage | undefined {
 
 export function findLesson(id: string): Lesson | undefined {
   return COURSE.lessons.find((lesson) => lesson.id === id);
+}
+
+/** The test at the end of the stage `stageId`, if it has one. */
+export function findStageTest(stageId: string): StageTest | undefined {
+  return findStage(stageId)?.test ?? undefined;
 }

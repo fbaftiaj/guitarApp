@@ -54,3 +54,25 @@ export function checkChord(
     similarity >= best.similarity - CHORD_MATCH.margin;
   return { correct, similarity, best };
 }
+
+const isTriad = (id: string) => {
+  const quality = CHORDS.get(id)?.quality;
+  return quality === 'major' || quality === 'minor';
+};
+
+/**
+ * The chord a strum sounds like, or null if nothing matches well enough.
+ * Among chords within the margin of the best match a plain major or minor
+ * chord wins, so a C major strum is named C rather than Cadd9, and E rather
+ * than E5.
+ */
+export function recognizeChord(
+  chroma: readonly number[],
+  direction: 'down' | 'up' = 'down',
+): TemplateMatch | null {
+  const ranked = rankTemplates(chroma, templates[direction]);
+  const best = ranked[0];
+  if (!best || best.similarity < CHORD_MATCH.minSimilarity) return null;
+  const close = ranked.filter((match) => match.similarity >= best.similarity - CHORD_MATCH.margin);
+  return close.find((match) => isTriad(match.id)) ?? best;
+}

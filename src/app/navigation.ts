@@ -24,6 +24,10 @@ export function stagePath(stageId: string): string {
   return `${LEARN_PATH}/stage/${encodeURIComponent(stageId)}`;
 }
 
+export function stageTestPath(stageId: string): string {
+  return `${stagePath(stageId)}/test`;
+}
+
 /** A lesson's steps, in order. */
 export const LESSON_STEPS = ['learn', 'listen', 'practice', 'check'] as const;
 export type LessonStep = (typeof LESSON_STEPS)[number];
@@ -46,6 +50,13 @@ export const SONGS_PATH = '/songs';
 
 export function songPath(songId: string): string {
   return `${SONGS_PATH}/${encodeURIComponent(songId)}`;
+}
+
+export const PROFILE_PATH = '/profile';
+export const CHORD_LIBRARY_PATH = `${PROFILE_PATH}/chords`;
+
+export function chordPath(chordId: string): string {
+  return `${CHORD_LIBRARY_PATH}/${encodeURIComponent(chordId)}`;
 }
 
 export const SETTINGS_PATH = '/profile/settings';

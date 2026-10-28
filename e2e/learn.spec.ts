@@ -13,7 +13,7 @@ test('takes a new player from the course overview into the first lesson', async 
   await page.goto('/learn');
   const stages = page.getByRole('list', { name: 'Stages' }).getByRole('listitem');
   await expect(stages).toHaveCount(8);
-  await expect(stages.nth(1)).toContainText('Complete Stage 1 to unlock');
+  await expect(stages.nth(1)).toContainText('Pass the Stage 1 test to unlock');
   await expect(stages.nth(7)).toContainText('Coming soon');
 
   await page.getByRole('link', { name: /Stage 1: First Steps/ }).click();
@@ -90,7 +90,7 @@ test('locked lessons stay closed and point to the lesson to play', async ({ page
   await expect(page.getByRole('heading', { level: 1, name: 'Parts of the guitar' })).toBeVisible();
 
   await page.goto('/learn/stage/open-chords-1');
-  await expect(page.getByText('Complete Stage 1 to unlock this stage.')).toBeVisible();
+  await expect(page.getByText('Pass the Stage 1 test to unlock this stage.')).toBeVisible();
   await expect(page.getByRole('link', { name: /E minor \(Em\)/ })).toHaveCount(0);
 });
 

@@ -1,5 +1,93 @@
 {
   "stage": "rhythm-foundations",
+  "test": {
+    "id": "rhythm-foundations-test",
+    "title": "Stage 3 test",
+    "summary": "Three short parts: eighth notes, the folk strum and a waltz. Pass to complete Stage 3.",
+    "parts": [
+      {
+        "title": "Eighth notes",
+        "skills": ["strumming", "rhythm", "chordChanges"],
+        "exercise": {
+          "kind": "chords",
+          "timeSignature": {
+            "beats": 4,
+            "unit": 4
+          },
+          "tempo": 66,
+          "strum": "down-up",
+          "bars": [
+            {
+              "chords": ["Em"]
+            },
+            {
+              "chords": ["Em"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["C"]
+            }
+          ]
+        }
+      },
+      {
+        "title": "The folk strum",
+        "skills": ["strumming", "rhythm", "chordChanges"],
+        "exercise": {
+          "kind": "chords",
+          "timeSignature": {
+            "beats": 4,
+            "unit": 4
+          },
+          "tempo": 72,
+          "strum": "folk",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            }
+          ]
+        }
+      },
+      {
+        "title": "Waltz time",
+        "skills": ["strumming", "rhythm", "chordChanges"],
+        "exercise": {
+          "kind": "chords",
+          "timeSignature": {
+            "beats": 3,
+            "unit": 4
+          },
+          "tempo": 84,
+          "strum": "waltz-up",
+          "bars": [
+            {
+              "chords": ["Am"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["Am"]
+            }
+          ]
+        }
+      }
+    ]
+  },
   "units": [
     {
       "id": "down-and-up",

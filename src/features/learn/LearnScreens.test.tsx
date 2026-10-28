@@ -31,7 +31,7 @@ describe('Learn screens', () => {
     await screen.findByRole('heading', { level: 1, name: 'Learn' });
     const stages = within(screen.getByRole('list', { name: 'Stages' })).getAllByRole('listitem');
     expect(stages).toHaveLength(8);
-    expect(stages[1]).toHaveTextContent('Complete Stage 1 to unlock');
+    expect(stages[1]).toHaveTextContent('Pass the Stage 1 test to unlock');
     expect(stages[3]).toHaveTextContent('Coming soon');
     expect(within(stages[3] ?? document.body).queryByRole('link')).toBeNull();
 
@@ -112,12 +112,54 @@ describe('Learn screens', () => {
 
   it('shows the chords of a chord lesson with finger numbers', async () => {
     const index = COURSE.lessons.findIndex((lesson) => lesson.id === 'changing-g-c');
-    complete(COURSE.lessons.slice(0, index).map((lesson) => lesson.id));
+    complete([
+      ...COURSE.lessons.slice(0, index).map((lesson) => lesson.id),
+      COURSE.stages[0]?.test?.id ?? '',
+    ]);
     renderRoute('/learn/lesson/changing-g-c/learn');
 
     expect(await screen.findByRole('heading', { name: 'The chords' })).toBeInTheDocument();
     expect(screen.getByRole('img', { name: /^G major chord: .*finger 2/ })).toBeInTheDocument();
     expect(screen.getByRole('img', { name: /^C major chord/ })).toBeInTheDocument();
+  });
+
+  it('opens the stage test once every lesson of the stage is done', async () => {
+    const user = userEvent.setup();
+    const stage = COURSE.stages[0];
+    renderRoute('/learn/stage/first-steps');
+    expect(
+      await screen.findByText('Complete every lesson in Stage 1 to take the test.'),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Take the test' })).toBeNull();
+
+    complete(stage?.lessons.map((lesson) => lesson.id) ?? []);
+    await user.click(await screen.findByRole('link', { name: 'Take the test' }));
+    await screen.findByRole('heading', { level: 1, name: 'Stage 1 test' });
+    const parts = within(screen.getByRole('list', { name: 'Parts' })).getAllByRole('listitem');
+    expect(parts.map((part) => part.textContent)).toEqual([
+      expect.stringContaining('Open strings'),
+      expect.stringContaining('Fretted notes'),
+      expect.stringContaining('A short melody'),
+    ]);
+    expect(screen.getByText(/70% passes and opens Stage 2/)).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: 'Start the test' }));
+    expect(screen.getByRole('heading', { name: 'Part 1 of 3 · Open strings' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Play' })).toBeInTheDocument();
+  });
+
+  it('keeps a stage test locked until its lessons are done', async () => {
+    renderRoute('/learn/stage/first-steps/test');
+    expect(await screen.findByText('This test is locked')).toBeInTheDocument();
+  });
+
+  it('points to the stage test when only the test is left', async () => {
+    complete(COURSE.stages[0]?.lessons.map((lesson) => lesson.id) ?? []);
+    renderRoute('/learn');
+    expect(await screen.findByRole('link', { name: 'Take the test' })).toHaveAttribute(
+      'href',
+      '/learn/stage/first-steps/test',
+    );
   });
 
   it('sends unknown lessons and stages back to the course', async () => {

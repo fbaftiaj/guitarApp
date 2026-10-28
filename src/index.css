@@ -37,6 +37,8 @@
   --color-accent-strong: #62e8ad;
   --color-accent-fg: #03140c;
   --color-accent-text: #4be3a0;
+  /* Single-series chart marks: at least 3:1 against the surface in both themes. */
+  --color-chart: #3ddc97;
 
   /* Tuning direction and feedback */
   --color-sharp: #ffa05c;
@@ -132,6 +134,7 @@
     --color-accent-strong: #1db57f;
     --color-accent-fg: #03140c;
     --color-accent-text: #057a55;
+    --color-chart: #169b6c;
 
     --color-sharp: #b3470d;
     --color-flat: #0b62c2;

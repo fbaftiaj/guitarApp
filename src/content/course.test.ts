@@ -7,6 +7,7 @@ import {
   UNITS_PER_STAGE,
   findLesson,
   findStage,
+  findStageTest,
   parseCourse,
 } from './course';
 import { EXERCISES } from './exercises';
@@ -53,9 +54,23 @@ function unit(id: string, count = 4, last: object = { exercise: undefined, song:
   };
 }
 
-function stageContent(stage: string, prefix = stage) {
+function stageTest(id: string, overrides: object = {}) {
+  return {
+    id,
+    title: 'Stage test',
+    summary: 'A test.',
+    parts: [
+      { title: 'Part one', skills: ['chords'], exercise: music },
+      { title: 'Part two', skills: ['rhythm'], exercise: music },
+    ],
+    ...overrides,
+  };
+}
+
+function stageContent(stage: string, prefix = stage, test: object = stageTest(`${prefix}-test`)) {
   return {
     stage,
+    test,
     units: [unit(`${prefix}-a`, 4, {}), unit(`${prefix}-b`, 4, {}), unit(`${prefix}-c`)],
   };
 }
@@ -110,6 +125,25 @@ describe('course content', () => {
       expect(stage.lessons.at(-1)?.songId, stage.id).not.toBeNull();
     }
     expect(findStage('first-steps')?.lessons.at(-1)?.songId).toBe('ode-to-joy');
+  });
+
+  it('ends every full stage with a test of mixed parts', () => {
+    for (const stage of COURSE.stages) {
+      if (stage.lessons.length === 0) {
+        expect(stage.test, stage.id).toBeNull();
+        continue;
+      }
+      expect(stage.test?.stageId).toBe(stage.id);
+      expect(stage.test?.parts.length).toBeGreaterThanOrEqual(2);
+      const ids = stage.test?.parts.map((part) => part.exercise.id);
+      expect(ids).toEqual(ids?.map((_, i) => `${stage.test?.id ?? ''}-${i + 1}`));
+    }
+    expect(findStageTest('first-steps')?.parts.map((part) => part.title)).toEqual([
+      'Open strings',
+      'Fretted notes',
+      'A short melody',
+    ]);
+    expect(findStageTest('open-chords-2')).toBeUndefined();
   });
 
   it('builds song lessons from the song, demoing its first section', () => {
@@ -198,6 +232,23 @@ describe('course validation', () => {
     ],
   ])('rejects %s', (_, content, message) => {
     expect(() => parse(content)).toThrow(message);
+  });
+
+  it.each([
+    [
+      'a test part that does not fit the bar',
+      stageTest('one-test', {
+        parts: [
+          { title: 'A', skills: ['chords'], exercise: music },
+          { title: 'B', skills: ['chords'], exercise: { ...music, strum: 'waltz' } },
+        ],
+      }),
+      'stage test "one-test", part 2, bar 1: strum "waltz" has 6 slots, needs 8',
+    ],
+    ['a test reusing a lesson id', stageTest('one-a-1'), 'the id "one-a-1" is already taken'],
+    ['a test with one part', stageTest('one-test', { parts: [] }), 'parts'],
+  ])('rejects %s', (_, test, message) => {
+    expect(() => parse([stageContent('one', 'one', test)])).toThrow(message);
   });
 
   it('rejects a lesson id taken by an exercise or song', () => {

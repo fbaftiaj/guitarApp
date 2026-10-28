@@ -60,7 +60,8 @@ test.describe('phone layout', () => {
 
   test('keeps content clear of the tab bar when scrolled to the end', async ({ page }) => {
     await page.goto('/profile');
-    const action = page.getByRole('link', { name: 'Start learning' });
+    // The last thing on the profile.
+    const action = page.getByRole('link', { name: /Chord library/ });
     await action.scrollIntoViewIfNeeded();
 
     const navTop = (await page.getByRole('navigation', { name: 'Main' }).boundingBox())?.y ?? 0;

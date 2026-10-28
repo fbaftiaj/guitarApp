@@ -1,5 +1,93 @@
 {
   "stage": "open-chords-1",
+  "test": {
+    "id": "open-chords-1-test",
+    "title": "Stage 2 test",
+    "summary": "Three short parts with all seven open chords and steady downstrokes. Pass to open Stage 3.",
+    "parts": [
+      {
+        "title": "Minor chords",
+        "skills": ["chords", "chordChanges", "rhythm"],
+        "exercise": {
+          "kind": "chords",
+          "timeSignature": {
+            "beats": 4,
+            "unit": 4
+          },
+          "tempo": 70,
+          "strum": "quarters",
+          "bars": [
+            {
+              "chords": ["Em"]
+            },
+            {
+              "chords": ["Am"]
+            },
+            {
+              "chords": ["Em"]
+            },
+            {
+              "chords": ["Am"]
+            }
+          ]
+        }
+      },
+      {
+        "title": "A, D and E",
+        "skills": ["chords", "chordChanges", "rhythm"],
+        "exercise": {
+          "kind": "chords",
+          "timeSignature": {
+            "beats": 4,
+            "unit": 4
+          },
+          "tempo": 70,
+          "strum": "quarters",
+          "bars": [
+            {
+              "chords": ["A"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["E"]
+            },
+            {
+              "chords": ["A"]
+            }
+          ]
+        }
+      },
+      {
+        "title": "G, C and D",
+        "skills": ["chords", "chordChanges", "rhythm"],
+        "exercise": {
+          "kind": "chords",
+          "timeSignature": {
+            "beats": 4,
+            "unit": 4
+          },
+          "tempo": 74,
+          "strum": "quarters",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            }
+          ]
+        }
+      }
+    ]
+  },
   "units": [
     {
       "id": "first-chords",

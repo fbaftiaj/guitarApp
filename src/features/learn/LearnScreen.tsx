@@ -1,6 +1,6 @@
 import { ChevronRight, Lock, PartyPopper, Play, Sparkles } from 'lucide-react';
 import { Link } from 'react-router';
-import { lessonPath, stagePath } from '@/app/navigation';
+import { stagePath } from '@/app/navigation';
 import { Screen } from '@/app/Screen';
 import { COURSE, findStage, type Stage } from '@/content/course';
 import { ButtonLink } from '@/ui/ButtonLink';
@@ -9,6 +9,7 @@ import { cx } from '@/ui/cx';
 import { ProgressMeter } from './components/ProgressMeter';
 import { StorageNotice } from './components/StorageNotice';
 import type { StageState } from './progression';
+import { describeNextStep } from './nextStep';
 import { useCourseProgress } from './useCourseProgress';
 
 function StageCard({ stage, state }: { stage: Stage; state: StageState }) {
@@ -38,7 +39,8 @@ function StageCard({ stage, state }: { stage: Stage; state: StageState }) {
           </span>
         ) : state.status === 'locked' ? (
           <span className="mt-2 flex items-center gap-1.5 text-xs font-medium text-fg-muted">
-            <Lock aria-hidden className="size-3.5" /> Complete Stage {stage.number - 1} to unlock
+            <Lock aria-hidden className="size-3.5" /> Pass the Stage {stage.number - 1} test to
+            unlock
           </span>
         ) : (
           <ProgressMeter
@@ -66,7 +68,7 @@ function StageCard({ stage, state }: { stage: Stage; state: StageState }) {
 
 export function LearnScreen() {
   const progress = useCourseProgress();
-  const { next } = progress;
+  const next = progress.next ? describeNextStep(progress.next) : null;
   const nextStage = next ? findStage(next.stageId) : undefined;
   const started = COURSE.lessons.some(
     (lesson) => progress.lessons.get(lesson.id)?.status === 'completed',
@@ -82,8 +84,12 @@ export function LearnScreen() {
           </p>
           <h2 className="mt-1 text-lg font-bold">{next.title}</h2>
           <p className="mt-1 text-sm text-pretty text-fg-muted">{next.summary}</p>
-          <ButtonLink to={lessonPath(next.id)} icon={Play} size="lg" fullWidth className="mt-4">
-            {started ? 'Continue' : 'Start the first lesson'}
+          <ButtonLink to={next.path} icon={Play} size="lg" fullWidth className="mt-4">
+            {progress.next?.kind === 'test'
+              ? 'Take the test'
+              : started
+                ? 'Continue'
+                : 'Start the first lesson'}
           </ButtonLink>
         </Card>
       ) : (

@@ -64,6 +64,19 @@ export function createRoutes(): RouteObject[] {
               },
             },
             {
+              path: 'learn/stage/:stageId/test',
+              lazy: async () => {
+                const [{ StageTestScreen }, { whenProgressLoaded }, { whenPracticeHydrated }] =
+                  await Promise.all([
+                    import('@/features/learn/StageTestScreen'),
+                    import('@/stores/progressStore'),
+                    import('@/features/practice/practiceStore'),
+                  ]);
+                await Promise.all([whenProgressLoaded(), whenPracticeHydrated()]);
+                return { Component: StageTestScreen };
+              },
+            },
+            {
               path: 'learn/lesson/:lessonId/:step?',
               lazy: async () => {
                 const [{ LessonScreen }, { whenProgressLoaded }, { whenPracticeHydrated }] =
@@ -114,8 +127,32 @@ export function createRoutes(): RouteObject[] {
             },
             {
               path: 'profile',
+              lazy: async () => {
+                const [{ ProfileScreen }, { whenProgressLoaded }, { whenActivityHydrated }] =
+                  await Promise.all([
+                    import('@/features/profile/ProfileScreen'),
+                    import('@/stores/progressStore'),
+                    import('@/stores/activityStore'),
+                  ]);
+                await Promise.all([whenProgressLoaded(), whenActivityHydrated()]);
+                return { Component: ProfileScreen };
+              },
+            },
+            {
+              path: 'profile/chords',
+              lazy: async () => {
+                const [{ ChordLibraryScreen }, { whenProgressLoaded }] = await Promise.all([
+                  import('@/features/profile/ChordLibraryScreen'),
+                  import('@/stores/progressStore'),
+                ]);
+                await whenProgressLoaded();
+                return { Component: ChordLibraryScreen };
+              },
+            },
+            {
+              path: 'profile/chords/:chordId',
               lazy: async () => ({
-                Component: (await import('@/features/profile/ProfileScreen')).ProfileScreen,
+                Component: (await import('@/features/profile/ChordScreen')).ChordScreen,
               }),
             },
             {

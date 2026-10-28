@@ -10,6 +10,7 @@ import { compileExercise } from '../../practice/engine/timeline';
 import { usePracticeStore } from '../../practice/practiceStore';
 import { playThroughSettings } from '../../practice/practiceView';
 import { usePracticeSession } from '../../practice/usePracticeSession';
+import { usePracticeTime } from '../../practice/usePracticeTime';
 
 /** The guide plays at least this loud on the Listen step, so every strum or note is heard. */
 const GUIDE_VOLUME = 0.8;
@@ -42,7 +43,9 @@ export function ListenStep({ lesson }: { lesson: Lesson }) {
     onTempoChange: keepTempo,
   });
   const { view } = session;
-  useWakeLock(view.phase === 'countIn' || view.phase === 'playing');
+  const moving = view.phase === 'countIn' || view.phase === 'playing';
+  useWakeLock(moving);
+  usePracticeTime(moving);
 
   if (session.error === 'audio-unsupported') {
     return (
