@@ -2,9 +2,9 @@ import { CHORDS } from '@/content/chords';
 import { noteName, spellMidi } from '@/lib/music/notes';
 import { cx } from '@/ui/cx';
 import type { ChordSegment, NoteEvent } from '../engine/timeline';
-import { describeNote } from '../practiceView';
+import { chordFretMarks, describeNote } from '../practiceView';
 import { ChordDiagram } from './ChordDiagram';
-import { Fretboard, type FretMark } from './Fretboard';
+import { Fretboard } from './Fretboard';
 
 interface NowPanelProps {
   chord: ChordSegment | null;
@@ -26,17 +26,6 @@ const STRING_BG = [
   'bg-string-5',
   'bg-string-6',
 ];
-
-function chordMarks(chordId: string): FretMark[] {
-  const chord = CHORDS.get(chordId);
-  if (!chord) return [];
-  return chord.frets.map((fret, i) => ({
-    string: 6 - i,
-    fret,
-    finger: chord.fingers[i] ?? null,
-    midi: chord.midis[i] ?? null,
-  }));
-}
 
 function sentenceCase(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -114,7 +103,7 @@ export function NowPanel({
         {showFretboard && current && (
           <div className="mt-3">
             <Fretboard
-              marks={chordMarks(current.id)}
+              marks={chordFretMarks(current.id)}
               showFingers={showFingers}
               showNoteNames={showNoteNames}
               label={`${current.name} on the fretboard`}

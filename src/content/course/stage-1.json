@@ -1,0 +1,1642 @@
+{
+  "stage": "first-steps",
+  "units": [
+    {
+      "id": "meet-your-guitar",
+      "title": "Meet your guitar",
+      "summary": "Name the parts, sit comfortably, hold the pick, tune up and learn the strings.",
+      "lessons": [
+        {
+          "id": "parts-of-the-guitar",
+          "title": "Parts of the guitar",
+          "summary": "Learn the names of the parts every lesson talks about, then pluck your first string.",
+          "skills": ["singleNotes", "rhythm"],
+          "learn": {
+            "what": "Every lesson mentions the neck, the frets and the strings, so it helps to know where they are. The headstock holds the tuning pegs, which tighten or loosen each string. The neck runs from the nut to the body, and the metal strips across it are the frets. On the body, the strings pass over the sound hole (or the pickups on an electric guitar) and end at the bridge.",
+            "steps": [
+              "Find the headstock and its tuning pegs: one peg for each string.",
+              "Follow the strings down the neck. The strip they cross at the top is the nut; every metal strip after it is a fret.",
+              "On the body, find the sound hole or pickups, and the bridge where the strings end.",
+              "Rest your picking hand over the sound hole and pluck the thickest string on each click, letting it ring."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Plucking right next to the bridge, so the note sounds thin and quiet.",
+                "fix": "Pluck over the sound hole, or between the pickups, where the string moves most freely."
+              },
+              {
+                "mistake": "Pulling the string away from the guitar, so it slaps back against the frets.",
+                "fix": "Brush through it towards the floor: the string should move along the guitar's top, not away from it."
+              }
+            ],
+            "tip": "Acoustic and electric guitars share the same parts. Only the way they make their sound differs.",
+            "figure": "guitar-parts"
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              }
+            ],
+            "repeat": 4
+          }
+        },
+        {
+          "id": "sitting-with-the-guitar",
+          "title": "Sitting with the guitar",
+          "summary": "Find a relaxed position that keeps your hands free, then play the A and D strings.",
+          "skills": ["singleNotes", "rhythm"],
+          "learn": {
+            "what": "A good position holds the guitar still by itself, so your hands are free to play instead of propping it up. Tension in your shoulders or wrists makes everything harder and tires you quickly, so aim for comfortable and balanced.",
+            "steps": [
+              "Sit near the front of a chair without arms, feet flat on the floor.",
+              "Rest the dip in the guitar's body on your right leg if you play right-handed, or your left leg if you play left-handed.",
+              "Keep the guitar upright with the neck pointing slightly upwards, so you can see the top of the neck without leaning over.",
+              "Let your picking forearm rest on the top edge of the body and let your shoulders drop.",
+              "Pluck the 5th string for a bar, then the 4th, keeping the guitar still."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Tilting the guitar back to see the strings.",
+                "fix": "Keep it upright and glance over the top edge: tilting it bends your fretting wrist sharply."
+              },
+              {
+                "mistake": "Holding the neck up with your fretting hand.",
+                "fix": "The neck should stay up by itself. If it drops, shift the guitar on your leg or use a strap."
+              },
+              {
+                "mistake": "Hunching over the guitar.",
+                "fix": "Sit tall and bring the guitar to you, not yourself to the guitar."
+              }
+            ],
+            "tip": "If you'd rather stand, set the strap so the guitar sits at the same height as when you sit."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 5,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 5,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 5,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 5,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "holding-the-pick",
+          "title": "Holding the pick",
+          "summary": "Grip the pick between your thumb and index finger and pick the top three strings.",
+          "skills": ["singleNotes", "rhythm"],
+          "learn": {
+            "what": "A pick gives a brighter, clearer sound than a fingertip and makes quick strumming easier. Holding it well keeps it steady while still letting you play lightly. A medium pick, about 0.6 to 0.8 mm thick, is a good one to start with.",
+            "steps": [
+              "Curl your index finger loosely, as if holding the handle of a cup.",
+              "Lay the pick on the side of the top joint of your index finger, with the point facing away from you.",
+              "Press your thumb flat on top, so only a few millimetres of the point show.",
+              "Pick down through one string, moving from the wrist rather than the whole arm.",
+              "Stop just past the string, ready for the next note."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Too much pick showing, so it catches and drags on the strings.",
+                "fix": "Show only a few millimetres of the point. Hold it nearer the tip if it snags."
+              },
+              {
+                "mistake": "Squeezing the pick so hard that your hand tires.",
+                "fix": "Grip just firmly enough that the pick doesn't twist, and keep your thumb relaxed."
+              },
+              {
+                "mistake": "Big arm swings that hit the strings next door.",
+                "fix": "Keep the movement small and from the wrist, stopping just past the string."
+              }
+            ],
+            "tip": "If the pick keeps slipping, try one with a textured grip or a slightly thicker one."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 64,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 2
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "tuning-up",
+          "title": "Tuning up",
+          "summary": "Tune each string with the tuner, then check that all six ring true.",
+          "skills": ["singleNotes", "rhythm"],
+          "learn": {
+            "what": "Even a perfect chord sounds wrong on an out-of-tune guitar, and strings drift whenever you play, the temperature changes or the guitar is moved. Tuning before every session takes a minute and makes everything sound better. This lesson's check listens for each string's pitch, so passing it also tells you your tuning is right.",
+            "steps": [
+              "Open the tuner and play the 6th string, the thickest. The tuner shows the note and how far it is from the target.",
+              "Turn that string's tuning peg slowly while the note rings: tighten if the tuner says flat, loosen if it says sharp.",
+              "Finish by tuning up to the note. If you overshoot, go below it and come back up, so the string holds its pitch.",
+              "Tune every string, then check them all once more: tuning one can pull the others slightly."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Turning the wrong peg, so the string you're playing doesn't change.",
+                "fix": "Follow the string from the nut to its peg before you turn, and watch the tuner as you go."
+              },
+              {
+                "mistake": "Turning quickly and breaking a string.",
+                "fix": "Make small turns and let the tuner catch up. A quarter turn is already a big change."
+              },
+              {
+                "mistake": "Plucking hard and reading the first wobble.",
+                "fix": "Pluck gently and read the steady part of the note, a moment after you pluck."
+              }
+            ],
+            "tip": "The tuner can also play a reference tone for each string, if you'd like to tune by ear.",
+            "tool": "tuner"
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 2
+                  },
+                  {
+                    "string": 5,
+                    "fret": 0,
+                    "beats": 2
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 2
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 2
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 2
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 2
+                  }
+                ]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "naming-the-strings",
+          "title": "Naming the strings",
+          "summary": "Learn the six string names and numbers, from low E to high e.",
+          "skills": ["theory", "singleNotes"],
+          "learn": {
+            "what": "Lessons name the strings two ways: by number and by note. String 6 is the thickest and lowest; string 1 is the thinnest and highest. From 6 to 1 the open strings are E, A, D, G, B and E, so there are two E strings, two octaves apart. Knowing them by heart makes tab, chord diagrams and the tuner much easier to follow.",
+            "steps": [
+              "Say the names aloud from the thickest string to the thinnest: E, A, D, G, B, E.",
+              "Remember them with a phrase: Every Ant Digs Great Big Earthworks.",
+              "Call the thickest string low E and the thinnest high e. Tab often writes the high one in lower case.",
+              "Play each string as you say its name, then come back from string 1 to string 6."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Thinking string 1 is the one nearest your face.",
+                "fix": "String 1 is the thinnest, nearest the floor. The numbers count up from the floor."
+              },
+              {
+                "mistake": "Mixing up the two E strings.",
+                "fix": "Low E is string 6, the thickest. High e is string 1, the thinnest."
+              }
+            ],
+            "tip": "Turn on note names in the practicer's Display options to see each string's name as you play."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 66,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 5,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 5,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 2
+                  }
+                ]
+              }
+            ],
+            "repeat": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "fretting-notes",
+      "title": "Fretting notes",
+      "summary": "Press the strings to the frets, number your fingers and walk them along the neck.",
+      "lessons": [
+        {
+          "id": "frets-and-fretting",
+          "title": "Frets and fretting",
+          "summary": "Press a string behind a fret to change its note, and play E, F and G on the high e.",
+          "skills": ["singleNotes", "rhythm"],
+          "learn": {
+            "what": "Pressing a string against a fret shortens the part that vibrates, so the note sounds higher. Each fret raises the note by a half step, or semitone. Frets are numbered from the nut, so fret 1 is the one nearest the headstock. In tab and chord diagrams, 0 means the open string.",
+            "steps": [
+              "Place the tip of your index finger on the high e string just behind fret 1: on the headstock side of the fret, not on top of it.",
+              "Press just hard enough for the note to ring clearly, with your thumb resting behind the neck.",
+              "Pluck: that's F. Play the open string, E, to hear the difference.",
+              "Now use your ring finger just behind fret 3 for G."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Notes that buzz.",
+                "fix": "Move your fingertip closer to the fret and press straight down with the very tip."
+              },
+              {
+                "mistake": "Pressing with the flat pad of the finger, which mutes the string next to it.",
+                "fix": "Arch your finger so the tip comes down on the string like a little hammer."
+              },
+              {
+                "mistake": "Squeezing the neck until your hand aches.",
+                "fix": "Press until the buzz stops and no harder. Relax your hand between notes."
+              }
+            ],
+            "tip": "Sore fingertips are normal for the first few weeks. Short daily practice builds calluses faster than long sessions."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 1,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  }
+                ]
+              }
+            ],
+            "repeat": 4
+          }
+        },
+        {
+          "id": "finger-numbers",
+          "title": "Finger numbers",
+          "summary": "Number your fretting fingers 1 to 4 and play frets 1 to 4 on the B string.",
+          "skills": ["theory", "singleNotes"],
+          "learn": {
+            "what": "Chord diagrams and tab number the fingers of your fretting hand: 1 is the index, 2 the middle, 3 the ring and 4 the little finger. The thumb (T) usually stays behind the neck. Following the suggested fingers puts your hand in place for the next note before you need it.",
+            "steps": [
+              "Hold up your fretting hand and name the fingers: 1 index, 2 middle, 3 ring, 4 little.",
+              "On the B string, put finger 1 just behind fret 1, finger 2 behind fret 2, and so on: one finger per fret.",
+              "Play frets 1, 2, 3 and 4, one note per click, then come back down from 4 to 1.",
+              "When you lift a finger, keep it hovering just above the string."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Playing everything with the index finger.",
+                "fix": "Use the finger the lesson suggests. Your little finger gets stronger with use."
+              },
+              {
+                "mistake": "Lifting fingers far away from the strings.",
+                "fix": "Keep them close, a few millimetres above, ready to land."
+              }
+            ],
+            "tip": "Your little finger will feel weak at first. That's normal, and it catches up within a couple of weeks.",
+            "figure": "finger-numbers"
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 2,
+                    "fret": 4,
+                    "beats": 1,
+                    "finger": 4
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 4,
+                    "beats": 1,
+                    "finger": 4
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 2,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  }
+                ]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "one-finger-per-fret",
+          "title": "One finger per fret",
+          "summary": "Walk frets 1 to 4 across the top three strings to train each finger.",
+          "skills": ["singleNotes", "rhythm"],
+          "learn": {
+            "what": "This exercise, often called a spider walk, trains each finger to press its own fret without help from the others. It builds strength, reach and accuracy, and it makes a good warm-up before every session.",
+            "steps": [
+              "Place your hand so each finger hovers over its own fret: finger 1 over fret 1, through to finger 4 over fret 4.",
+              "Play frets 1, 2, 3 and 4 on the G string, then on the B string, then on the high e.",
+              "Come back down from fret 4 to fret 1 on the high e.",
+              "Keep your thumb behind the neck, roughly opposite your middle finger."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Your hand sliding up and down the neck.",
+                "fix": "Keep the hand still and let only the fingers move."
+              },
+              {
+                "mistake": "Rushing the first notes and dragging the last ones.",
+                "fix": "Play exactly on the click. Speed comes later."
+              }
+            ],
+            "tip": "For an extra challenge, leave each finger down as you climb a string: 1, then 1 and 2, then 1, 2 and 3."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 3,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 3,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 3,
+                    "fret": 4,
+                    "beats": 1,
+                    "finger": 4
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 2,
+                    "fret": 4,
+                    "beats": 1,
+                    "finger": 4
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 1,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 1,
+                    "fret": 4,
+                    "beats": 1,
+                    "finger": 4
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 4,
+                    "beats": 1,
+                    "finger": 4
+                  },
+                  {
+                    "string": 1,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 1,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 1,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "moving-across-strings",
+          "title": "Moving across strings",
+          "summary": "Move the pick from string to string without losing the beat.",
+          "skills": ["singleNotes", "rhythm"],
+          "learn": {
+            "what": "Melodies and riffs jump between strings all the time. The skill is moving the pick exactly the right distance, so you hit the string you want and nothing else. Small, controlled movements make it reliable.",
+            "steps": [
+              "Rest the side of your picking hand lightly near the bridge, so it has a fixed point to move from.",
+              "Play the open D, G, B and high e strings in order, one per click, then come back down.",
+              "Watch the pick for the first few rounds, then try it by feel.",
+              "The second half adds two fretted notes at fret 2, played with fingers 2 and 3."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Hitting two strings at once.",
+                "fix": "Aim through one string and stop before you reach the next."
+              },
+              {
+                "mistake": "Big jumps that make you late.",
+                "fix": "Move only as far as the next string; the pick hardly leaves the strings."
+              }
+            ],
+            "tip": "Say the string names as you play them, to link each name with its sound."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 66,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 4,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 3,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 4,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  }
+                ]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "your-first-riff",
+          "title": "Your first riff",
+          "summary": "Play a short original riff on the two lowest strings.",
+          "skills": ["singleNotes", "rhythm"],
+          "learn": {
+            "what": "A riff is a short, catchy phrase that repeats. Riffs on the low strings drive a lot of rock and blues. This one uses the open low E and A strings and two fretted notes, so you can focus on keeping it steady and even.",
+            "steps": [
+              "Rest the side of your picking hand near the bridge to steady it.",
+              "Play the open low E twice, then fret 3 on the same string with finger 3, then the open string again.",
+              "Bar 2 moves to the A string: open, then fret 2 with finger 2.",
+              "Let the last two notes ring for two beats each."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Fretted notes stopping short.",
+                "fix": "Keep pressing until the next note is due."
+              },
+              {
+                "mistake": "Open strings ringing on into the next note.",
+                "fix": "Touch the string lightly with the side of your picking hand to stop it when the next note comes."
+              }
+            ],
+            "tip": "Once it feels easy, play the riff a little harder for a heavier sound."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 72,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 6,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 5,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 5,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 6,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 6,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 5,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 5,
+                    "fret": 2,
+                    "beats": 2,
+                    "finger": 2
+                  },
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 2
+                  }
+                ]
+              }
+            ],
+            "repeat": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "reading-music",
+      "title": "Reading guitar music",
+      "summary": "Read tab and chord diagrams, count beats, and play your first melody and song.",
+      "lessons": [
+        {
+          "id": "reading-tab",
+          "title": "Reading tab",
+          "summary": "Read tablature: six lines for six strings, numbers for frets.",
+          "skills": ["theory", "singleNotes"],
+          "learn": {
+            "what": "Tab, short for tablature, is the quickest way to write guitar music. Its six lines are the six strings, with high e on top, as if you were looking down at the neck. A number on a line tells you which fret to play on that string, and 0 means open. Read it from left to right, like text.",
+            "steps": [
+              "Find the top line: that's the high e string. The bottom line is low E.",
+              "Read the first number and its line: 0 on the second line means the open B string.",
+              "Numbers in a row are played one after another; numbers stacked on top of each other are played together.",
+              "In the practicer the tab scrolls towards the play line, and the space after each note shows how long it lasts."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Reading the top line as low E.",
+                "fix": "Tab is the other way up to how you see the strings: the top line is the highest string, high e."
+              },
+              {
+                "mistake": "Reading the numbers as fingers.",
+                "fix": "Tab numbers are frets. Finger suggestions appear separately, if at all."
+              }
+            ],
+            "tip": "Turn on note names in the Display options to see the note each number makes."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 66,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 2
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 2,
+                    "finger": 3
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 4
+                  }
+                ]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "counting-beats",
+          "title": "Counting beats",
+          "summary": "Count 1 2 3 4 and hold notes for one, two or four beats.",
+          "skills": ["rhythm", "singleNotes"],
+          "learn": {
+            "what": "Music runs on beats, the steady pulse you tap your foot to, grouped into bars. In four-four time each bar has four beats: count 1 2 3 4, 1 2 3 4. A quarter note lasts one beat, a half note two and a whole note four. A rest is a beat of silence, and you count it just like a note.",
+            "steps": [
+              "Tap your foot with the click and count aloud: 1 2 3 4.",
+              "Bar 1 is one whole note: play on 1 and let it ring until the next bar.",
+              "Bar 2 has two half notes, on 1 and 3. Bar 3 has two quarter notes and a half note.",
+              "Bar 4 has rests on 2 and 4: touch the strings with your picking hand to stop the sound."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Cutting long notes short.",
+                "fix": "Keep counting while the note rings, and don't move until its time is up."
+              },
+              {
+                "mistake": "Rushing through rests.",
+                "fix": "Count a rest out loud like a note: the next note still waits for its beat."
+              }
+            ],
+            "tip": "Counting aloud feels odd at first, but it's the quickest way to lock in your timing."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 66,
+            "bars": [
+              {
+                "notes": [
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 4
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 4,
+                    "fret": 0,
+                    "beats": 2
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 2
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 2
+                  }
+                ]
+              },
+              {
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "beats": 1
+                  }
+                ]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "reading-chord-diagrams",
+          "title": "Reading chord diagrams",
+          "summary": "Read a chord box, then pick through E minor one string at a time.",
+          "skills": ["theory", "singleNotes"],
+          "learn": {
+            "what": "A chord diagram is a picture of the neck standing upright. The vertical lines are strings, with low E on the left; the horizontal lines are frets; the thick bar at the top is the nut. Dots show where to press, with numbers for the fingers. An O above a string means play it open, and an X means leave it out.",
+            "steps": [
+              "Look at the E minor diagram: two dots, both at fret 2, on the A and D strings.",
+              "Place finger 2 on the A string and finger 3 on the D string, both just behind fret 2.",
+              "Check the top of the diagram: every string has an O, so all six are played.",
+              "Hold the chord and pick the strings one at a time, listening for any that buzz or stay silent."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Reading the diagram sideways and fretting the wrong strings.",
+                "fix": "In a chord box the left-hand line is the thickest string, low E."
+              },
+              {
+                "mistake": "A finger leaning on the next string and muting it.",
+                "fix": "Arch your fingers so each touches only its own string."
+              }
+            ],
+            "tip": "Picking a chord one string at a time is the best way to check that it rings cleanly."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 66,
+            "bars": [
+              {
+                "chord": "Em",
+                "notes": [
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 5,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 4,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "chord": "Em",
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 0,
+                    "beats": 1
+                  }
+                ]
+              },
+              {
+                "chord": "Em",
+                "notes": [
+                  {
+                    "string": 4,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 5,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 6,
+                    "fret": 0,
+                    "beats": 2
+                  }
+                ]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "your-first-melody",
+          "title": "Your first melody",
+          "summary": "Play an original eight-bar melody on the top two strings.",
+          "skills": ["singleNotes", "rhythm"],
+          "learn": {
+            "what": "A melody is a tune you could sing. This one, written for FretPath, uses five notes on the top two strings: C and D on the B string, and E, F and G on the high e. Most notes sit next to each other, so your hand stays in one place.",
+            "steps": [
+              "Rest your hand with finger 1 over fret 1 and finger 3 over fret 3. Every fretted note uses one of these two fingers.",
+              "Follow the tab as it scrolls: B string notes are on the second line, high e notes on the top line.",
+              "Hold the half notes, and the whole note at the end, for their full length.",
+              "Listen to it once, then play along."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Watching your fingers and losing your place in the tab.",
+                "fix": "Keep your eyes on the tab and feel for the frets."
+              },
+              {
+                "mistake": "Playing a note on the wrong string.",
+                "fix": "Check which line each number sits on: the line is the string."
+              }
+            ],
+            "tip": "Once you know it, try humming the melody as you play."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 72,
+            "bars": [
+              {
+                "chord": "C",
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  }
+                ]
+              },
+              {
+                "chord": "G",
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 2,
+                    "finger": 3
+                  }
+                ]
+              },
+              {
+                "chord": "C",
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 3,
+                    "beats": 2,
+                    "finger": 3
+                  }
+                ]
+              },
+              {
+                "chord": "G",
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 2,
+                    "finger": 3
+                  }
+                ]
+              },
+              {
+                "chord": "C",
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  }
+                ]
+              },
+              {
+                "chord": "G",
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 2,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 2,
+                    "finger": 1
+                  }
+                ]
+              },
+              {
+                "chord": "G",
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 3,
+                    "beats": 1,
+                    "finger": 3
+                  }
+                ]
+              },
+              {
+                "chord": "C",
+                "notes": [
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 4,
+                    "finger": 1
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "id": "stage-1-song",
+          "title": "Stage song: Ode to Joy",
+          "summary": "Bring it all together with Beethoven's famous theme on the top two strings.",
+          "skills": ["singleNotes", "rhythm"],
+          "learn": {
+            "what": "Ode to Joy comes from Beethoven's Ninth Symphony, first performed in 1824, and it's one of the best-known tunes in the world. It uses the same five notes as your first melody, plus the open G string at the end of the middle section. Pass this check to complete Stage 1.",
+            "steps": [
+              "The theme plays twice, with a different ending the second time.",
+              "Watch for the dotted rhythm at the end of each theme: a long note, a short one, then a held note.",
+              "The middle section has two quick pairs of notes, E then F: play them twice as fast as the others.",
+              "The song ends with the theme once more."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Playing the dotted rhythm as even notes.",
+                "fix": "Count “1 2 & 3 4”: the long note lasts from 1 until the “&”, where the short note goes, and the held note starts on 3."
+              },
+              {
+                "mistake": "Losing the beat in the quick pairs.",
+                "fix": "Keep your foot tapping: the quick notes fit two to a tap."
+              }
+            ],
+            "tip": "If a passage is tricky, loop it in Practice at a slower tempo, then build back up."
+          },
+          "song": "ode-to-joy"
+        }
+      ]
+    }
+  ]
+}

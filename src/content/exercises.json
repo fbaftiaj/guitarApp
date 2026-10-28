@@ -1,11 +1,4 @@
 {
-  "strumPatterns": {
-    "quarters": "D.D.D.D.",
-    "eighths": "DDDDDDDD",
-    "folk": "D.DU.UDU",
-    "waltz": "D.D.D.",
-    "waltz-up": "D.DUDU"
-  },
   "exercises": [
     {
       "id": "em-am-changes",
@@ -13,15 +6,26 @@
       "title": "Em – Am changes",
       "description": "Switch between E minor and A minor every bar with steady downstrokes.",
       "skills": ["chords", "chordChanges", "rhythm"],
-      "timeSignature": { "beats": 4, "unit": 4 },
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
       "tempo": 80,
       "strum": "quarters",
       "repeat": 2,
       "bars": [
-        { "chords": ["Em"] },
-        { "chords": ["Am"] },
-        { "chords": ["Em"] },
-        { "chords": ["Am"] }
+        {
+          "chords": ["Em"]
+        },
+        {
+          "chords": ["Am"]
+        },
+        {
+          "chords": ["Em"]
+        },
+        {
+          "chords": ["Am"]
+        }
       ]
     },
     {
@@ -30,11 +34,27 @@
       "title": "G – C – D folk strum",
       "description": "The classic down, down-up, up-down-up pattern over three open chords.",
       "skills": ["chords", "chordChanges", "strumming", "rhythm"],
-      "timeSignature": { "beats": 4, "unit": 4 },
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
       "tempo": 90,
       "strum": "folk",
       "repeat": 2,
-      "bars": [{ "chords": ["G"] }, { "chords": ["C"] }, { "chords": ["D"] }, { "chords": ["G"] }]
+      "bars": [
+        {
+          "chords": ["G"]
+        },
+        {
+          "chords": ["C"]
+        },
+        {
+          "chords": ["D"]
+        },
+        {
+          "chords": ["G"]
+        }
+      ]
     },
     {
       "id": "a-d-half-bars",
@@ -42,11 +62,18 @@
       "title": "A – D half-bar changes",
       "description": "Two chords in every bar: change on beat 3 without losing the eighth-note pulse.",
       "skills": ["chords", "chordChanges", "rhythm"],
-      "timeSignature": { "beats": 4, "unit": 4 },
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
       "tempo": 72,
       "strum": "eighths",
       "repeat": 4,
-      "bars": [{ "chords": ["A", "D"] }]
+      "bars": [
+        {
+          "chords": ["A", "D"]
+        }
+      ]
     },
     {
       "id": "am-e-waltz",
@@ -54,18 +81,38 @@
       "title": "Waltz in A minor",
       "description": "Three beats to the bar: lean on beat one and keep the other two light.",
       "skills": ["chords", "chordChanges", "rhythm"],
-      "timeSignature": { "beats": 3, "unit": 4 },
+      "timeSignature": {
+        "beats": 3,
+        "unit": 4
+      },
       "tempo": 90,
       "strum": "waltz",
       "bars": [
-        { "chords": ["Am"] },
-        { "chords": ["E"] },
-        { "chords": ["Am"] },
-        { "chords": ["E"] },
-        { "chords": ["Am"] },
-        { "chords": ["Dm"] },
-        { "chords": ["E"] },
-        { "chords": ["Am"], "strum": "D....." }
+        {
+          "chords": ["Am"]
+        },
+        {
+          "chords": ["E"]
+        },
+        {
+          "chords": ["Am"]
+        },
+        {
+          "chords": ["E"]
+        },
+        {
+          "chords": ["Am"]
+        },
+        {
+          "chords": ["Dm"]
+        },
+        {
+          "chords": ["E"]
+        },
+        {
+          "chords": ["Am"],
+          "strum": "D....."
+        }
       ]
     },
     {
@@ -74,43 +121,110 @@
       "title": "Open-string warm-up",
       "description": "Pick each open string in turn, low to high and back, one note per beat.",
       "skills": ["singleNotes", "rhythm"],
-      "timeSignature": { "beats": 4, "unit": 4 },
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
       "tempo": 80,
       "bars": [
         {
           "chord": "Em",
           "notes": [
-            { "string": 6, "fret": 0, "beats": 1 },
-            { "string": 5, "fret": 0, "beats": 1 },
-            { "string": 4, "fret": 0, "beats": 1 },
-            { "string": 3, "fret": 0, "beats": 1 }
+            {
+              "string": 6,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 5,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 4,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 3,
+              "fret": 0,
+              "beats": 1
+            }
           ]
         },
         {
           "chord": "Em",
           "notes": [
-            { "string": 2, "fret": 0, "beats": 1 },
-            { "string": 1, "fret": 0, "beats": 1 },
-            { "string": 2, "fret": 0, "beats": 1 },
-            { "string": 3, "fret": 0, "beats": 1 }
+            {
+              "string": 2,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 1,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 2,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 3,
+              "fret": 0,
+              "beats": 1
+            }
           ]
         },
         {
           "chord": "Em",
           "notes": [
-            { "string": 4, "fret": 0, "beats": 1 },
-            { "string": 5, "fret": 0, "beats": 1 },
-            { "string": 6, "fret": 0, "beats": 1 },
-            { "string": 5, "fret": 0, "beats": 1 }
+            {
+              "string": 4,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 5,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 6,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 5,
+              "fret": 0,
+              "beats": 1
+            }
           ]
         },
         {
           "chord": "Em",
           "notes": [
-            { "string": 4, "fret": 0, "beats": 1 },
-            { "string": 3, "fret": 0, "beats": 1 },
-            { "string": 2, "fret": 0, "beats": 1 },
-            { "string": 1, "fret": 0, "beats": 1 }
+            {
+              "string": 4,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 3,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 2,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "string": 1,
+              "fret": 0,
+              "beats": 1
+            }
           ]
         }
       ]
@@ -121,33 +235,99 @@
       "title": "E minor riff",
       "description": "An original riff on the three bass strings, mostly eighth notes, in open position.",
       "skills": ["singleNotes", "lead", "rhythm"],
-      "timeSignature": { "beats": 4, "unit": 4 },
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
       "tempo": 90,
       "repeat": 2,
       "bars": [
         {
           "chord": "Em",
           "notes": [
-            { "string": 6, "fret": 0, "beats": 0.5 },
-            { "string": 6, "fret": 0, "beats": 0.5 },
-            { "string": 6, "fret": 3, "beats": 0.5, "finger": 3 },
-            { "string": 5, "fret": 0, "beats": 0.5 },
-            { "string": 5, "fret": 2, "beats": 0.5, "finger": 2 },
-            { "string": 5, "fret": 0, "beats": 0.5 },
-            { "string": 6, "fret": 3, "beats": 0.5, "finger": 3 },
-            { "string": 6, "fret": 0, "beats": 0.5 }
+            {
+              "string": 6,
+              "fret": 0,
+              "beats": 0.5
+            },
+            {
+              "string": 6,
+              "fret": 0,
+              "beats": 0.5
+            },
+            {
+              "string": 6,
+              "fret": 3,
+              "beats": 0.5,
+              "finger": 3
+            },
+            {
+              "string": 5,
+              "fret": 0,
+              "beats": 0.5
+            },
+            {
+              "string": 5,
+              "fret": 2,
+              "beats": 0.5,
+              "finger": 2
+            },
+            {
+              "string": 5,
+              "fret": 0,
+              "beats": 0.5
+            },
+            {
+              "string": 6,
+              "fret": 3,
+              "beats": 0.5,
+              "finger": 3
+            },
+            {
+              "string": 6,
+              "fret": 0,
+              "beats": 0.5
+            }
           ]
         },
         {
           "chord": "Em",
           "notes": [
-            { "string": 4, "fret": 0, "beats": 0.5 },
-            { "string": 4, "fret": 2, "beats": 0.5, "finger": 2 },
-            { "string": 4, "fret": 0, "beats": 0.5 },
-            { "string": 5, "fret": 2, "beats": 0.5, "finger": 2 },
-            { "string": 5, "fret": 0, "beats": 1 },
-            { "beats": 0.5 },
-            { "string": 6, "fret": 0, "beats": 0.5 }
+            {
+              "string": 4,
+              "fret": 0,
+              "beats": 0.5
+            },
+            {
+              "string": 4,
+              "fret": 2,
+              "beats": 0.5,
+              "finger": 2
+            },
+            {
+              "string": 4,
+              "fret": 0,
+              "beats": 0.5
+            },
+            {
+              "string": 5,
+              "fret": 2,
+              "beats": 0.5,
+              "finger": 2
+            },
+            {
+              "string": 5,
+              "fret": 0,
+              "beats": 1
+            },
+            {
+              "beats": 0.5
+            },
+            {
+              "string": 6,
+              "fret": 0,
+              "beats": 0.5
+            }
           ]
         }
       ]

@@ -120,6 +120,19 @@ describe('sessionRecord', () => {
     });
     expect(sessionResultSchema.safeParse({ ...record, id: 'x' }).success).toBe(true);
   });
+
+  it('records a lesson check with its lesson', () => {
+    const em = exercise('em-am-changes');
+    const summary = summarize([hit(0, 'perfect', true)], { exercise: em, tempo: 64, startTime: 0 });
+    const record = sessionRecord(summary, {
+      exercise: em,
+      tempo: 64,
+      startedAt: 1,
+      durationMs: 1,
+      context: { mode: 'check', lessonId: 'e-minor-chord' },
+    });
+    expect(record).toMatchObject({ mode: 'check', lessonId: 'e-minor-chord' });
+  });
 });
 
 describe('suggestion', () => {

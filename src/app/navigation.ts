@@ -15,12 +15,37 @@ export const TABS: readonly TabDefinition[] = [
   { to: '/profile', label: 'Profile', icon: CircleUser },
 ];
 
-export const HOME_PATH = '/tuner';
+export const TUNER_PATH = '/tuner';
+export const HOME_PATH = TUNER_PATH;
+
+export const LEARN_PATH = '/learn';
+
+export function stagePath(stageId: string): string {
+  return `${LEARN_PATH}/stage/${encodeURIComponent(stageId)}`;
+}
+
+/** A lesson's steps, in order. */
+export const LESSON_STEPS = ['learn', 'listen', 'practice', 'check'] as const;
+export type LessonStep = (typeof LESSON_STEPS)[number];
+
+export function isLessonStep(value: string | undefined): value is LessonStep {
+  return LESSON_STEPS.some((step) => step === value);
+}
+
+export function lessonPath(lessonId: string, step: LessonStep = 'learn'): string {
+  return `${LEARN_PATH}/lesson/${encodeURIComponent(lessonId)}/${step}`;
+}
 
 export const PRACTICE_PATH = '/practice';
 
 export function exercisePath(exerciseId: string): string {
   return `${PRACTICE_PATH}/${encodeURIComponent(exerciseId)}`;
+}
+
+export const SONGS_PATH = '/songs';
+
+export function songPath(songId: string): string {
+  return `${SONGS_PATH}/${encodeURIComponent(songId)}`;
 }
 
 export const SETTINGS_PATH = '/profile/settings';

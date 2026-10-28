@@ -42,9 +42,40 @@ export function createRoutes(): RouteObject[] {
             },
             {
               path: 'learn',
-              lazy: async () => ({
-                Component: (await import('@/features/learn/LearnScreen')).LearnScreen,
-              }),
+              lazy: async () => {
+                const [{ LearnScreen }, { whenProgressLoaded }] = await Promise.all([
+                  import('@/features/learn/LearnScreen'),
+                  import('@/stores/progressStore'),
+                ]);
+                // Show the saved progress, not a flash of a fresh course.
+                await whenProgressLoaded();
+                return { Component: LearnScreen };
+              },
+            },
+            {
+              path: 'learn/stage/:stageId',
+              lazy: async () => {
+                const [{ StageScreen }, { whenProgressLoaded }] = await Promise.all([
+                  import('@/features/learn/StageScreen'),
+                  import('@/stores/progressStore'),
+                ]);
+                await whenProgressLoaded();
+                return { Component: StageScreen };
+              },
+            },
+            {
+              path: 'learn/lesson/:lessonId/:step?',
+              lazy: async () => {
+                const [{ LessonScreen }, { whenProgressLoaded }, { whenPracticeHydrated }] =
+                  await Promise.all([
+                    import('@/features/learn/LessonScreen'),
+                    import('@/stores/progressStore'),
+                    import('@/features/practice/practiceStore'),
+                  ]);
+                // A locked lesson must not flash open, nor practice start at a default tempo.
+                await Promise.all([whenProgressLoaded(), whenPracticeHydrated()]);
+                return { Component: LessonScreen };
+              },
             },
             {
               path: 'practice',
@@ -69,6 +100,17 @@ export function createRoutes(): RouteObject[] {
               lazy: async () => ({
                 Component: (await import('@/features/songs/SongsScreen')).SongsScreen,
               }),
+            },
+            {
+              path: 'songs/:songId',
+              lazy: async () => {
+                const [{ SongScreen }, { whenPracticeHydrated }] = await Promise.all([
+                  import('@/features/songs/SongScreen'),
+                  import('@/features/practice/practiceStore'),
+                ]);
+                await whenPracticeHydrated();
+                return { Component: SongScreen };
+              },
             },
             {
               path: 'profile',

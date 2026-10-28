@@ -1,0 +1,663 @@
+{
+  "stage": "rhythm-foundations",
+  "units": [
+    {
+      "id": "down-and-up",
+      "title": "Down and up",
+      "summary": "Add up-strums, count eighth notes and keep your strumming hand moving.",
+      "lessons": [
+        {
+          "id": "up-strums",
+          "title": "Up-strums",
+          "summary": "Add your first up-strum, on the “and” after beat 4.",
+          "skills": ["strumming", "rhythm"],
+          "learn": {
+            "what": "So far every strum has gone down. Strumming up as your hand comes back makes rhythms lighter and quicker. An up-strum usually catches only the top three or four strings, which gives it a softer sound.",
+            "steps": [
+              "Strum down on beats 1, 2, 3 and 4 as before.",
+              "After the strum on 4, brush up across the top strings as your hand rises: that's the “and” of 4.",
+              "Count “1 2 3 4 &”, with the up-strum on the “&”.",
+              "Keep the up-strum lighter than the downstrokes."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Up-strums as loud as downstrokes, hitting all six strings.",
+                "fix": "Aim the up-strum at the top three or four strings only."
+              },
+              {
+                "mistake": "Pausing between beat 4 and the up-strum.",
+                "fix": "The up-strum is just your hand coming back up, so keep it moving."
+              }
+            ],
+            "tip": "Hold the pick a little more loosely for up-strums, so it glides over the strings."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 64,
+            "strum": "one-up",
+            "bars": [
+              {
+                "chords": ["Em"]
+              },
+              {
+                "chords": ["Em"]
+              },
+              {
+                "chords": ["Em"]
+              },
+              {
+                "chords": ["Em"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "eighth-notes",
+          "title": "Eighth notes: 1 & 2 &",
+          "summary": "Strum down on the numbers and up on the “and”s.",
+          "skills": ["strumming", "rhythm"],
+          "learn": {
+            "what": "Splitting each beat in two gives eighth notes, counted “1 & 2 & 3 & 4 &”. Strumming down on the numbers and up on the “and”s gives eight even strums per bar, the basis of nearly every strum pattern.",
+            "steps": [
+              "Count “1 & 2 & 3 & 4 &” aloud, with the click on the numbers.",
+              "Strum down on each number and up on each “&”.",
+              "Keep your wrist loose: the motion comes from the wrist, like shaking water off your hand.",
+              "Make the strums even, in both volume and spacing."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Rushing the up-strums so they bunch up towards the next beat.",
+                "fix": "Put each “&” exactly halfway between two clicks."
+              },
+              {
+                "mistake": "Strumming from the elbow, which tires your arm.",
+                "fix": "Let the wrist do the work; the forearm just follows."
+              }
+            ],
+            "tip": "Down on the numbers, up on the “and”s: that rule holds for every pattern in this stage."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "strum": "down-up",
+            "bars": [
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["G"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "keep-your-hand-moving",
+          "title": "Keep your hand moving",
+          "summary": "Skip some strums on purpose while your hand keeps the down-up motion.",
+          "skills": ["strumming", "rhythm"],
+          "learn": {
+            "what": "Real strum patterns leave out some of the eight strums. The secret is that your hand never stops: it keeps moving down and up in time and simply misses the strings where a strum is left out. That's what keeps the rhythm steady.",
+            "steps": [
+              "Start the down-up motion: down on the numbers, up on the “and”s.",
+              "This pattern is D – D U D – D U. On the “and” of 1 and the “and” of 3, your hand passes the strings without touching them.",
+              "Move your hand slightly away from the strings for the missed strums.",
+              "Count the full “1 & 2 & 3 & 4 &” to stay in time."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Stopping your hand on the missed strums, then rushing to catch up.",
+                "fix": "Keep the motion constant; only the contact with the strings changes."
+              },
+              {
+                "mistake": "Catching the strings on the missed strums.",
+                "fix": "Lift your hand a little further away from the strings for those."
+              }
+            ],
+            "tip": "Missed strums like these are often called ghost strums."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 66,
+            "strum": "down-down-up",
+            "bars": [
+              {
+                "chords": ["Am"]
+              },
+              {
+                "chords": ["Am"]
+              },
+              {
+                "chords": ["Am"]
+              },
+              {
+                "chords": ["Am"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "patterns-with-changes",
+          "title": "Patterns with chord changes",
+          "summary": "Keep a strum pattern going through chord changes.",
+          "skills": ["strumming", "rhythm", "chordChanges"],
+          "learn": {
+            "what": "The real test of a strum pattern is keeping it steady while your fretting hand changes chord. The last up-strum of each bar is the moment to change: let it catch the open strings while your fingers move.",
+            "steps": [
+              "Play D – D U D – D U on C, G, Am and Em, one bar each.",
+              "Start moving to the next chord on the last “&” of the bar.",
+              "It's fine if that last up-strum hits open strings: everyone does it.",
+              "Land the new chord in time for the downstroke on 1."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Holding the old chord until beat 1, then scrambling.",
+                "fix": "Leave it on the last “&”, so you land on time."
+              },
+              {
+                "mistake": "Your strumming hand stopping during the change.",
+                "fix": "The strumming hand never waits for the fretting hand."
+              }
+            ],
+            "tip": "If one change is slower than the others, loop just those two bars in Practice."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 66,
+            "strum": "down-down-up",
+            "bars": [
+              {
+                "chords": ["C"]
+              },
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["Am"]
+              },
+              {
+                "chords": ["Em"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "keeping-time",
+          "title": "Keeping time with a metronome",
+          "summary": "Change how often you strum while the beat stays exactly the same.",
+          "skills": ["strumming", "rhythm"],
+          "learn": {
+            "what": "A metronome is a strict but honest teacher: it shows when you speed up or slow down. Players tend to rush busy rhythms and drag simple ones. This lesson changes how many strums you play each bar, from two to four to eight, while the beat stays steady.",
+            "steps": [
+              "Bar 1: two strums, on beats 1 and 3.",
+              "Bar 2: four strums, one on each beat.",
+              "Bar 3: eight strums, down and up.",
+              "Bar 4: back to four strums. The click never changes; only your hand does."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Speeding up in the eighth-note bar.",
+                "fix": "The click stays the same; the extra strums just fill in between."
+              },
+              {
+                "mistake": "Slowing down in the two-strum bar.",
+                "fix": "Keep your hand moving down and up silently through the gaps."
+              }
+            ],
+            "tip": "Record yourself playing with the click and listen back: it shows your timing habits clearly."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 70,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["D"],
+                "strum": "half-notes"
+              },
+              {
+                "chords": ["D"]
+              },
+              {
+                "chords": ["D"],
+                "strum": "down-up"
+              },
+              {
+                "chords": ["D"]
+              }
+            ],
+            "repeat": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "strum-patterns",
+      "title": "Common strum patterns",
+      "summary": "The folk strum, waltz time, changes on the beat, two chords per bar, and rests.",
+      "lessons": [
+        {
+          "id": "folk-strum",
+          "title": "The folk strum",
+          "summary": "Down, down-up, up-down-up: the pattern behind countless songs.",
+          "skills": ["strumming", "rhythm", "chordChanges"],
+          "learn": {
+            "what": "This pattern, D – D U – U D U, suits a huge range of folk, pop and rock songs. It leaves out the downstroke on beat 3, which gives the second half of the bar a lift.",
+            "steps": [
+              "Count “1 & 2 & 3 & 4 &”.",
+              "Strum down on 1, down on 2, up on the “&” of 2, nothing on 3, up on the “&” of 3, then down on 4 and up on its “&”.",
+              "Keep the down-up motion going: on beat 3 your hand passes over the strings.",
+              "Saying “down, down-up, up-down-up” as you play helps."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Stopping your hand on the missed beat 3.",
+                "fix": "Your hand still moves down on 3; it just doesn't touch the strings."
+              },
+              {
+                "mistake": "Two up-strums in a row feeling awkward.",
+                "fix": "They have a silent downstroke between them, so keep the motion going."
+              }
+            ],
+            "tip": "If it's tricky, loop just the middle of the bar (D U – U) slowly until it feels natural."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 70,
+            "strum": "folk",
+            "bars": [
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["C"]
+              },
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["D"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "waltz-time",
+          "title": "Waltz time: 3/4",
+          "summary": "Count in threes and strum a waltz.",
+          "skills": ["strumming", "rhythm", "chordChanges"],
+          "learn": {
+            "what": "Not all music counts in fours. Waltzes and many folk songs and hymns have three beats per bar, written 3/4 and counted “1 2 3”. The first beat is the strongest, which gives the music its swaying feel.",
+            "steps": [
+              "Count “1 2 3, 1 2 3” with the click.",
+              "Strum down on 1, then down-up on 2 and on 3: D – D U D U.",
+              "Make beat 1 slightly stronger than the others.",
+              "Change chords on the last up-strum, as before."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Adding a fourth beat out of habit.",
+                "fix": "Count aloud: each bar ends after 3."
+              },
+              {
+                "mistake": "Strumming everything equally loudly, so the sway disappears.",
+                "fix": "Lean into beat 1 a little."
+              }
+            ],
+            "tip": "Amazing Grace and Scarborough Fair, later in this stage, are both in 3/4."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 3,
+              "unit": 4
+            },
+            "tempo": 80,
+            "strum": "waltz-up",
+            "bars": [
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["C"]
+              },
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["D"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "changing-on-the-beat",
+          "title": "Changing on the beat",
+          "summary": "Make every new chord land exactly on beat 1.",
+          "skills": ["strumming", "rhythm", "chordChanges"],
+          "learn": {
+            "what": "A late chord change stands out even more than a wrong note. This lesson uses a busy pattern, down on 1 and then down-up for the rest of the bar, so there's no gap to hide a late change. Leaving the old chord on the last up-strum is what makes the new one land on time.",
+            "steps": [
+              "The pattern is D – D U D U D U.",
+              "On the last up-strum, start lifting your fingers for the next chord.",
+              "Land the new chord on beat 1, even if it isn't perfect yet.",
+              "In Practice, turn on Wait mode if you'd like the app to wait for each chord."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Lifting off the old chord too early, so half the bar sounds open.",
+                "fix": "Leave only on the very last “&”."
+              },
+              {
+                "mistake": "Landing the new chord after beat 1.",
+                "fix": "Practise the change on its own: lift on “4 &”, land on “1”."
+              }
+            ],
+            "tip": "If one change still lands late, loop those two bars in Practice."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 70,
+            "strum": "rock",
+            "bars": [
+              {
+                "chords": ["Em"]
+              },
+              {
+                "chords": ["C"]
+              },
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["D"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "two-chords-per-bar",
+          "title": "Two chords in a bar",
+          "summary": "Change halfway through the bar, on beat 3.",
+          "skills": ["strumming", "rhythm", "chordChanges"],
+          "learn": {
+            "what": "Many songs change chord twice in a bar, on beats 1 and 3. That halves the time for each change, so the shapes need to be ready. The pattern D – D U splits neatly into two halves, one for each chord.",
+            "steps": [
+              "Each half bar gets D – D U: down on 1, down-up on 2; then down on 3, down-up on 4.",
+              "Change on the up-strum of beat 2, ready for the new chord on beat 3.",
+              "The chord lane shows two blocks in each bar: the second starts on beat 3.",
+              "Practise slowly until both changes feel the same."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Holding the first chord for the whole bar.",
+                "fix": "Watch the chord lane and count: the change comes on 3."
+              },
+              {
+                "mistake": "Dropping the up-strums to buy time.",
+                "fix": "Keep the whole pattern, and let the up-strum before each change hit the open strings."
+              }
+            ],
+            "tip": "Your stage song, Auld Lang Syne, has a two-chord bar near the end of each half."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 66,
+            "strum": "down-down-up",
+            "bars": [
+              {
+                "chords": ["G", "D"]
+              },
+              {
+                "chords": ["Em", "C"]
+              },
+              {
+                "chords": ["G", "D"]
+              },
+              {
+                "chords": ["C", "G"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "rests-and-accents",
+          "title": "Rests and accents",
+          "summary": "Stop the sound on purpose, and lean into beat 1.",
+          "skills": ["strumming", "rhythm"],
+          "learn": {
+            "what": "Silence is part of rhythm. Stopping the strings for a beat (a rest) and playing some strums a little louder (accents) give a pattern its character. This lesson plays D – D U D, then rests on beat 4 by stopping the chord with your strumming hand.",
+            "steps": [
+              "Strum down on 1, down on 2, up on the “&” of 2, down on 3.",
+              "On beat 4, rest the side of your strumming hand on the strings to cut the sound.",
+              "Lift your hand again in time for beat 1.",
+              "Accent beat 1 of each bar by strumming it a little harder."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Letting the chord ring through the rest.",
+                "fix": "Mute it with the side of your palm, right on beat 4."
+              },
+              {
+                "mistake": "Coming back late after the rest.",
+                "fix": "Keep counting “4 &” through the silence."
+              }
+            ],
+            "tip": "The check scores your timing, not your accents, but accents are what bring a rhythm to life."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 72,
+            "strum": "stop",
+            "bars": [
+              {
+                "chords": ["A"]
+              },
+              {
+                "chords": ["D"]
+              },
+              {
+                "chords": ["A"]
+              },
+              {
+                "chords": ["E"]
+              }
+            ],
+            "repeat": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "first-full-songs",
+      "title": "Your first full songs",
+      "summary": "Four complete songs, then your Stage 3 song.",
+      "lessons": [
+        {
+          "id": "song-saints",
+          "title": "When the Saints Go Marching In",
+          "summary": "A traditional march with the D – D U D – D U pattern.",
+          "skills": ["strumming", "rhythm", "chordChanges"],
+          "learn": {
+            "what": "When the Saints Go Marching In is a traditional American spiritual and a favourite of New Orleans brass bands. It stays on G for most of the song, so you can focus on the strum, with changes to D and C near the end of each line.",
+            "steps": [
+              "Strum D – D U D – D U throughout.",
+              "The first line is six bars of G, then two of D.",
+              "The second line goes G, C, then G, D and back to G.",
+              "Look ahead for each change: they all come on beat 1."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Losing the pattern during the long stretch of G.",
+                "fix": "Count bars as well as beats, so you know when D is coming."
+              },
+              {
+                "mistake": "Rushing the change from C back to G.",
+                "fix": "Leave C on the last up-strum of the bar."
+              }
+            ],
+            "tip": "Once you know it, try humming the tune while you strum."
+          },
+          "song": "when-the-saints"
+        },
+        {
+          "id": "song-amazing-grace",
+          "title": "Amazing Grace",
+          "summary": "A gentle hymn in 3/4 with the waltz strum.",
+          "skills": ["strumming", "rhythm", "chordChanges"],
+          "learn": {
+            "what": "Amazing Grace sets words written by John Newton in 1779 to a tune called New Britain, first printed in 1829. In 3/4 time, it moves slowly between G, C and D, which makes it ideal for practising a steady waltz strum.",
+            "steps": [
+              "Strum D – D U D U in every bar, counting “1 2 3”.",
+              "Make beat 1 slightly stronger to keep the sway.",
+              "The changes go from G to C and back, with two bars of D at the end of the first half.",
+              "Let the final G ring at the end."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Counting in four.",
+                "fix": "Keep counting “1 2 3”: each bar ends after 3."
+              },
+              {
+                "mistake": "Rushing the slow tempo.",
+                "fix": "Let each strum breathe; the click keeps you honest."
+              }
+            ],
+            "tip": "For a simpler, hymn-like feel, try it with just three downstrokes per bar."
+          },
+          "song": "amazing-grace"
+        },
+        {
+          "id": "song-scarborough-fair",
+          "title": "Scarborough Fair",
+          "summary": "A traditional ballad in A minor, in 3/4.",
+          "skills": ["strumming", "rhythm", "chordChanges"],
+          "learn": {
+            "what": "Scarborough Fair is an old English ballad that has been sung for centuries in many versions. Its minor sound comes from A minor, the home chord, with G, C, D and Em around it. It uses the plain waltz strum: three downstrokes per bar.",
+            "steps": [
+              "Strum down on 1, 2 and 3 in every bar.",
+              "Am is home: every phrase finds its way back to it.",
+              "Watch for D near the end of the first half: it's the brightest chord in the song.",
+              "Keep the strums gentle; this is a quiet song."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Strumming the low E on Am, C or D.",
+                "fix": "Start Am and C from the A string, and D from the D string."
+              },
+              {
+                "mistake": "Hurrying the change from D back to Am.",
+                "fix": "Loop those two bars in Practice until the change is smooth."
+              }
+            ],
+            "tip": "Once you've passed the check, try picking the chords one string at a time: it suits the song beautifully."
+          },
+          "song": "scarborough-fair"
+        },
+        {
+          "id": "song-back-porch-groove",
+          "title": "Back Porch Groove",
+          "summary": "An original groove that fills out at the end of each bar.",
+          "skills": ["strumming", "rhythm", "chordChanges"],
+          "learn": {
+            "what": "Back Porch Groove was written for FretPath. It loops Em, C, G and D with a pattern that starts plain and fills out towards the end of the bar: D – D – D U D U. A short bridge visits Am before the groove returns.",
+            "steps": [
+              "The pattern is down on 1, down on 2, then down-up on 3 and down-up on 4.",
+              "Play the groove twice, then the bridge, then the groove again.",
+              "The bridge goes C, G, Am, D, and D leads back to the groove's Em.",
+              "Keep it relaxed: a groove should feel easy."
+            ],
+            "mistakes": [
+              {
+                "mistake": "The up-strums on 3 and 4 dragging.",
+                "fix": "Keep your wrist loose and the motion even."
+              },
+              {
+                "mistake": "Losing track of where the bridge starts.",
+                "fix": "The bridge starts at bar 9, on C."
+              }
+            ],
+            "tip": "Loop the groove in Practice with Auto speed-up to build up to the target tempo."
+          },
+          "song": "back-porch-groove"
+        },
+        {
+          "id": "stage-3-song",
+          "title": "Stage song: Auld Lang Syne",
+          "summary": "The folk strum and a two-chord bar in a complete song.",
+          "skills": ["strumming", "rhythm", "chordChanges"],
+          "learn": {
+            "what": "Auld Lang Syne is a traditional Scottish melody with words by Robert Burns from 1788, sung around the world at New Year. It brings together the folk strum and a two-chord bar near the end of each half. Pass this check to complete Stage 3.",
+            "steps": [
+              "Strum D – D U – U D U throughout.",
+              "The verse goes G, D, G, C, G, D, then C and D in one bar, then G.",
+              "The chorus is the same, except that Em replaces the second D.",
+              "In the two-chord bar, change to D on beat 3."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Missing the two-chord bar.",
+                "fix": "It's bar 7 of each half: watch the chord lane for the split block."
+              },
+              {
+                "mistake": "Losing the folk strum on the changes.",
+                "fix": "Leave each chord on the last up-strum, as you've practised."
+              }
+            ],
+            "tip": "Loop bars 7 and 8 in Practice until the half-bar change feels natural."
+          },
+          "song": "auld-lang-syne"
+        }
+      ]
+    }
+  ]
+}

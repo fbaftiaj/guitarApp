@@ -1,0 +1,896 @@
+{
+  "songs": [
+    {
+      "id": "ode-to-joy",
+      "title": "Ode to Joy",
+      "kind": "notes",
+      "origin": "public-domain",
+      "credit": "Ludwig van Beethoven, Symphony No. 9 (1824)",
+      "description": "Beethoven’s famous theme, played on the top two strings. Almost every note steps to its neighbour, so your fingers barely move.",
+      "skills": ["singleNotes", "rhythm"],
+      "stage": 1,
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
+      "tempo": 76,
+      "sections": [
+        {
+          "id": "theme",
+          "name": "Theme",
+          "bars": [
+            {
+              "chord": "C",
+              "notes": [
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                },
+                {
+                  "string": 1,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                },
+                {
+                  "string": 1,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                }
+              ]
+            },
+            {
+              "chord": "G",
+              "notes": [
+                {
+                  "string": 1,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                },
+                {
+                  "string": 1,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                }
+              ]
+            },
+            {
+              "chord": "C",
+              "notes": [
+                {
+                  "string": 2,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                }
+              ]
+            },
+            {
+              "chord": "G",
+              "notes": [
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1.5
+                },
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 0.5,
+                  "finger": 3
+                },
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 2,
+                  "finger": 3
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "theme-ending",
+          "name": "Theme, ending",
+          "bars": [
+            {
+              "chord": "C",
+              "notes": [
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                },
+                {
+                  "string": 1,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                },
+                {
+                  "string": 1,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                }
+              ]
+            },
+            {
+              "chord": "G",
+              "notes": [
+                {
+                  "string": 1,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                },
+                {
+                  "string": 1,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                }
+              ]
+            },
+            {
+              "chord": "C",
+              "notes": [
+                {
+                  "string": 2,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                }
+              ]
+            },
+            {
+              "chord": "C",
+              "notes": [
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1.5,
+                  "finger": 3
+                },
+                {
+                  "string": 2,
+                  "fret": 1,
+                  "beats": 0.5,
+                  "finger": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 1,
+                  "beats": 2,
+                  "finger": 1
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "middle",
+          "name": "Middle",
+          "bars": [
+            {
+              "chord": "G",
+              "notes": [
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                },
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                }
+              ]
+            },
+            {
+              "chord": "C",
+              "notes": [
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 0.5
+                },
+                {
+                  "string": 1,
+                  "fret": 1,
+                  "beats": 0.5,
+                  "finger": 1
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                }
+              ]
+            },
+            {
+              "chord": "G",
+              "notes": [
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 0.5
+                },
+                {
+                  "string": 1,
+                  "fret": 1,
+                  "beats": 0.5,
+                  "finger": 1
+                },
+                {
+                  "string": 1,
+                  "fret": 0,
+                  "beats": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                }
+              ]
+            },
+            {
+              "chord": "G",
+              "notes": [
+                {
+                  "string": 2,
+                  "fret": 1,
+                  "beats": 1,
+                  "finger": 1
+                },
+                {
+                  "string": 2,
+                  "fret": 3,
+                  "beats": 1,
+                  "finger": 3
+                },
+                {
+                  "string": 3,
+                  "fret": 0,
+                  "beats": 2
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "form": ["theme", "theme-ending", "middle", "theme-ending"]
+    },
+    {
+      "id": "oh-susanna",
+      "title": "Oh! Susanna",
+      "kind": "chords",
+      "origin": "public-domain",
+      "credit": "Stephen Foster (1848)",
+      "description": "A lively American tune built on just three chords: G, C and D. Steady downstrokes carry the whole song.",
+      "skills": ["chords", "chordChanges", "rhythm"],
+      "stage": 2,
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
+      "tempo": 80,
+      "strum": "quarters",
+      "sections": [
+        {
+          "id": "verse",
+          "name": "Verse",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            }
+          ]
+        },
+        {
+          "id": "chorus",
+          "name": "Chorus",
+          "bars": [
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            }
+          ]
+        }
+      ],
+      "form": ["verse", "chorus"]
+    },
+    {
+      "id": "red-river-valley",
+      "title": "Red River Valley",
+      "kind": "chords",
+      "origin": "traditional",
+      "credit": "Traditional North American folk song",
+      "description": "A gentle cowboy song with long stretches on each chord, so you have time to get every change ready.",
+      "skills": ["chords", "chordChanges", "rhythm"],
+      "stage": 2,
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
+      "tempo": 84,
+      "strum": "quarters",
+      "sections": [
+        {
+          "id": "first-half",
+          "name": "First half",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["D"]
+            }
+          ]
+        },
+        {
+          "id": "second-half",
+          "name": "Second half",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            }
+          ]
+        }
+      ],
+      "form": ["first-half", "second-half"]
+    },
+    {
+      "id": "when-the-saints",
+      "title": "When the Saints Go Marching In",
+      "kind": "chords",
+      "origin": "traditional",
+      "credit": "Traditional American spiritual",
+      "description": "A marching tune that loves a bouncy down, down-up strum. Mostly G, with short trips to C and D.",
+      "skills": ["strumming", "rhythm", "chordChanges"],
+      "stage": 3,
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
+      "tempo": 84,
+      "strum": "down-down-up",
+      "sections": [
+        {
+          "id": "first-line",
+          "name": "First line",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["D"]
+            }
+          ]
+        },
+        {
+          "id": "second-line",
+          "name": "Second line",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            }
+          ]
+        }
+      ],
+      "form": ["first-line", "second-line"]
+    },
+    {
+      "id": "amazing-grace",
+      "title": "Amazing Grace",
+      "kind": "chords",
+      "origin": "public-domain",
+      "credit": "Melody “New Britain” (1829); words by John Newton (1779)",
+      "description": "A slow hymn in three-four time. Count “1 2 3” and let the first beat of each bar ring.",
+      "skills": ["strumming", "rhythm", "chordChanges"],
+      "stage": 3,
+      "timeSignature": {
+        "beats": 3,
+        "unit": 4
+      },
+      "tempo": 84,
+      "strum": "waltz-up",
+      "sections": [
+        {
+          "id": "first-half",
+          "name": "First half",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["D"]
+            }
+          ]
+        },
+        {
+          "id": "second-half",
+          "name": "Second half",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["G"]
+            }
+          ]
+        }
+      ],
+      "form": ["first-half", "second-half"]
+    },
+    {
+      "id": "scarborough-fair",
+      "title": "Scarborough Fair",
+      "kind": "chords",
+      "origin": "traditional",
+      "credit": "Traditional English ballad",
+      "description": "An old ballad with a haunting minor sound, in three-four time. Am is home; every phrase finds its way back to it.",
+      "skills": ["strumming", "rhythm", "chordChanges"],
+      "stage": 3,
+      "timeSignature": {
+        "beats": 3,
+        "unit": 4
+      },
+      "tempo": 90,
+      "strum": "waltz",
+      "sections": [
+        {
+          "id": "first-half",
+          "name": "First half",
+          "bars": [
+            {
+              "chords": ["Am"]
+            },
+            {
+              "chords": ["Am"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["Am"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["Am"]
+            }
+          ]
+        },
+        {
+          "id": "second-half",
+          "name": "Second half",
+          "bars": [
+            {
+              "chords": ["Am"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["Em"]
+            },
+            {
+              "chords": ["Am"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["Am"]
+            },
+            {
+              "chords": ["Am"]
+            }
+          ]
+        }
+      ],
+      "form": ["first-half", "second-half"]
+    },
+    {
+      "id": "back-porch-groove",
+      "title": "Back Porch Groove",
+      "kind": "chords",
+      "origin": "original",
+      "credit": "Written for FretPath",
+      "description": "An original four-chord groove with a push on the “and” of beat three. Loop it and let it settle into your hand.",
+      "skills": ["strumming", "rhythm", "chordChanges"],
+      "stage": 3,
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
+      "tempo": 88,
+      "strum": "fill",
+      "sections": [
+        {
+          "id": "groove",
+          "name": "Groove",
+          "bars": [
+            {
+              "chords": ["Em"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            }
+          ]
+        },
+        {
+          "id": "bridge",
+          "name": "Bridge",
+          "bars": [
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["Am"]
+            },
+            {
+              "chords": ["D"]
+            }
+          ]
+        }
+      ],
+      "form": ["groove", "groove", "bridge", "groove"]
+    },
+    {
+      "id": "auld-lang-syne",
+      "title": "Auld Lang Syne",
+      "kind": "chords",
+      "origin": "traditional",
+      "credit": "Traditional Scottish melody; words by Robert Burns (1788)",
+      "description": "The New Year’s classic, with the folk strum and two quick changes squeezed into one bar near the end of each half.",
+      "skills": ["strumming", "rhythm", "chordChanges"],
+      "stage": 3,
+      "timeSignature": {
+        "beats": 4,
+        "unit": 4
+      },
+      "tempo": 76,
+      "strum": "folk",
+      "sections": [
+        {
+          "id": "verse",
+          "name": "Verse",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["C", "D"]
+            },
+            {
+              "chords": ["G"]
+            }
+          ]
+        },
+        {
+          "id": "chorus",
+          "name": "Chorus",
+          "bars": [
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["D"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["C"]
+            },
+            {
+              "chords": ["G"]
+            },
+            {
+              "chords": ["Em"]
+            },
+            {
+              "chords": ["C", "D"]
+            },
+            {
+              "chords": ["G"]
+            }
+          ]
+        }
+      ],
+      "form": ["verse", "chorus"]
+    }
+  ]
+}

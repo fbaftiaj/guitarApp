@@ -2,11 +2,16 @@ import { z } from 'zod/mini';
 import { skillIdSchema, type SkillId } from '@/storage/types';
 import { CHORDS } from './chords';
 import exercisesJson from './exercises.json';
+import { parseOrThrow, report, slug, text } from './schemaParts';
+import strumPatternsJson from './strumPatterns.json';
 
 /**
  * Play-along exercises, validated when the module loads. A strum pattern has
  * one character per slot — an eighth note in x/4 time, a beat in x/8 time:
- * "D" down, "U" up, "." no strum. Patterns may be named in `strumPatterns`.
+ * "D" down, "U" up, "." no strum. Patterns may be named (strumPatterns.json).
+ *
+ * The music of an exercise (time signature, tempo, bars) has its own schema,
+ * reused by lessons and songs, which supply the title and skills themselves.
  */
 
 export interface TimeSignature {
@@ -36,11 +41,14 @@ export interface NoteBar {
   notes: readonly NoteItem[];
 }
 
-interface ExerciseBase {
+export interface ExerciseMeta {
   id: string;
   title: string;
   description: string;
   skills: readonly SkillId[];
+}
+
+interface ExerciseBase extends ExerciseMeta {
   timeSignature: TimeSignature;
   /** Target tempo in beats per minute (beats of the time signature's unit). */
   tempo: number;
@@ -58,89 +66,94 @@ export function slotsPerBeat({ unit }: TimeSignature): number {
   return unit === 4 ? 2 : 1;
 }
 
-const slug = z.string().check(z.regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/));
-const text = z.string().check(z.minLength(1));
 const patternText = z.string().check(z.regex(/^[DU.]+$/));
 
-const common = {
-  id: slug,
-  title: text,
-  description: text,
-  skills: z.array(skillIdSchema).check(z.minLength(1)),
-  timeSignature: z.object({
-    beats: z.int().check(z.gte(2), z.lte(12)),
-    unit: z.union([z.literal(4), z.literal(8)]),
-  }),
-  tempo: z.int().check(z.gte(MIN_TEMPO), z.lte(MAX_TEMPO)),
+export const STRUM_PATTERNS: Readonly<Record<string, string>> = parseOrThrow(
+  z.record(slug, patternText),
+  strumPatternsJson,
+  'strum patterns',
+);
+
+export const timeSignatureSchema = z.object({
+  beats: z.int().check(z.gte(2), z.lte(12)),
+  unit: z.union([z.literal(4), z.literal(8)]),
+});
+
+export const tempoSchema = z.int().check(z.gte(MIN_TEMPO), z.lte(MAX_TEMPO));
+
+const musicCommon = {
+  timeSignature: timeSignatureSchema,
+  tempo: tempoSchema,
   /** Plays the bars this many times. */
   repeat: z.optional(z.int().check(z.gte(1), z.lte(16))),
 };
 
-const chordExerciseSchema = z.object({
-  ...common,
+export const chordBarSchema = z.object({
+  chords: z.array(z.string()).check(z.minLength(1), z.maxLength(4)),
+  strum: z.optional(z.string()),
+});
+
+const chordMusic = {
+  ...musicCommon,
   kind: z.literal('chords'),
   strum: z.string(),
-  bars: z
+  bars: z.array(chordBarSchema).check(z.minLength(1)),
+};
+
+export const noteBarSchema = z.object({
+  chord: z.optional(z.string()),
+  notes: z
     .array(
       z.object({
-        chords: z.array(z.string()).check(z.minLength(1), z.maxLength(4)),
-        strum: z.optional(z.string()),
+        beats: z.number().check(z.positive()),
+        string: z.optional(z.int().check(z.gte(1), z.lte(6))),
+        fret: z.optional(z.int().check(z.gte(0), z.lte(15))),
+        finger: z.optional(z.int().check(z.gte(1), z.lte(4))),
       }),
     )
     .check(z.minLength(1)),
 });
 
-const noteExerciseSchema = z.object({
-  ...common,
+const noteMusic = {
+  ...musicCommon,
   kind: z.literal('notes'),
-  bars: z
-    .array(
-      z.object({
-        chord: z.optional(z.string()),
-        notes: z
-          .array(
-            z.object({
-              beats: z.number().check(z.positive()),
-              string: z.optional(z.int().check(z.gte(1), z.lte(6))),
-              fret: z.optional(z.int().check(z.gte(0), z.lte(15))),
-              finger: z.optional(z.int().check(z.gte(1), z.lte(4))),
-            }),
-          )
-          .check(z.minLength(1)),
-      }),
-    )
-    .check(z.minLength(1)),
-});
+  bars: z.array(noteBarSchema).check(z.minLength(1)),
+};
 
-const catalogShape = z.object({
-  strumPatterns: z.record(slug, patternText),
-  exercises: z
-    .array(z.discriminatedUnion('kind', [chordExerciseSchema, noteExerciseSchema]))
-    .check(z.minLength(1)),
-});
+/** The music of an exercise, without its title and skills. */
+export const musicSchema = z.discriminatedUnion('kind', [
+  z.object(chordMusic),
+  z.object(noteMusic),
+]);
+export type MusicData = z.infer<typeof musicSchema>;
 
-type CatalogData = z.infer<typeof catalogShape>;
-type ExerciseData = CatalogData['exercises'][number];
+const meta = {
+  id: slug,
+  title: text,
+  description: text,
+  skills: z.array(skillIdSchema).check(z.minLength(1)),
+};
 
-function resolvePattern(patterns: Record<string, string>, value: string): string | null {
-  const pattern = patterns[value] ?? value;
+const exerciseDataSchema = z.discriminatedUnion('kind', [
+  z.object({ ...meta, ...chordMusic }),
+  z.object({ ...meta, ...noteMusic }),
+]);
+
+function resolvePattern(value: string): string | null {
+  const pattern = STRUM_PATTERNS[value] ?? value;
   return /^[DU.]+$/.test(pattern) ? pattern : null;
 }
 
-function checkExercise(
-  exercise: ExerciseData,
-  patterns: Record<string, string>,
-  issues: string[],
-): void {
-  const where = `exercise "${exercise.id}"`;
-  const { beats } = exercise.timeSignature;
-  const slots = beats * slotsPerBeat(exercise.timeSignature);
+/** Content checks a schema cannot express; `where` prefixes each issue, e.g. `exercise "x"`. */
+export function checkMusic(music: MusicData, where: string, issues: string[]): void {
+  const { beats } = music.timeSignature;
+  const slots = beats * slotsPerBeat(music.timeSignature);
   const checkChord = (id: string, bar: number) => {
     if (!CHORDS.has(id)) issues.push(`${where}, bar ${bar}: unknown chord "${id}"`);
   };
 
-  if (exercise.kind === 'chords') {
-    exercise.bars.forEach((bar, i) => {
+  if (music.kind === 'chords') {
+    music.bars.forEach((bar, i) => {
       bar.chords.forEach((id) => {
         checkChord(id, i + 1);
       });
@@ -149,8 +162,8 @@ function checkExercise(
           `${where}, bar ${i + 1}: ${bar.chords.length} chords do not split ${beats} beats`,
         );
       }
-      const strum = bar.strum ?? exercise.strum;
-      const pattern = resolvePattern(patterns, strum);
+      const strum = bar.strum ?? music.strum;
+      const pattern = resolvePattern(strum);
       if (pattern === null) issues.push(`${where}, bar ${i + 1}: unknown strum pattern "${strum}"`);
       else if (pattern.length !== slots) {
         issues.push(
@@ -161,7 +174,7 @@ function checkExercise(
     return;
   }
 
-  exercise.bars.forEach((bar, i) => {
+  music.bars.forEach((bar, i) => {
     if (bar.chord !== undefined) checkChord(bar.chord, i + 1);
     const total = bar.notes.reduce((sum, note) => sum + note.beats, 0);
     if (Math.abs(total - beats) > 1e-9) {
@@ -178,41 +191,27 @@ function checkExercise(
   });
 }
 
-export const exerciseCatalogSchema = catalogShape.check(
-  z.superRefine((catalog, ctx) => {
-    const issues: string[] = [];
-    const ids = new Set<string>();
-    for (const exercise of catalog.exercises) {
-      if (ids.has(exercise.id)) issues.push(`duplicate exercise id "${exercise.id}"`);
-      ids.add(exercise.id);
-      checkExercise(exercise, catalog.strumPatterns, issues);
-    }
-    issues.forEach((issue) => {
-      ctx.addIssue(issue);
-    });
-  }),
-);
-
-function resolveExercise(exercise: ExerciseData, patterns: Record<string, string>): Exercise {
+/** An exercise from validated music: named strum patterns resolved, repeats expanded. */
+export function buildExercise(info: ExerciseMeta, music: MusicData): Exercise {
   const base: ExerciseBase = {
-    id: exercise.id,
-    title: exercise.title,
-    description: exercise.description,
-    skills: exercise.skills,
-    timeSignature: exercise.timeSignature,
-    tempo: exercise.tempo,
+    id: info.id,
+    title: info.title,
+    description: info.description,
+    skills: info.skills,
+    timeSignature: music.timeSignature,
+    tempo: music.tempo,
   };
   const repeat = <T>(bars: T[]): T[] =>
-    Array.from({ length: exercise.repeat ?? 1 }, () => bars).flat();
+    Array.from({ length: music.repeat ?? 1 }, () => bars).flat();
 
-  if (exercise.kind === 'chords') {
+  if (music.kind === 'chords') {
     return {
       ...base,
       kind: 'chords',
       bars: repeat(
-        exercise.bars.map((bar) => ({
+        music.bars.map((bar) => ({
           chords: bar.chords,
-          strum: resolvePattern(patterns, bar.strum ?? exercise.strum) ?? '',
+          strum: resolvePattern(bar.strum ?? music.strum) ?? '',
         })),
       ),
     };
@@ -221,7 +220,7 @@ function resolveExercise(exercise: ExerciseData, patterns: Record<string, string
     ...base,
     kind: 'notes',
     bars: repeat(
-      exercise.bars.map((bar) => ({
+      music.bars.map((bar) => ({
         chord: bar.chord ?? null,
         notes: bar.notes.map((note) => ({
           beats: note.beats,
@@ -234,13 +233,24 @@ function resolveExercise(exercise: ExerciseData, patterns: Record<string, string
   };
 }
 
+export const exerciseCatalogSchema = z
+  .object({ exercises: z.array(exerciseDataSchema).check(z.minLength(1)) })
+  .check(
+    z.superRefine((catalog, ctx) => {
+      const issues: string[] = [];
+      const ids = new Set<string>();
+      for (const exercise of catalog.exercises) {
+        if (ids.has(exercise.id)) issues.push(`duplicate exercise id "${exercise.id}"`);
+        ids.add(exercise.id);
+        checkMusic(exercise, `exercise "${exercise.id}"`, issues);
+      }
+      report(issues, ctx);
+    }),
+  );
+
 export function parseExerciseCatalog(data: unknown): readonly Exercise[] {
-  const result = exerciseCatalogSchema.safeParse(data);
-  if (!result.success) {
-    throw new Error(`Invalid exercise catalog:\n${z.prettifyError(result.error)}`);
-  }
-  const { strumPatterns, exercises } = result.data;
-  return exercises.map((exercise) => resolveExercise(exercise, strumPatterns));
+  const { exercises } = parseOrThrow(exerciseCatalogSchema, data, 'exercise catalog');
+  return exercises.map((exercise) => buildExercise(exercise, exercise));
 }
 
 export const EXERCISES = parseExerciseCatalog(exercisesJson);

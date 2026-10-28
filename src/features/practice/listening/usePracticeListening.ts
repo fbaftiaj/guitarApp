@@ -2,7 +2,13 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { Exercise } from '@/content/exercises';
 import { saveSession } from '@/storage/sessions';
 import type { Timeline } from '../engine/timeline';
-import { sessionRecord, summarize, summarizeWait, type SessionSummary } from '../scoring/summary';
+import {
+  sessionRecord,
+  summarize,
+  summarizeWait,
+  type SessionContext,
+  type SessionSummary,
+} from '../scoring/summary';
 import type { ListeningError } from './microphoneErrors';
 import { PracticeListening, type ListeningFeedback } from './practiceListening';
 
@@ -16,8 +22,11 @@ export interface PracticeListeningState {
   waitSatisfied: number;
   error: ListeningError | null;
   clearError: () => void;
-  /** Ends the session: judges what is left, saves it and returns the results (null if empty). */
-  finish: (tempo: number) => SessionSummary | null;
+  /**
+   * Ends the session: judges what is left, saves it (as practice unless a
+   * context says otherwise) and returns the results (null if empty).
+   */
+  finish: (tempo: number, context?: SessionContext) => SessionSummary | null;
   /** Forgets the session (e.g. after a restart or once the results were shown). */
   reset: () => void;
 }
@@ -85,7 +94,7 @@ export function usePracticeListening({
   );
 
   const finish = useCallback(
-    (tempo: number): SessionSummary | null => {
+    (tempo: number, context?: SessionContext): SessionSummary | null => {
       if (!input) return null;
       const hits = input.settle();
       const { startedAt, durationMs, startTime } = input.session;
@@ -97,11 +106,10 @@ export function usePracticeListening({
             ? summarize(hits, { exercise, tempo, startTime })
             : null;
       if (summary && startedAt !== null) {
-        saveSession(sessionRecord(summary, { exercise, tempo, startedAt, durationMs })).catch(
-          (cause: unknown) => {
-            console.error('[practice] could not save the session', cause);
-          },
-        );
+        const record = sessionRecord(summary, { exercise, tempo, startedAt, durationMs, context });
+        saveSession(record).catch((cause: unknown) => {
+          console.error('[practice] could not save the session', cause);
+        });
       }
       return summary;
     },

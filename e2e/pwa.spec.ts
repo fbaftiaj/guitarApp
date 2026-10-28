@@ -77,6 +77,9 @@ test('works offline once the service worker is installed', async ({ page, contex
   await expect(page.getByRole('heading', { level: 1, name: 'Learn' })).toBeVisible();
   await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Songs' }).click();
   await expect(page.getByRole('heading', { level: 1, name: 'Songs' })).toBeVisible();
+  await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'Learn' }).click();
+  await page.getByRole('link', { name: 'Start the first lesson' }).click();
+  await expect(page.getByRole('heading', { level: 1, name: 'Parts of the guitar' })).toBeVisible();
 });
 
 test.describe('offline tuner', () => {

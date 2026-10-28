@@ -4,9 +4,9 @@ A mobile-first Progressive Web App for learning guitar: a precision tuner, a str
 eight-stage course and an interactive play-along practicer that listens to what you play.
 Everything runs on the device and works offline; there is no backend.
 
-> **Status:** Milestones 1–4 of 7 (foundation, tuner, practicer, listening and scoring) are
-> complete. The curriculum, songs and profile screens are placeholders until their
-> milestones land.
+> **Status:** Milestones 1–5 of 7 (foundation, tuner, practicer, listening and scoring,
+> curriculum) are complete. Stages 4–8 are shown as previews and the profile screen is a
+> placeholder until their milestones land.
 
 | #   | Milestone                                                  | Status  |
 | --- | ---------------------------------------------------------- | ------- |
@@ -14,8 +14,8 @@ Everything runs on the device and works offline; there is no backend.
 | 2   | Tuner: audio engine, pitch worklet, tuner UI               | Done    |
 | 3   | Practicer engine: scheduler, metronome, timeline, controls | Done    |
 | 4   | Listening and scoring: onset/chroma, latency calibration   | Done    |
-| 5   | Curriculum: content schemas, stages 1–3, lesson flow       | Next    |
-| 6   | Progress and profile: skill meters, streaks, history       | Planned |
+| 5   | Curriculum: content schemas, stages 1–3, lesson flow       | Done    |
+| 6   | Progress and profile: skill meters, streaks, history       | Next    |
 | 7   | Polish: onboarding, stages 4–8, accessibility, performance | Planned |
 
 ## Getting started
@@ -64,15 +64,16 @@ src/
   audio/      Shared AudioContext, microphone, the listener (mic + analysis worklet) for every feature
     dsp/      FFT, McLeod pitch detector, stabilizer, onset detector (SuperFlux), chroma
     synth/    Karplus–Strong plucks (shared pluck bank), reference tones, practice synth
-  content/    Data-driven content (instruments, chords, exercises JSON) with Zod schemas
+  content/    Data-driven content (instruments, chords, exercises, songs, course JSON) with Zod schemas
   lib/music/  Music theory: note spelling, MIDI ↔ Hz, cents, chord tones, shapes and templates
   platform/   Thin wrappers for browser APIs (screen wake lock, vibration)
   storage/    IndexedDB schema, migrations, repositories and the Zustand persist adapter
-  stores/     App-wide Zustand stores (settings)
+  stores/     App-wide Zustand stores (settings, lesson progress)
   features/   One folder per screen: tuner, learn, practice, songs, profile, settings
     practice/engine/     Timeline compiler, arrangement, transport, lookahead scheduler (pure)
     practice/scoring/    Chord recognition, hit checks, scorer, wait matcher, latency, stars, results
     practice/listening/  Session inputs: scoring while practising, latency calibration
+    learn/               Course screens, unlock rules, the Learn/Listen/Practice/Check steps
   test/       Test setup, signal generators and module stand-ins
 e2e/          Playwright specs (phone 390×844 and desktop 1280×800); support/ has the fake mic
 public/       Static assets: logo, generated icons and splash screens
@@ -216,6 +217,28 @@ note of the guide part as the transport schedules it (the guide does not have to
   headphones. Thresholds were tuned and tested on synthesised guitar sounds; tuning them on
   real guitars and phones is part of Milestone 7's cross-device testing.
 
+**Curriculum.** The course is data: `src/content/course/stages.json` lists the eight
+stages, and each playable stage has its own file of units and lessons (`stage-1.json` …
+`stage-3.json`), validated with Zod when the module loads. The checks go beyond the schema:
+unique ids, known chords and songs, strum patterns that fit the bar, 3–5 units of 4–8 lessons
+per stage, a stage song at the end of every stage, and no playable stage after a preview.
+Strum patterns are shared (`strumPatterns.json`); the exercise schema's music part is reused
+by lessons and songs.
+
+- **Lessons** run Learn → Listen → Practice → Check on one exercise (their own music, or a
+  song from the library). Learn shows what and why, numbered technique steps, chord diagrams
+  with finger numbers (or tab with suggested fingers), a silent animated fretboard demo of
+  the opening phrase (paused under `prefers-reduced-motion`), common mistakes with fixes and
+  a tip. Listen plays the exercise at its target tempo with the guide on. Practice is the
+  full practicer. Check is one scored run at the target tempo with the guide muted, saved as
+  a `check` session with its lesson id.
+- **Progress:** 1–3 stars at ≥ 70 / 85 / 95 % accuracy; the best result per lesson is kept in
+  IndexedDB (`stores/progressStore.ts`, in memory if storage is blocked). Lessons unlock in
+  order; a stage opens once the previous one is completed (Milestone 6's stage tests will
+  replace that rule). The rules are pure functions in `features/learn/progression.ts`.
+- **Songs:** chord progression (or melody), rhythm, tempo, sections and form; no lyrics.
+  The Songs tab lists them with origin and credit and opens each in the practicer.
+
 **PWA.** Workbox precaches the app shell and every screen chunk, so the app works offline
 after the first visit. New versions wait for the user to tap "Reload to update", so an
 update never interrupts a practice session. The manifest is portrait, standalone and
@@ -251,6 +274,17 @@ installable, with maskable icons and iOS splash screens.
   exactly, the results sheet and the stored session, wait mode advancing on the right chord,
   single notes by pitch, speed-up only after a pass played well, microphone errors and the
   microphone being released.
+- **Curriculum tests:** every lesson, song and strum pattern passes its schema and
+  references only existing chords and songs; validation rejects unknown chords and songs,
+  misfitting strums, a stage without a stage song, too few units or lessons, reused ids and
+  a playable stage after a preview; star thresholds at their boundaries; unlock rules (one
+  lesson after another, stages after the previous stage, previews closed, completed lessons
+  kept open); the progress store, including blocked storage; and the course screens.
+- **Lessons end to end** (`e2e/lesson.listening.spec.ts`, in the listening project): the
+  fake guitarist plays the first lesson's check; it passes with three stars, unlocks the next
+  lesson, saves a `check` session and survives a reload. A failed check keeps the next lesson
+  locked. `e2e/learn.spec.ts` covers the course overview, locked lessons and stages, the
+  fretboard demo (and reduced motion), the Listen step's guide timing and the Songs tab.
 - **End-to-end tests** (`e2e/`): the practicer on the real audio clock, with an audio spy
   recording each sound's scheduled start time: click spacing to the microsecond, sounds always
   scheduled ahead, pause and resume, restart, loop with speed-up, wait mode, mix and label
@@ -265,6 +299,7 @@ installable, with maskable icons and iOS splash screens.
 
 ## Content policy
 
-The code, logo, artwork, chord diagrams and exercises are original. Course songs will be
-public-domain or traditional pieces, or written for the app. The repository will not contain lyrics, tabs or
+The code, logo, artwork, chord diagrams, lesson text and exercises are original. Songs are
+traditional or public-domain pieces (with their source credited) or written for the app, and
+are stored as chords, rhythm and form only. The repository contains no lyrics, tabs or
 arrangements of copyrighted songs.

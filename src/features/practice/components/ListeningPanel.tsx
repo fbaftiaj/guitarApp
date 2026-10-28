@@ -3,7 +3,8 @@ import { LATENCY_PATH } from '@/app/navigation';
 import { Button } from '@/ui/Button';
 import { ButtonLink } from '@/ui/ButtonLink';
 import { Switch } from '@/ui/Switch';
-import { LISTENING_ERRORS, type ListeningError } from '../listening/microphoneErrors';
+import type { ListeningError } from '../listening/microphoneErrors';
+import { MicrophoneAlert } from './MicrophoneAlert';
 
 interface ListeningPanelProps {
   enabled: boolean;
@@ -21,7 +22,6 @@ export function ListeningPanel({
   error,
   onRetry,
 }: ListeningPanelProps) {
-  const copy = error ? LISTENING_ERRORS[error] : null;
   return (
     <div>
       <Switch
@@ -30,24 +30,19 @@ export function ListeningPanel({
         checked={enabled}
         onChange={onEnabledChange}
       />
-      {enabled && copy && (
-        <div role="alert" className="mt-2 rounded-control border border-danger/50 bg-danger/10 p-3">
-          <p className="text-sm font-semibold">{copy.title}</p>
-          <p className="mt-1 text-sm text-fg-muted">{copy.description}</p>
-          <div className="mt-3 flex flex-wrap gap-2">
-            {copy.retry && <Button onClick={onRetry}>Try again</Button>}
-            <Button
-              variant="secondary"
-              onClick={() => {
-                onEnabledChange(false);
-              }}
-            >
-              Play without listening
-            </Button>
-          </div>
-        </div>
+      {enabled && error && (
+        <MicrophoneAlert error={error} onRetry={onRetry} className="mt-2">
+          <Button
+            variant="secondary"
+            onClick={() => {
+              onEnabledChange(false);
+            }}
+          >
+            Play without listening
+          </Button>
+        </MicrophoneAlert>
       )}
-      {enabled && !copy && (
+      {enabled && !error && (
         <div className="mt-1 space-y-2 text-sm text-fg-muted">
           <p className="flex items-center justify-between gap-3">
             <span>

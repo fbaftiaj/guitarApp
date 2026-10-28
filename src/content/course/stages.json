@@ -1,0 +1,58 @@
+[
+  {
+    "id": "first-steps",
+    "number": 1,
+    "title": "First Steps",
+    "summary": "Get to know your guitar: hold it, tune it, read tab and chord diagrams, and play your first notes and melody.",
+    "skills": ["singleNotes", "rhythm", "theory"]
+  },
+  {
+    "id": "open-chords-1",
+    "number": 2,
+    "title": "Open Chords I",
+    "summary": "Seven essential open chords (Em, Am, E, A, D, G and C), clean fretting and smooth changes over steady downstrokes.",
+    "skills": ["chords", "chordChanges", "rhythm"]
+  },
+  {
+    "id": "rhythm-foundations",
+    "number": 3,
+    "title": "Rhythm Foundations",
+    "summary": "Down and up strums, eighth notes, the strum patterns behind countless songs, steady time and your first full songs.",
+    "skills": ["strumming", "rhythm", "chordChanges"]
+  },
+  {
+    "id": "open-chords-2",
+    "number": 4,
+    "title": "Open Chords II & Riffs",
+    "summary": "Seventh and suspended chords, more colourful changes and classic single-note riffs.",
+    "skills": ["chords", "chordChanges", "singleNotes"]
+  },
+  {
+    "id": "barre-and-power-chords",
+    "number": 5,
+    "title": "Barre & Power Chords",
+    "summary": "Power chords, palm muting and your first barre chords, F and Bm.",
+    "skills": ["chords", "chordChanges", "strumming"]
+  },
+  {
+    "id": "lead-guitar-1",
+    "number": 6,
+    "title": "Lead Guitar I",
+    "summary": "The minor pentatonic scale, hammer-ons, pull-offs, slides and bends, and your first short solos.",
+    "skills": ["lead", "singleNotes"]
+  },
+  {
+    "id": "fingerstyle-and-theory",
+    "number": 7,
+    "title": "Fingerstyle & Theory",
+    "summary": "Fingerpicking patterns, the major scale, and how keys and chords fit together.",
+    "skills": ["singleNotes", "theory"]
+  },
+  {
+    "id": "intermediate-musician",
+    "number": 8,
+    "title": "Intermediate Musician",
+    "summary": "Longer songs, quicker changes, mixed strumming and picking, and playing by ear.",
+    "skills": ["chords", "rhythm", "lead", "theory"]
+  }
+]

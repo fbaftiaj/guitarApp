@@ -1,0 +1,771 @@
+{
+  "stage": "open-chords-1",
+  "units": [
+    {
+      "id": "first-chords",
+      "title": "Your first chords",
+      "summary": "E minor, A minor and E major, played cleanly and changed in time.",
+      "lessons": [
+        {
+          "id": "e-minor-chord",
+          "title": "E minor (Em)",
+          "summary": "Your first full chord: two fingers, all six strings.",
+          "skills": ["chords", "rhythm"],
+          "learn": {
+            "what": "E minor is the easiest full chord on the guitar: two fingers, and you strum all six strings. Its dark, open sound turns up in every style of music. Learning it first lets you concentrate on pressing cleanly and strumming evenly.",
+            "steps": [
+              "Place finger 2 on the A string (5th) and finger 3 on the D string (4th), both just behind fret 2.",
+              "Arch both fingers so they don't touch the strings next to them.",
+              "Strum down across all six strings, starting from the low E, with a loose wrist.",
+              "Strum on beats 1 and 3 and let the chord ring in between."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Fingers landing in the middle of the fret space and buzzing.",
+                "fix": "Slide them right up to the fret, on the headstock side."
+              },
+              {
+                "mistake": "Strumming only the top few strings.",
+                "fix": "Start each strum at the low E: aim for the thickest string first."
+              }
+            ],
+            "tip": "If something sounds off, pick the strings one at a time: you'll hear exactly which one is muted."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "strum": "half-notes",
+            "bars": [
+              {
+                "chords": ["Em"]
+              },
+              {
+                "chords": ["Em"]
+              },
+              {
+                "chords": ["Em"]
+              },
+              {
+                "chords": ["Em"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "a-minor-chord",
+          "title": "A minor (Am)",
+          "summary": "Three fingers and five strings: a soft chord that pairs with C, G and Em.",
+          "skills": ["chords", "rhythm"],
+          "learn": {
+            "what": "A minor uses the same two-finger shape as E minor, moved across one string, plus finger 1. You strum five strings and leave out the low E. It's a soft, wistful chord and a very common partner for C, G and E minor.",
+            "steps": [
+              "Put finger 1 on the B string (2nd), fret 1.",
+              "Put finger 2 on the D string (4th) and finger 3 on the G string (3rd), both at fret 2.",
+              "Start your strum from the A string: the X above the low E means leave it out.",
+              "Strum down on every beat: four even strums per bar."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Hitting the low E, which muddies the chord.",
+                "fix": "Aim the start of the strum at the A string."
+              },
+              {
+                "mistake": "Finger 1 muting the high e.",
+                "fix": "Curl finger 1 so its tip comes straight down onto the B string."
+              }
+            ],
+            "tip": "Put finger 1 down first; the other two fall into place beside it."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["Am"]
+              },
+              {
+                "chords": ["Am"]
+              },
+              {
+                "chords": ["Am"]
+              },
+              {
+                "chords": ["Am"]
+              }
+            ]
+          }
+        },
+        {
+          "id": "clean-fretting",
+          "title": "Clean fretting",
+          "summary": "Make every string of a chord ring, picked one at a time.",
+          "skills": ["chords", "singleNotes"],
+          "learn": {
+            "what": "A chord only sounds full when every note rings. Muted or buzzing strings are the most common beginner problem, and playing the strings one at a time finds them quickly. This lesson picks through A minor so you can hear what each finger is doing.",
+            "steps": [
+              "Hold A minor and pick each string from the A string up to the high e.",
+              "If a string sounds dead, look for a finger leaning on it. If it buzzes, move that finger closer to the fret.",
+              "Keep your thumb low behind the neck: it lets your fingers arch higher.",
+              "Pick back down again without lifting the chord."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Fixing one string and muting another.",
+                "fix": "Adjust one finger at a time, then pick all the strings again."
+              },
+              {
+                "mistake": "Pressing harder to stop a buzz.",
+                "fix": "Position matters more than pressure: move closer to the fret first."
+              }
+            ],
+            "tip": "Short fingernails on your fretting hand make clean fretting much easier."
+          },
+          "exercise": {
+            "kind": "notes",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 66,
+            "bars": [
+              {
+                "chord": "Am",
+                "notes": [
+                  {
+                    "string": 5,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 4,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  },
+                  {
+                    "string": 3,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  }
+                ]
+              },
+              {
+                "chord": "Am",
+                "notes": [
+                  {
+                    "string": 1,
+                    "fret": 0,
+                    "beats": 1
+                  },
+                  {
+                    "string": 2,
+                    "fret": 1,
+                    "beats": 1,
+                    "finger": 1
+                  },
+                  {
+                    "string": 3,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 3
+                  },
+                  {
+                    "string": 4,
+                    "fret": 2,
+                    "beats": 1,
+                    "finger": 2
+                  }
+                ]
+              }
+            ],
+            "repeat": 4
+          }
+        },
+        {
+          "id": "e-major-chord",
+          "title": "E major (E)",
+          "summary": "Turn E minor into E major with one extra finger.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "E major is E minor plus finger 1 on the G string at fret 1, and that one finger turns the sound from dark to bright. Switching between the two trains your fingers to land together and your ears to hear major and minor.",
+            "steps": [
+              "Hold E minor: finger 2 on the A string and finger 3 on the D string, both at fret 2.",
+              "Add finger 1 on the G string, fret 1.",
+              "Strum all six strings.",
+              "Lift finger 1 to go back to E minor; put it down again for E major."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Finger 1 lying flat and muting the B string.",
+                "fix": "Keep finger 1 arched, on its tip."
+              },
+              {
+                "mistake": "Moving all three fingers to change between Em and E.",
+                "fix": "Leave fingers 2 and 3 where they are. Only finger 1 moves."
+              }
+            ],
+            "tip": "Listen for the difference: E major sounds bright and settled, E minor darker."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["E"]
+              },
+              {
+                "chords": ["E"]
+              },
+              {
+                "chords": ["Em"]
+              },
+              {
+                "chords": ["Em"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "changing-em-am",
+          "title": "Changing Em to Am",
+          "summary": "A one-minute drill switching between E minor and A minor every bar.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "Changing chords in time is the skill that turns shapes into songs. Em and Am are close: fingers 2 and 3 keep their shape and move across one string together, and finger 1 joins them for Am. This drill changes every bar for one minute.",
+            "steps": [
+              "From Em, move fingers 2 and 3 together onto the D and G strings, and add finger 1 on the B string at fret 1.",
+              "Move the fingers as one unit, keeping their shape in the air.",
+              "Strum four downstrokes per bar and start the change during beat 4.",
+              "Keep your strumming hand going even if the change isn't ready: staying on the beat matters more than a perfect chord."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Stopping the strum to wait for your fingers.",
+                "fix": "Keep strumming. A slightly messy chord on time beats a clean one that's late."
+              },
+              {
+                "mistake": "Lifting your fingers high between chords.",
+                "fix": "Hover just above the strings and glide across."
+              }
+            ],
+            "tip": "Count how many clean changes you make in the minute, and try to beat it the next day."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 64,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["Em"]
+              },
+              {
+                "chords": ["Am"]
+              }
+            ],
+            "repeat": 8
+          }
+        }
+      ]
+    },
+    {
+      "id": "major-chords",
+      "title": "A, D, G and C",
+      "summary": "Four major chords that open up hundreds of songs.",
+      "lessons": [
+        {
+          "id": "a-major-chord",
+          "title": "A major (A)",
+          "summary": "Three fingers side by side at fret 2.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "A major packs three fingers into fret 2 on the D, G and B strings. It's bright and strong, and the home chord of countless songs. The challenge is fitting the fingers in, so it's worth building the shape slowly.",
+            "steps": [
+              "Put finger 1 on the D string, finger 2 on the G string and finger 3 on the B string, all at fret 2.",
+              "Angle the fingers slightly so they fit side by side. Finger 3 will sit a little further from the fret than the others.",
+              "Leave the high e open: make sure finger 3 doesn't touch it.",
+              "Start your strum on the A string."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Finger 3 muting the high e.",
+                "fix": "Stand finger 3 up on its very tip, or tilt your wrist slightly forward."
+              },
+              {
+                "mistake": "Strumming the low E.",
+                "fix": "Start from the A string, as with A minor."
+              }
+            ],
+            "tip": "A major and A minor both start on the A string, so your strum stays the same when you switch between them."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["A"]
+              },
+              {
+                "chords": ["A"]
+              },
+              {
+                "chords": ["E"]
+              },
+              {
+                "chords": ["E"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "d-major-chord",
+          "title": "D major (D)",
+          "summary": "A triangle of fingers on the top three strings.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "D major is played on just four strings, from the open D upwards. Its triangle shape is easy to spot and appears everywhere, often next to A and G.",
+            "steps": [
+              "Put finger 1 on the G string, fret 2.",
+              "Put finger 3 on the B string, fret 3.",
+              "Put finger 2 on the high e, fret 2. The three fingers make a triangle.",
+              "Start your strum on the open D string and leave the two lowest strings silent."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Strumming all six strings, which makes D sound muddy.",
+                "fix": "Aim for the D string: your strum covers only four strings."
+              },
+              {
+                "mistake": "The high e buzzing under finger 2.",
+                "fix": "Bring finger 2 close to the fret and keep it upright."
+              }
+            ],
+            "tip": "Place finger 3 first: it's the anchor the other two form around."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["D"]
+              },
+              {
+                "chords": ["D"]
+              },
+              {
+                "chords": ["A"]
+              },
+              {
+                "chords": ["A"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "changing-a-d",
+          "title": "Changing A to D",
+          "summary": "A one-minute drill between A and D.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "A and D sit side by side in a huge number of songs. Finger 3 stays on the B string for both, moving from fret 2 for A to fret 3 for D, so it can guide the whole change. This drill changes every bar for one minute.",
+            "steps": [
+              "From A, slide finger 3 up to fret 3 on the B string, keeping light contact with the string.",
+              "Move finger 1 from the D string to the G string, and put finger 2 on the high e, both at fret 2.",
+              "Strum four downstrokes per bar and start the change on beat 4.",
+              "Go back to A by sliding finger 3 down and dropping fingers 1 and 2 into place."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Lifting all three fingers and searching for the new shape.",
+                "fix": "Let finger 3 lead: it barely moves."
+              },
+              {
+                "mistake": "Starting the D strum on the low strings.",
+                "fix": "Move the start of the strum: A from the A string, D from the D string."
+              }
+            ],
+            "tip": "Practise the change silently, without strumming, until your fingers find D on their own."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 64,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["A"]
+              },
+              {
+                "chords": ["D"]
+              }
+            ],
+            "repeat": 8
+          }
+        },
+        {
+          "id": "g-major-chord",
+          "title": "G major (G)",
+          "summary": "A wide, ringing chord across all six strings.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "G major stretches across the neck, with notes on both outside strings. It's one of the most used chords in folk and pop, and it pairs with C and D in so many songs that learning it opens up a whole library.",
+            "steps": [
+              "Put finger 2 on the low E, fret 3.",
+              "Put finger 1 on the A string, fret 2.",
+              "Put finger 3 on the high e, fret 3.",
+              "Strum all six strings: the D, G and B strings ring open."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Finger 1 or 2 touching the D string.",
+                "fix": "Arch both fingers and keep your palm away from the neck."
+              },
+              {
+                "mistake": "A weak high e under finger 3.",
+                "fix": "Drop your thumb a little lower behind the neck so finger 3 can reach over."
+              }
+            ],
+            "tip": "This shape uses fingers 1, 2 and 3. Some players use 2, 3 and 4 instead; either works, but pick one and stick with it."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["D"]
+              },
+              {
+                "chords": ["D"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "c-major-chord",
+          "title": "C major (C)",
+          "summary": "A staircase shape across five strings.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "C major climbs across the neck in steps: fret 3, fret 2, then fret 1. It's the biggest stretch of the open chords so far, and an essential one: C, G, Am and Em together make one of the most popular chord sets there is.",
+            "steps": [
+              "Put finger 3 on the A string, fret 3.",
+              "Put finger 2 on the D string, fret 2.",
+              "Put finger 1 on the B string, fret 1. The G and high e strings ring open.",
+              "Strum from the A string and leave out the low E."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Finger 1 muting the high e.",
+                "fix": "Curl finger 1 more steeply onto its tip."
+              },
+              {
+                "mistake": "Finger 2 muting the open G string.",
+                "fix": "Keep finger 2 upright so it clears the G string."
+              }
+            ],
+            "tip": "C to Am is an easy change: fingers 1 and 2 stay put, and only finger 3 moves."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 60,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["C"]
+              },
+              {
+                "chords": ["C"]
+              },
+              {
+                "chords": ["Am"]
+              },
+              {
+                "chords": ["Am"]
+              }
+            ],
+            "repeat": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "changing-in-time",
+      "title": "Changing chords in time",
+      "summary": "Drill the key changes, link three and four chords, and play your stage song.",
+      "lessons": [
+        {
+          "id": "changing-e-a",
+          "title": "Changing E to A",
+          "summary": "A one-minute drill between E and A.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "E to A is a key change in blues and rock. Every finger moves to a new string, so the trick is to move them all at once rather than one by one. This drill changes every bar for one minute.",
+            "steps": [
+              "From E, lift all three fingers together, keeping them curved.",
+              "Land fingers 1, 2 and 3 on the D, G and B strings at fret 2 in one movement.",
+              "Strum four downstrokes per bar: E from the low E, A from the A string.",
+              "Go back to E the same way, with all the fingers together."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Placing fingers one at a time and arriving late.",
+                "fix": "Picture the new shape, then drop all the fingers at once. Speed comes with repetition."
+              },
+              {
+                "mistake": "Strumming the low E on the A chord.",
+                "fix": "Start the strum one string over for A."
+              }
+            ],
+            "tip": "Practise the change in slow motion first, then on the beat."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 64,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["E"]
+              },
+              {
+                "chords": ["A"]
+              }
+            ],
+            "repeat": 8
+          }
+        },
+        {
+          "id": "changing-g-c",
+          "title": "Changing G to C",
+          "summary": "A one-minute drill between G and C.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "G to C is one of the most common changes in folk, pop and country, and one of the trickiest at first, because every finger moves. Thinking of it as one shape replacing another, rather than three separate moves, is what makes it quick. This drill changes every bar for one minute.",
+            "steps": [
+              "From G, lift all the fingers together.",
+              "Finger 3 moves from the high e to the A string, fret 3. Lead with it: it travels furthest.",
+              "Finger 2 lands on the D string at fret 2, and finger 1 on the B string at fret 1.",
+              "Strum four downstrokes per bar and change on beat 4."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Strumming the low E on C.",
+                "fix": "Start the C strum from the A string."
+              },
+              {
+                "mistake": "Freezing between the chords.",
+                "fix": "If you're not ready, strum the open strings on beat 4 and land C on beat 1."
+              }
+            ],
+            "tip": "Strumming open strings on beat 4 is a trick experienced players use too: it buys time and still sounds musical."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 64,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["C"]
+              }
+            ],
+            "repeat": 8
+          }
+        },
+        {
+          "id": "g-c-and-d",
+          "title": "G, C and D",
+          "summary": "Link three chords in a row with steady downstrokes.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "G, C and D are the three main chords of the key of G, and together they can accompany hundreds of songs. This lesson links them in a four-bar loop: G, C, D, then back to G.",
+            "steps": [
+              "Play four downstrokes on each chord.",
+              "G to C: lead with finger 3 to the A string.",
+              "C to D: finger 1 moves to the G string, finger 3 to the B string and finger 2 to the high e.",
+              "D to G: spread out, with finger 2 on the low E, finger 1 on the A string and finger 3 on the high e."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Speeding up on easy chords and slowing down on hard ones.",
+                "fix": "Keep the strum exactly with the click, however the change feels."
+              },
+              {
+                "mistake": "Strumming every chord from the low E.",
+                "fix": "G from the low E, C from the A string, D from the D string."
+              }
+            ],
+            "tip": "This loop is the backbone of your stage song, Oh! Susanna."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 70,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["C"]
+              },
+              {
+                "chords": ["D"]
+              },
+              {
+                "chords": ["G"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "four-chord-loop",
+          "title": "Four chords, one loop",
+          "summary": "Em, C, G and D: the loop behind countless songs.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "This four-chord loop is one of the most used progressions in modern music, so playing it smoothly lets you strum along with a huge number of songs. It brings together the changes you've practised: Em to C, C to G and G to D.",
+            "steps": [
+              "Play four downstrokes on each chord: Em, C, G, D.",
+              "Before each change, glance at the next chord in the panel so your fingers know where they're going.",
+              "Change during beat 4 of every bar.",
+              "When it flows, try it without looking at your fretting hand."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Stopping at the end of the loop.",
+                "fix": "D leads straight back into Em, so keep going."
+              },
+              {
+                "mistake": "Gripping harder when the tempo feels fast.",
+                "fix": "Relax and slow down in Practice: tension makes changes slower."
+              }
+            ],
+            "tip": "If four strums a bar feels busy, practise the loop with two strums a bar first."
+          },
+          "exercise": {
+            "kind": "chords",
+            "timeSignature": {
+              "beats": 4,
+              "unit": 4
+            },
+            "tempo": 70,
+            "strum": "quarters",
+            "bars": [
+              {
+                "chords": ["Em"]
+              },
+              {
+                "chords": ["C"]
+              },
+              {
+                "chords": ["G"]
+              },
+              {
+                "chords": ["D"]
+              }
+            ],
+            "repeat": 2
+          }
+        },
+        {
+          "id": "stage-2-song",
+          "title": "Stage song: Oh! Susanna",
+          "summary": "Play a complete song with G, C and D.",
+          "skills": ["chords", "chordChanges", "rhythm"],
+          "learn": {
+            "what": "Oh! Susanna was written by Stephen Foster in 1848 and became one of the best-known American songs. Its verse and chorus use only G, C and D, with steady downstrokes all the way through. Pass this check to complete Stage 2.",
+            "steps": [
+              "The verse stays on G most of the time, with short trips to D.",
+              "The chorus starts on C: get ready for it during the last bar of the verse.",
+              "Play four downstrokes per bar and change on beat 4.",
+              "Look over the song chart before you play, so you know where the changes come."
+            ],
+            "mistakes": [
+              {
+                "mistake": "Missing the move to C at the start of the chorus.",
+                "fix": "Watch the chord lane: the chorus starts at bar 9."
+              },
+              {
+                "mistake": "Rushing the D to G changes at the end of each line.",
+                "fix": "They come twice in each section, so loop bars 7 and 8 in Practice."
+              }
+            ],
+            "tip": "If the chorus gives you trouble, loop it in Practice before playing the whole song."
+          },
+          "song": "oh-susanna"
+        }
+      ]
+    }
+  ]
+}

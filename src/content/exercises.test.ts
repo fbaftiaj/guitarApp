@@ -1,7 +1,13 @@
 // @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import { CHORDS } from './chords';
-import { EXERCISES, findExercise, parseExerciseCatalog, slotsPerBeat } from './exercises';
+import {
+  EXERCISES,
+  STRUM_PATTERNS,
+  findExercise,
+  parseExerciseCatalog,
+  slotsPerBeat,
+} from './exercises';
 import exercisesJson from './exercises.json';
 
 const chordExercise = {
@@ -28,7 +34,7 @@ const noteExercise = {
 };
 
 function catalog(...exercises: object[]) {
-  return { strumPatterns: { quarters: 'D.D.D.D.' }, exercises };
+  return { exercises };
 }
 
 describe('exercise catalog', () => {
@@ -78,6 +84,13 @@ describe('exercise catalog', () => {
       fret: null,
       finger: null,
     });
+  });
+
+  it('names strum patterns that fit common time signatures', () => {
+    expect(STRUM_PATTERNS.folk).toBe('D.DU.UDU');
+    for (const [name, pattern] of Object.entries(STRUM_PATTERNS)) {
+      expect([6, 8], name).toContain(pattern.length);
+    }
   });
 
   it('counts strum slots per beat from the time signature', () => {

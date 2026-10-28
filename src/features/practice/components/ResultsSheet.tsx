@@ -1,8 +1,8 @@
-import { Star } from 'lucide-react';
 import { Button } from '@/ui/Button';
-import { cx } from '@/ui/cx';
 import { Sheet } from '@/ui/Sheet';
+import { StarRating } from '@/ui/StarRating';
 import type { SessionSummary } from '../scoring/summary';
+import { HitCounts } from './HitCounts';
 import { TimingChart } from './TimingChart';
 
 interface ResultsSheetProps {
@@ -13,36 +13,13 @@ interface ResultsSheetProps {
   onTryTempo: (tempo: number) => void;
 }
 
-const COUNTS = [
-  ['perfect', 'Perfect'],
-  ['good', 'Good'],
-  ['early', 'Early'],
-  ['late', 'Late'],
-  ['miss', 'Miss'],
-] as const;
-
 export function ResultsSheet({ summary, onClose, onPlayAgain, onTryTempo }: ResultsSheetProps) {
   return (
     <Sheet open={summary !== null} onClose={onClose} title="Results">
       {summary && (
         <div className="space-y-5">
           <div className="text-center">
-            <p
-              className="flex justify-center gap-1"
-              role="img"
-              aria-label={`${summary.stars} of 3 stars`}
-            >
-              {[1, 2, 3].map((star) => (
-                <Star
-                  key={star}
-                  aria-hidden
-                  className={cx(
-                    'size-8',
-                    star <= summary.stars ? 'fill-warning text-warning' : 'text-border-strong',
-                  )}
-                />
-              ))}
-            </p>
+            <StarRating stars={summary.stars} size="lg" className="justify-center gap-1" />
             <p className="mt-2 text-4xl font-bold tabular-nums">
               {Math.round(summary.accuracy * 100)}%
             </p>
@@ -51,20 +28,7 @@ export function ResultsSheet({ summary, onClose, onPlayAgain, onTryTempo }: Resu
             </p>
           </div>
 
-          <dl className="grid grid-cols-5 gap-1 text-center text-xs">
-            {COUNTS.map(([key, label]) => (
-              <div key={key} className="rounded-control bg-surface-raised py-2">
-                <dt className="text-fg-muted">{label}</dt>
-                <dd className="text-base font-bold tabular-nums">{summary.counts[key]}</dd>
-              </div>
-            ))}
-          </dl>
-          {summary.wrong > 0 && (
-            <p className="text-center text-sm text-fg-muted">
-              {summary.wrong} played on time with the wrong{' '}
-              {summary.wrong === 1 ? 'chord or note' : 'chords or notes'}
-            </p>
-          )}
+          <HitCounts summary={summary} />
 
           {summary.timeline.length > 0 && <TimingChart summary={summary} />}
 

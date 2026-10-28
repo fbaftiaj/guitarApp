@@ -1,0 +1,17 @@
+{
+  "quarters": "D.D.D.D.",
+  "eighths": "DDDDDDDD",
+  "folk": "D.DU.UDU",
+  "waltz": "D.D.D.",
+  "waltz-up": "D.DUDU",
+  "down-up": "DUDUDUDU",
+  "down-down-up": "D.DUD.DU",
+  "rock": "D.DUDUDU",
+  "half-notes": "D...D...",
+  "whole": "D.......",
+  "waltz-bass": "D...D.",
+  "six-eight": "D.UD.U",
+  "one-up": "D.D.D.DU",
+  "stop": "D.DUD...",
+  "fill": "D.D.DUDU"
+}

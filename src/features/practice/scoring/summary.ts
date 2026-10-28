@@ -146,6 +146,11 @@ export function summarizeWait(
 }
 
 /** The record stored in IndexedDB for a finished practice session. */
+/** How a session was played: free practice, or a lesson's check. */
+export type SessionContext = Pick<NewSessionResult, 'mode' | 'lessonId'>;
+
+export const PRACTICE_CONTEXT: SessionContext = { mode: 'practice', lessonId: null };
+
 export function sessionRecord(
   summary: SessionSummary,
   {
@@ -153,12 +158,19 @@ export function sessionRecord(
     tempo,
     startedAt,
     durationMs,
-  }: { exercise: Exercise; tempo: number; startedAt: number; durationMs: number },
+    context = PRACTICE_CONTEXT,
+  }: {
+    exercise: Exercise;
+    tempo: number;
+    startedAt: number;
+    durationMs: number;
+    context?: SessionContext | undefined;
+  },
 ): NewSessionResult {
   return {
     exerciseId: exercise.id,
-    lessonId: null,
-    mode: 'practice',
+    lessonId: context.lessonId,
+    mode: context.mode,
     startedAt: Math.round(startedAt),
     durationMs: Math.max(0, Math.round(durationMs)),
     bpm: tempo,

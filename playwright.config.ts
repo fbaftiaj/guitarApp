@@ -45,6 +45,8 @@ export default defineConfig({
       testMatch: LISTENING,
       dependencies: ['mobile', 'desktop'],
       fullyParallel: false,
+      // One worker: listening tests in different files must not overlap either.
+      workers: 1,
       use: PHONE,
     },
   ],
